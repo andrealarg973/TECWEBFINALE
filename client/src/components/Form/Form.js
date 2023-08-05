@@ -28,7 +28,7 @@ const Form = ({ currentId, setCurrentId }) => {
 
     const getChars = async () => {
         if (user) {
-            return await dispatch(getCar({ user: user?.result?._id }));
+            return dispatch(getCar({ user: user?.result?._id }));
 
         }
         return null;
@@ -40,7 +40,7 @@ const Form = ({ currentId, setCurrentId }) => {
             setInitialCar(res?.quota);
             //console.log('res', res);
         });
-
+        //console.log(initialCar);
         if (post) {
             setPostData(post);
         }
@@ -50,9 +50,9 @@ const Form = ({ currentId, setCurrentId }) => {
         e.preventDefault();
 
         if (currentId === 0 || currentId === null) {
-            if (initialCar - caratteri > 0) {
+            if (DAILY - initialCar - caratteri > 0) {
                 dispatch(createPost({ ...postData, name: user?.result?.name }));
-                dispatch(updateQuota({ ...caratteri, user: user.result._id, quota: initialCar - caratteri }));
+                dispatch(updateQuota({ ...caratteri, user: user.result._id, quota: caratteri }));
                 navigate('/');
             } else {
                 alert('Quota insufficiente');
@@ -91,7 +91,7 @@ const Form = ({ currentId, setCurrentId }) => {
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                 <Typography variant="h6">{currentId ? 'Edit Post' : 'Create Post'}</Typography>
                 <TextField name="title" variant="outlined" label="Title" fullWidth value={postData.title} onChange={(e) => setPostData({ ...postData, title: e.target.value })} />
-                <Typography variant="h6" style={(initialCar - caratteri < 0) ? { color: 'red' } : { color: 'black' }}> Caratteri restanti: {initialCar - caratteri}</Typography>
+                <Typography variant="h6" style={(DAILY - initialCar - caratteri < 0) ? { color: 'red' } : { color: 'black' }}> Caratteri restanti: {DAILY - initialCar - caratteri}</Typography>
                 <TextField name="message" variant="outlined" label="Message" fullWidth multiline minRows={4} value={postData.message} onChange={handleMessage} />
                 <TextField name="tags" variant="outlined" label="Tags (coma separated)" fullWidth value={postData.tags} onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })} />
                 <div className={classes.fileInput}><FileBase type="file" multiple={false} onDone={({ base64 }) => setPostData({ ...postData, selectedFile: base64 })} /></div>

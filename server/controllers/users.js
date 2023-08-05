@@ -68,9 +68,9 @@ export const updateQuota = async (req, res) => {
         const message = new RegExp(id, 'i');
 
         const temp = await QuotaSchema.findOne({ $or: [{ user: message }] });
-        console.log('USER', temp);
+        //console.log('USER', temp);
         temp.quota += quota;
-        console.log('USER', temp);
+        //console.log('USER', temp);
 
         /*
         const user = await User.findById(id);
