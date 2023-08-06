@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useStyles from './styles';
 import { createPost, updatePost } from '../../actions/posts';
 import { updateQuota, getCar } from '../../actions/auth';
+import { getChannels } from '../../actions/channels';
 import { useNavigate } from 'react-router-dom';
 
 // get the current id of the post
@@ -25,6 +26,7 @@ const Form = ({ currentId, setCurrentId }) => {
     const [caratteri, setCaratteri] = useState(0);
     const [initialCar, setInitialCar] = useState(0);
     const DAILY = 100;
+    const [channels, setChannels] = useState([]);
 
     const getChars = async () => {
         if (user) {
@@ -34,8 +36,17 @@ const Form = ({ currentId, setCurrentId }) => {
         return null;
     }
 
+    const getChanns = async () => {
+        await dispatch(getChannels()).then((res) => {
+            setChannels(res);
+        });
+        console.log('channels:', channels);
+    }
+
+
     useEffect(() => {
         //console.log('ID', user?.result?._id);
+        //getChannels();
         getChars().then((res) => {
             setInitialCar(res?.quota);
             //console.log('res', res);
@@ -95,6 +106,7 @@ const Form = ({ currentId, setCurrentId }) => {
                 <TextField name="message" variant="outlined" label="Message" fullWidth multiline minRows={4} value={postData.message} onChange={handleMessage} />
                 <TextField name="tags" variant="outlined" label="Tags (coma separated)" fullWidth value={postData.tags} onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })} />
                 <div className={classes.fileInput}><FileBase type="file" multiple={false} onDone={({ base64 }) => setPostData({ ...postData, selectedFile: base64 })} /></div>
+                <Button onClick={getChanns}>canali</Button>
                 <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
                 <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
             </form>

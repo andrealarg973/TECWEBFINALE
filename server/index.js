@@ -5,6 +5,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import postRoutes from './routes/posts.js';
 import userRoutes from './routes/users.js';
+import channelRoutes from './routes/channels.js';
 
 const app = express();
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(cors());
 
 app.use('/posts', postRoutes);
 app.use('/users', userRoutes);
+app.use('/channels', channelRoutes);
 
 //const CONNECTION_URL = 'mongodb+srv://user:user@cluster0.xmu1sog.mongodb.net/?retryWrites=true&w=majority';
 const PORT = process.env.PORT || 5000;

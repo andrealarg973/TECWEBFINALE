@@ -27,3 +27,5 @@ export const signIn = (formData) => API.post('/users/signin', formData);
 export const signUp = (formData) => API.post('/users/signup', formData);
 export const updateQuota = (formData) => API.patch(`/users/updateQuota`, formData);
 export const getCar = (id) => API.patch(`/users/caratteri`, id);
+
+export const getChannels = () => API.get('/channels/getChannels');

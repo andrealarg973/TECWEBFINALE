@@ -15,3 +15,5 @@ export const AUTH = 'AUTH';
 export const LOGOUT = 'LOGOUT';
 export const UPDATE_QUOTA = 'UPDATE_QUOTA';
 export const GET_CAR = 'GET_CAR';
+
+export const GET_CHANNELS = 'GET_CHANNELS';
