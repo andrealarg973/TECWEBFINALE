@@ -23,6 +23,10 @@ const postSchema = mongoose.Schema({
         type: [String],
         default: [],
     },
+    destinatari: {
+        type: [String],
+        default: [],
+    },
     createdAt: {
         type: Date,
         default: new Date(),

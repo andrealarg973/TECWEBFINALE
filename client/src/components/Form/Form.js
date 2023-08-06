@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
+import CreateSelect from 'react-select/creatable';
 
 import useStyles from './styles';
 import { createPost, updatePost } from '../../actions/posts';
 import { updateQuota, getCar } from '../../actions/auth';
-import { getChannels } from '../../actions/channels';
+import { getChannels, createChannel } from '../../actions/channels';
 import { useNavigate } from 'react-router-dom';
 
 // get the current id of the post
@@ -16,7 +17,8 @@ const Form = ({ currentId, setCurrentId }) => {
         title: '',
         message: '',
         tags: '',
-        selectedFile: ''
+        selectedFile: '',
+        destinatari: [],
     });
     const post = useSelector((state) => (currentId ? state.posts.posts.find((p) => p._id === currentId) : null));
     const classes = useStyles();
@@ -27,6 +29,11 @@ const Form = ({ currentId, setCurrentId }) => {
     const [initialCar, setInitialCar] = useState(0);
     const DAILY = 100;
     const [channels, setChannels] = useState([]);
+    const options = [
+        { value: "OFFICIAL", label: "OFFICIAL" },
+        { value: "CONTROVERSIAL", label: "CONTROVERSIAL" },
+        { value: "RANDOM", label: "RANDOM" },
+    ];
 
     const getChars = async () => {
         if (user) {
@@ -40,13 +47,14 @@ const Form = ({ currentId, setCurrentId }) => {
         await dispatch(getChannels()).then((res) => {
             setChannels(res);
         });
-        console.log('channels:', channels);
+        //console.log('channels:', channels);
     }
 
 
     useEffect(() => {
         //console.log('ID', user?.result?._id);
         //getChannels();
+        getChanns();
         getChars().then((res) => {
             setInitialCar(res?.quota);
             //console.log('res', res);
@@ -71,6 +79,7 @@ const Form = ({ currentId, setCurrentId }) => {
         } else {
 
             dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
+            navigate('/');
         }
 
         clear();
@@ -84,7 +93,31 @@ const Form = ({ currentId, setCurrentId }) => {
 
     const clear = () => {
         setCurrentId(null);
-        setPostData({ title: '', message: '', tags: '', selectedFile: '' });
+        setPostData({ title: '', message: '', tags: '', selectedFile: '', destinatari: [] });
+    }
+
+    const handleSelect = (selectedOption, actionMeta) => {
+        //console.log('handleSelect', selectedOption, actionMeta);
+        setPostData({ ...postData, destinatari: selectedOption.map((dest) => dest.value) });
+        //console.log(postData);
+        if (actionMeta.action === 'create-option') {
+            //console.log("CREAZIONE", actionMeta.option);
+            actionMeta.option.label = actionMeta.option.label.toLowerCase();
+            actionMeta.option.value = actionMeta.option.value.toLowerCase();
+            dispatch(createChannel({ ...channels, owner: user?.result?._id, label: '$' + actionMeta.option.label, value: actionMeta.option.value }));
+        }
+    }
+
+    const handleInputSelect = (inputValue, actionMeta) => {
+        //console.log('handleInputSelect', inputValue, actionMeta);
+    }
+
+    const loadOptions = (searchValue, callback) => {
+        setTimeout(() => {
+            const filteredOptions = options.filter((option) => option.label.toLowerCase().includes(searchValue.toLowerCase()));
+            //console.log('loadOptions', searchValue, filteredOptions);
+            callback(filteredOptions);
+        }, 1000);
     }
 
     if (!user?.result?.name) {
@@ -105,8 +138,9 @@ const Form = ({ currentId, setCurrentId }) => {
                 <Typography variant="h6" style={(DAILY - initialCar - caratteri < 0) ? { color: 'red' } : { color: 'black' }}> Caratteri restanti: {DAILY - initialCar - caratteri}</Typography>
                 <TextField name="message" variant="outlined" label="Message" fullWidth multiline minRows={4} value={postData.message} onChange={handleMessage} />
                 <TextField name="tags" variant="outlined" label="Tags (coma separated)" fullWidth value={postData.tags} onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })} />
+                <Typography variant="h6">Destinatari</Typography>
+                <CreateSelect className={classes.fileInput} value={postData.destinatari.map((c) => ({ value: c, label: "$" + c }))} isMulti options={channels} onChange={handleSelect} onInputChange={handleInputSelect} />
                 <div className={classes.fileInput}><FileBase type="file" multiple={false} onDone={({ base64 }) => setPostData({ ...postData, selectedFile: base64 })} /></div>
-                <Button onClick={getChanns}>canali</Button>
                 <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
                 <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
             </form>

@@ -1,10 +1,16 @@
 import mongoose from 'mongoose';
 
 const channelSchema = mongoose.Schema({
-    name: String,
+    value: String,
+    label: String,
     privacy: {
         type: String,
         default: 'public'
+    },
+    owner: String,
+    participants: {
+        type: [String],
+        default: []
     }
 });
 

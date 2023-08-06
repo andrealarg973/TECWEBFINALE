@@ -31,7 +31,7 @@ export const signup = (formData, navigate) => async (dispatch) => {
 export const updateQuota = (formData) => async (dispatch) => {
     try {
         const { data } = await api.updateQuota(formData);
-        console.log('data', data);
+        //console.log('data', data);
         dispatch({ type: UPDATE_QUOTA, payload: data });
 
     } catch (error) {

@@ -29,3 +29,4 @@ export const updateQuota = (formData) => API.patch(`/users/updateQuota`, formDat
 export const getCar = (id) => API.patch(`/users/caratteri`, id);
 
 export const getChannels = () => API.get('/channels/getChannels');
+export const createChannel = (channel) => API.post('/channels/addChannel', channel);
