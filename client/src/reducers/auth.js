@@ -1,6 +1,6 @@
-import { AUTH, LOGOUT, UPDATE_QUOTA, GET_CAR } from '../constants/actionTypes';
+import { AUTH, LOGOUT, UPDATE_QUOTA, GET_CAR, GET_USERS } from '../constants/actionTypes';
 
-const authReducer = (state = { authData: null }, action) => {
+const authReducers = (state = { authData: null }, action) => {
     switch (action.type) {
         case AUTH:
             //console.log(action.data);
@@ -14,9 +14,12 @@ const authReducer = (state = { authData: null }, action) => {
         case GET_CAR:
             //console.log('REDU', action.payload);
             return action.payload;
+        case GET_USERS:
+            //console.log('REDU', action.payload);
+            return action.payload;
         default:
             return state;
     }
 }
 
-export default authReducer;
+export default authReducers;

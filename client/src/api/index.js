@@ -23,10 +23,11 @@ export const likePost = (id) => API.patch(`/posts/${id}/likePost`);
 export const dislikePost = (id) => API.patch(`/posts/${id}/dislikePost`);
 export const commentPost = (value, id) => API.post(`/posts/${id}/commentPost`, { value });
 
+export const getUsers = (id) => API.get(`/users/${id}/getUsers`);
 export const signIn = (formData) => API.post('/users/signin', formData);
 export const signUp = (formData) => API.post('/users/signup', formData);
 export const updateQuota = (formData) => API.patch(`/users/updateQuota`, formData);
 export const getCar = (id) => API.patch(`/users/caratteri`, id);
 
-export const getChannels = () => API.get('/channels/getChannels');
+export const getChannels = (id) => API.get(`/channels/${id}/getChannels`);
 export const createChannel = (channel) => API.post('/channels/addChannel', channel);

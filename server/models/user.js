@@ -6,8 +6,6 @@ const userSchema = mongoose.Schema({
     password: { type: String, required: true },
     role: { type: String, default: 'user' },
     id: { type: String },
-    quotaGiornaliera: { type: Number, default: 100 },
-    quotaRestante: { type: Number, default: 100 },
 });
 
 const User = mongoose.model('User', userSchema);

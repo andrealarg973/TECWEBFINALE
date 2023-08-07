@@ -3,10 +3,11 @@ import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
 import CreateSelect from 'react-select/creatable';
+import Select from 'react-select';
 
 import useStyles from './styles';
 import { createPost, updatePost } from '../../actions/posts';
-import { updateQuota, getCar } from '../../actions/auth';
+import { getUsers, updateQuota, getCar } from '../../actions/auth';
 import { getChannels, createChannel } from '../../actions/channels';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,6 +20,7 @@ const Form = ({ currentId, setCurrentId }) => {
         tags: '',
         selectedFile: '',
         destinatari: [],
+        destinatariPrivati: [],
     });
     const post = useSelector((state) => (currentId ? state.posts.posts.find((p) => p._id === currentId) : null));
     const classes = useStyles();
@@ -29,6 +31,7 @@ const Form = ({ currentId, setCurrentId }) => {
     const [initialCar, setInitialCar] = useState(0);
     const DAILY = 100;
     const [channels, setChannels] = useState([]);
+    const [users, setUsers] = useState([]);
     const options = [
         { value: "OFFICIAL", label: "OFFICIAL" },
         { value: "CONTROVERSIAL", label: "CONTROVERSIAL" },
@@ -43,8 +46,16 @@ const Form = ({ currentId, setCurrentId }) => {
         return null;
     }
 
+    const getUsrs = async () => {
+        await dispatch(getUsers(user?.result?._id)).then((res) => {
+            //console.log('res:', res);
+            setUsers(res);
+        });
+    }
+
     const getChanns = async () => {
-        await dispatch(getChannels()).then((res) => {
+        await dispatch(getChannels(user?.result?._id)).then((res) => {
+            //console.log('channels:', res);
             setChannels(res);
         });
         //console.log('channels:', channels);
@@ -52,14 +63,16 @@ const Form = ({ currentId, setCurrentId }) => {
 
 
     useEffect(() => {
+
         //console.log('ID', user?.result?._id);
         //getChannels();
         getChanns();
+        getUsrs();
         getChars().then((res) => {
             setInitialCar(res?.quota);
             //console.log('res', res);
         });
-        //console.log(initialCar);
+
         if (post) {
             setPostData(post);
         }
@@ -71,7 +84,7 @@ const Form = ({ currentId, setCurrentId }) => {
         if (currentId === 0 || currentId === null) {
             if (DAILY - initialCar - caratteri > 0) {
                 dispatch(createPost({ ...postData, name: user?.result?.name }));
-                dispatch(updateQuota({ ...caratteri, user: user.result._id, quota: caratteri }));
+                dispatch(updateQuota({ ...caratteri, user: user?.result?._id, quota: caratteri }));
                 navigate('/');
             } else {
                 alert('Quota insufficiente');
@@ -93,10 +106,10 @@ const Form = ({ currentId, setCurrentId }) => {
 
     const clear = () => {
         setCurrentId(null);
-        setPostData({ title: '', message: '', tags: '', selectedFile: '', destinatari: [] });
+        setPostData({ title: '', message: '', tags: '', selectedFile: '', destinatari: [], destinatariPrivati: [] });
     }
 
-    const handleSelect = (selectedOption, actionMeta) => {
+    const handleSelectChannels = (selectedOption, actionMeta) => {
         //console.log('handleSelect', selectedOption, actionMeta);
         setPostData({ ...postData, destinatari: selectedOption.map((dest) => dest.value) });
         //console.log(postData);
@@ -106,6 +119,11 @@ const Form = ({ currentId, setCurrentId }) => {
             actionMeta.option.value = actionMeta.option.value.toLowerCase();
             dispatch(createChannel({ ...channels, owner: user?.result?._id, label: '$' + actionMeta.option.label, value: actionMeta.option.value }));
         }
+    }
+
+    const handleSelectUsers = (selectedOption, actionMeta) => {
+        setPostData({ ...postData, destinatariPrivati: selectedOption.map((dest) => dest.value) });
+        //console.log(postData);
     }
 
     const handleInputSelect = (inputValue, actionMeta) => {
@@ -118,6 +136,11 @@ const Form = ({ currentId, setCurrentId }) => {
             //console.log('loadOptions', searchValue, filteredOptions);
             callback(filteredOptions);
         }, 1000);
+    }
+
+    const nome = (c) => {
+        const foundItem = users.find(item => item.value === c);
+        return foundItem ? foundItem.label : null;
     }
 
     if (!user?.result?.name) {
@@ -138,8 +161,10 @@ const Form = ({ currentId, setCurrentId }) => {
                 <Typography variant="h6" style={(DAILY - initialCar - caratteri < 0) ? { color: 'red' } : { color: 'black' }}> Caratteri restanti: {DAILY - initialCar - caratteri}</Typography>
                 <TextField name="message" variant="outlined" label="Message" fullWidth multiline minRows={4} value={postData.message} onChange={handleMessage} />
                 <TextField name="tags" variant="outlined" label="Tags (coma separated)" fullWidth value={postData.tags} onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })} />
-                <Typography variant="h6">Destinatari</Typography>
-                <CreateSelect className={classes.fileInput} value={postData.destinatari.map((c) => ({ value: c, label: "$" + c }))} isMulti options={channels} onChange={handleSelect} onInputChange={handleInputSelect} />
+                <Typography variant="h6">Destinatari (canali)</Typography>
+                <CreateSelect className={classes.fileInput} value={postData.destinatari.map((c) => ({ value: c, label: "$" + c }))} isMulti options={channels} onChange={handleSelectChannels} onInputChange={handleInputSelect} />
+                <Typography variant="h6">Destinatari (utenti)</Typography>
+                <Select className={classes.fileInput} value={postData.destinatariPrivati.map((c) => ({ value: c, label: nome(c) }))} isMulti options={users} onChange={handleSelectUsers} onInputChange={handleInputSelect} />
                 <div className={classes.fileInput}><FileBase type="file" multiple={false} onDone={({ base64 }) => setPostData({ ...postData, selectedFile: base64 })} /></div>
                 <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
                 <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>

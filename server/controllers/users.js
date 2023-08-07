@@ -8,6 +8,20 @@ import QuotaSchema from '../models/quota.js';
 
 const router = express.Router();
 
+export const getUsers = async (req, res) => {
+    const id = req.params.id;
+    //console.log(id);
+
+    try {
+        const users = await User.find({ $and: [{ _id: { $ne: id } }, { $or: [{ role: 'user' }, { role: 'vip' }] }] }); // get all users (except mod, smm and yourself)
+        const values = users.map((user) => ({ value: String(user._id), label: user.name }));
+        //console.log(values);
+        res.status(200).json(values);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const signin = async (req, res) => {
     const { email, password } = req.body;
 
@@ -43,7 +57,7 @@ export const signup = async (req, res) => {
 
         const result = await User.create({ email, password: hashedPassword, name: temp });
 
-        const quota = await QuotaSchema.create({ user: result._id, quota: 100 });
+        const quota = await QuotaSchema.create({ user: result._id });
 
         //console.log(result);
 

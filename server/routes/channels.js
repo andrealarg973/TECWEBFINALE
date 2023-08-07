@@ -6,7 +6,7 @@ import { getChannels, addChannel } from '../controllers/channels.js';
 const router = express.Router();
 
 // http://localhost:5000/channels
-router.get('/getChannels', getChannels);
+router.get('/:id/getChannels', getChannels);
 router.post('/addChannel', addChannel);
 
 export default router;

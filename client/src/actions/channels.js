@@ -1,9 +1,10 @@
 import { GET_CHANNELS, CREATE_CHANNEL } from '../constants/actionTypes';
 import * as api from '../api';
 
-export const getChannels = () => async (dispatch) => {
+export const getChannels = (id) => async (dispatch) => {
+    //console.log(id);
     try {
-        const { data } = await api.getChannels();
+        const { data } = await api.getChannels(id);
         //console.log(data);
         dispatch({ type: GET_CHANNELS, payload: data });
         return data;
