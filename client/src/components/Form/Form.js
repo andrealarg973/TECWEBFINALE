@@ -66,12 +66,14 @@ const Form = ({ currentId, setCurrentId }) => {
 
         //console.log('ID', user?.result?._id);
         //getChannels();
-        getChanns();
-        getUsrs();
-        getChars().then((res) => {
-            setInitialCar(res?.quota);
-            //console.log('res', res);
-        });
+        if (user) {
+            getChanns();
+            getUsrs();
+            getChars().then((res) => {
+                setInitialCar(res?.quota);
+                //console.log('res', res);
+            });
+        }
 
         if (post) {
             setPostData(post);
