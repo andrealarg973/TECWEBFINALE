@@ -84,12 +84,16 @@ const Form = ({ currentId, setCurrentId }) => {
         e.preventDefault();
 
         if (currentId === 0 || currentId === null) {
-            if (DAILY - initialCar - caratteri > 0) {
+            if ((DAILY - initialCar - caratteri > 0) || !(postData.destinatari.length > 0)) {
                 dispatch(createPost({ ...postData, name: user?.result?.name }));
-                dispatch(updateQuota({ ...caratteri, user: user?.result?._id, quota: caratteri }));
+                if (postData.destinatari.length > 0) {
+                    dispatch(updateQuota({ ...caratteri, user: user?.result?._id, quota: caratteri }));
+                }
                 navigate('/');
             } else {
-                alert('Quota insufficiente');
+                if (postData.destinatari.length > 0) {
+                    alert('Quota insufficiente');
+                }
             }
         } else {
 
