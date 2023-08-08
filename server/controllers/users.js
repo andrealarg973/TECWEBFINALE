@@ -60,7 +60,7 @@ export const getMySMM = async (req, res) => {
     //console.log('id', id);
     try {
         const user = await User.findById(id);
-        if (user.smm !== '') {
+        if (user.smm !== '' && user.smm) {
             const smm = await User.findById(user.smm);
             //console.log(smm);
             res.status(200).json({ value: smm._id, label: smm.name });

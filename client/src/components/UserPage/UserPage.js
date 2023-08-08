@@ -41,7 +41,7 @@ const UserPage = () => {
             getMySmm();
             //console.log(smm);
         }
-        //console.log(smms);
+        //console.log(user?.result);
     }, []);
 
     const handleSelectUsers = (selectedOption, actionMeta) => {
@@ -78,7 +78,7 @@ const UserPage = () => {
                                 <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                                     <Typography variant="h6">Selezione SMM</Typography>
                                     <Select className={classes.fileInput} options={smms} value={smm} fullWidth onChange={handleSelectUsers} />
-                                    <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
+                                    <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Confirm</Button>
                                     <Button variant="contained" color="secondary" size="small" onClick={clearSMM} fullWidth>Remove SMM</Button>
                                 </form>
                             </Paper>
