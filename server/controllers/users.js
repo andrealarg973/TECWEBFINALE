@@ -22,6 +22,57 @@ export const getUsers = async (req, res) => {
     }
 }
 
+export const getSMM = async (req, res) => {
+    try {
+        const smms = await User.find({ role: 'smm' });
+        const values = smms.map((user) => ({ value: String(user._id), label: user.name }));
+        res.status(200).json(values);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const setSMM = async (req, res) => {
+    const vipId = req.params.id;
+    const smmId = req.body.id;
+    //console.log('params', req.params);
+    //console.log('body', req.body);
+    try {
+        //const vip = await User.findById(vipId);
+        //console.log(vip);
+        //const smm = await User.findById(smmId);
+
+        //const updatedPost = await PostMessage.findByIdAndUpdate(id, { visual: post.visual + 1 }, { new: true });
+        const updateVip = await User.findByIdAndUpdate(vipId, { smm: smmId });
+        //const updateSmm = await User.findByIdAndUpdate(smmId, { vip: vip._id });
+
+
+        //console.log(updateVip);
+        //console.log(updateSmm);
+        res.status(200).json({ result: updateVip });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getMySMM = async (req, res) => {
+    const id = req.params.id;
+    //console.log('id', id);
+    try {
+        const user = await User.findById(id);
+        if (user.smm !== '') {
+            const smm = await User.findById(user.smm);
+            //console.log(smm);
+            res.status(200).json({ value: smm._id, label: smm.name });
+        } else {
+            res.status(200).json({ value: '', label: '' });
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
 export const signin = async (req, res) => {
     const { email, password } = req.body;
 
@@ -43,7 +94,7 @@ export const signin = async (req, res) => {
 };
 
 export const signup = async (req, res) => {
-    const { email, password, confirmPassword, firstName, lastName } = req.body;
+    const { email, password, confirmPassword, firstName, lastName, role } = req.body;
     try {
         const existingUser = await User.findOne({ email });
 
@@ -55,7 +106,7 @@ export const signup = async (req, res) => {
 
         let temp = firstName + " " + lastName;
 
-        const result = await User.create({ email, password: hashedPassword, name: temp });
+        const result = await User.create({ email, password: hashedPassword, name: temp, role });
 
         const quota = await QuotaSchema.create({ user: result._id });
 

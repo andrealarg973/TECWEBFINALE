@@ -1,4 +1,4 @@
-import { AUTH, UPDATE_QUOTA, GET_CAR, GET_USERS } from '../constants/actionTypes';
+import { AUTH, UPDATE_QUOTA, GET_CAR, GET_USERS, GET_SMMS, GET_MY_SMM, SET_SMM } from '../constants/actionTypes';
 import * as api from '../api';
 
 export const getUsers = (id) => async (dispatch) => {
@@ -7,6 +7,39 @@ export const getUsers = (id) => async (dispatch) => {
 
         dispatch({ type: GET_USERS, payload: data });
 
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getSMMs = () => async (dispatch) => {
+    try {
+        const { data } = await api.getSMMs();
+        dispatch({ type: GET_SMMS, payload: data });
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const setSMM = (idVip, idSmm) => async (dispatch) => {
+    //console.log('ACTIONS', idVip, idSmm);
+    try {
+        const { data } = await api.setSMM(idVip, { id: idSmm });
+        //console.log('wewe', data);
+        dispatch({ type: SET_SMM, payload: data });
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getMySMM = (id) => async (dispatch) => {
+    try {
+        const { data } = await api.getMySMM(id);
+        //console.log('wewe', data);
+        dispatch({ type: GET_MY_SMM, payload: data });
         return data;
     } catch (error) {
         console.log(error);

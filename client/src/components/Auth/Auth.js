@@ -12,7 +12,7 @@ import Input from './Input';
 //import Icon from './icon';
 import { signin, signup } from '../../actions/auth';
 
-const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
+const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '', role: 'user' };
 
 const Auth = () => {
     const classes = useStyles();
@@ -61,6 +61,11 @@ const Auth = () => {
         console.log(error);
     };
 
+    const handleRadioClick = (e) => {
+        setFormData({ ...formData, role: e.target.value });
+        //console.log(formData);
+    };
+
     return (
         <Container component="main" maxWidth="xs">
             <Paper className={classes.paper} elevation={3}>
@@ -79,11 +84,12 @@ const Auth = () => {
                         <Input name="email" label="Email Address" handleChange={handleChange} type="email" />
                         <Input name="password" label="Password" handleChange={handleChange} type={showPassword ? "text" : "password"} handleShowPassword={handleShowPassword} />
                         {isSignup && <Input name="confirmPassword" label="Repeat Password" handleChange={handleChange} type="password" />}
-                        {isSignup && <>
-                            <input name="type" type="radio" value="user" onChange={console.log('A')} defaultChecked />default
-                            <input name="type" type="radio" value="vip" onChange={console.log('B')} />VIP
-                            <input name="type" type="radio" value="smm" onChange={console.log('C')} />SMM
-                        </>}
+                        {isSignup && <div>
+                            <Typography variant="h6" style={{ textAlign: 'center' }}>Account type:</Typography>
+                            <input name="role" type="radio" value="user" onChange={handleRadioClick} defaultChecked />User
+                            <input name="role" type="radio" value="vip" onChange={handleRadioClick} />Vip
+                            <input name="role" type="radio" value="smm" onChange={handleRadioClick} />SMM
+                        </div>}
                     </Grid>
                     <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} >
                         {isSignup ? 'Sign Up' : 'Sign in'}

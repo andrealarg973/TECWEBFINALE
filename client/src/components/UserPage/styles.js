@@ -17,4 +17,26 @@ export default makeStyles((theme) => ({
             flexDirection: 'column-reverse',
         },
     },
+    root: {
+        '& .MuiTextField-root': {
+            margin: theme.spacing(1),
+        },
+    },
+    paper: {
+        padding: theme.spacing(2),
+        margin: theme.spacing(2),
+        justifyContent: 'center',
+    },
+    form: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+    },
+    fileInput: {
+        width: '97%',
+        margin: '10px 0',
+    },
+    buttonSubmit: {
+        marginBottom: 10,
+    },
 }));

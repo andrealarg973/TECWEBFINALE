@@ -14,6 +14,7 @@ API.interceptors.request.use((req) => {
 
 export const fetchPosts = (page) => API.get(`/posts?page=${page}`);
 export const fetchPost = (id) => API.get(`/posts/${id}`);
+export const fetchPostsByUser = (id) => API.get(`/posts/${id}/posts`);
 export const fetchPostsBySearch = (searchQuery) => API.get(`/posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${searchQuery.tags}`);
 export const createPost = (newPost) => API.post('/posts', newPost);
 export const updatePost = (id, updatedPost) => API.patch(`/posts/${id}`, updatedPost);
@@ -24,10 +25,13 @@ export const dislikePost = (id) => API.patch(`/posts/${id}/dislikePost`);
 export const commentPost = (value, id) => API.post(`/posts/${id}/commentPost`, { value });
 
 export const getUsers = (id) => API.get(`/users/${id}/getUsers`);
+export const getSMMs = () => API.get(`/users/getSMM`);
+export const getMySMM = (id) => API.get(`/users/${id}/getSMM`);
 export const signIn = (formData) => API.post('/users/signin', formData);
 export const signUp = (formData) => API.post('/users/signup', formData);
 export const updateQuota = (formData) => API.patch(`/users/updateQuota`, formData);
 export const getCar = (id) => API.patch(`/users/caratteri`, id);
+export const setSMM = (idVip, idSmm) => API.patch(`/users/${idVip}/setSMM`, idSmm);
 
 export const getChannels = (id) => API.get(`/channels/${id}/getChannels`);
 export const createChannel = (channel) => API.post('/channels/addChannel', channel);

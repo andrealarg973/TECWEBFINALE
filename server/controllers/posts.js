@@ -51,6 +51,17 @@ export const getPostsBySearch = async (req, res) => {
     }
 }
 
+export const getPostsByUser = async (req, res) => {
+    const userId = req.params.id;
+
+    try {
+        const posts = await PostMessage.find({ creator: userId });
+        res.status(200).json({ data: posts });
+    } catch (error) {
+        res.status(500).json(error);
+    }
+}
+
 export const createPost = async (req, res) => {
     const post = req.body;
 
