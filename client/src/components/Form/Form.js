@@ -85,11 +85,16 @@ const Form = ({ currentId, setCurrentId }) => {
 
         if (currentId === 0 || currentId === null) {
             if ((DAILY - initialCar - caratteri > 0) || !(postData.destinatari.length > 0)) {
-                dispatch(createPost({ ...postData, name: user?.result?.name }));
-                if (postData.destinatari.length > 0) {
-                    dispatch(updateQuota({ ...caratteri, user: user?.result?._id, quota: caratteri }));
+                if (postData.destinatari.length < 1 && postData.destinatariPrivati.length < 1) {
+                    alert('Devi selezionare almeno un destinatario!');
+                } else {
+                    dispatch(createPost({ ...postData, name: user?.result?.name }));
+                    if (postData.destinatari.length > 0) {
+                        dispatch(updateQuota({ ...caratteri, user: user?.result?._id, quota: caratteri }));
+                    }
+                    clear();
+                    navigate('/');
                 }
-                navigate('/');
             } else {
                 if (postData.destinatari.length > 0) {
                     alert('Quota insufficiente');
@@ -98,10 +103,9 @@ const Form = ({ currentId, setCurrentId }) => {
         } else {
 
             dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
+            clear();
             navigate('/');
         }
-
-        clear();
 
     }
 
