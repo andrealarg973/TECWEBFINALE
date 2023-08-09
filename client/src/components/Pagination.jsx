@@ -11,9 +11,10 @@ const Paginate = ({ page }) => {
     const { numberOfPages } = useSelector((state) => state.posts);
     const classes = useStyles();
     const dispatch = useDispatch();
+    const user = JSON.parse(localStorage.getItem('profile'));
 
     useEffect(() => {
-        if (page) dispatch(getPosts(page));
+        if (page) dispatch(getPosts(page, user?.result._id));
     }, [page, dispatch]);
 
     return (

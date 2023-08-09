@@ -17,7 +17,7 @@ const Navbar = () => {
     const location = useLocation();
 
     const handleBackHomePage = () => {
-        dispatch(getPosts());
+        //dispatch(getPosts());
         navigate('/posts');
     }
 

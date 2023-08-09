@@ -1,4 +1,4 @@
-import { CREATE_CHANNEL, GET_CHANNELS, GET_MY_CHANNELS } from '../constants/actionTypes';
+import { CREATE_CHANNEL, GET_CHANNELS, GET_MY_CHANNELS, UPDATE_CHANNEL } from '../constants/actionTypes';
 
 const channelReducers = (state = { channels: [] }, action) => {
     switch (action.type) {
@@ -7,6 +7,7 @@ const channelReducers = (state = { channels: [] }, action) => {
             //console.log('STATE', state);
             return action.payload;
         case CREATE_CHANNEL:
+        case UPDATE_CHANNEL:
             //console.log('QUI');
             return { ...state, channels: [...state.channels, action.payload] };
         default:

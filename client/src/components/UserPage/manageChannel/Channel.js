@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Grow, Grid, Paper, AppBar, TextField, Button, Typography } from '@material-ui/core';
 import { getUsers } from '../../../actions/auth';
+import { updateChannel } from '../../../actions/channels';
 import { useDispatch } from 'react-redux';
 import Select from 'react-select';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import useStyles from '../styles';
 
 const Channel = ({ channel }) => {
@@ -42,15 +45,21 @@ const Channel = ({ channel }) => {
     const handleSelectChannels = (selectedOption, actionMeta) => {
         //console.log('handleSelect', selectedOption, actionMeta);
         setChannelData({ ...channelData, participants: selectedOption.map((dest) => dest.value) });
+        //console.log(channelData);
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        //console.log(channelData?._id);
+        dispatch(updateChannel(channelData?._id, channelData));
+        toast("Done!", { type: "success" });
+
     }
 
     const handleRadioClick = (e) => {
         setChannelData({ ...channelData, privacy: e.target.value });
+        //console.log(channelData);
     }
 
     const checkPrivacy = (e) => {
@@ -82,6 +91,7 @@ const Channel = ({ channel }) => {
                     <input name="privacy" type="radio" value="closed" onChange={handleRadioClick} defaultChecked={checkPrivacy('closed')} />Closed
                 </div>
                 <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
+                <ToastContainer autoClose={1000} hideProgressBar={true} />
             </form>
         </Paper>
     );

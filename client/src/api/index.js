@@ -12,7 +12,7 @@ API.interceptors.request.use((req) => {
     return req;
 });
 
-export const fetchPosts = (page) => API.get(`/posts?page=${page}`);
+export const fetchPosts = (page, userId) => API.get(`/posts?page=${page}`, userId);
 export const fetchPost = (id) => API.get(`/posts/${id}`);
 export const fetchPostsByUser = (id) => API.get(`/posts/${id}/posts`);
 export const fetchPostsBySearch = (searchQuery) => API.get(`/posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${searchQuery.tags}`);
@@ -36,3 +36,4 @@ export const setSMM = (idVip, idSmm) => API.patch(`/users/${idVip}/setSMM`, idSm
 export const getChannels = (id) => API.get(`/channels/${id}/getChannels`);
 export const getMyChannels = (id) => API.get(`/channels/${id}/getMyChannels`);
 export const createChannel = (channel) => API.post('/channels/addChannel', channel);
+export const updateChannel = (id, channel) => API.patch(`/channels/${id}/updateChannel`, channel);

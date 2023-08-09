@@ -17,10 +17,10 @@ export const getPost = (id) => async (dispatch) => {
     }
 }
 
-export const getPosts = (page) => async (dispatch) => {
+export const getPosts = (page, userId) => async (dispatch) => {
     try {
         dispatch({ type: START_LOADING });
-        const { data } = await api.fetchPosts(page);
+        const { data } = await api.fetchPosts(page, userId);
 
         //console.log(data);
 

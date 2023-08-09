@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getChannels, addChannel, getMyChannels } from '../controllers/channels.js';
+import { getChannels, addChannel, getMyChannels, updateChannel } from '../controllers/channels.js';
 //import auth from '../middleware/auth.js';
 
 const router = express.Router();
@@ -9,5 +9,6 @@ const router = express.Router();
 router.get('/:id/getChannels', getChannels);
 router.get('/:id/getMyChannels', getMyChannels);
 router.post('/addChannel', addChannel);
+router.patch('/:id/updateChannel', updateChannel);
 
 export default router;

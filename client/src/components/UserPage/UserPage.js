@@ -7,6 +7,8 @@ import { getSMMs, setSMM, getMySMM } from '../../actions/auth';
 import { getPostsByUser } from '../../actions/posts';
 import ChannelManager from './manageChannel/ChannelManager';
 import { getMyChannels } from '../../actions/channels';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Posts from '../Posts/Posts';
 
@@ -65,6 +67,8 @@ const UserPage = () => {
         e.preventDefault();
 
         dispatch(setSMM(user.result._id, (smm.value ? smm.value : '')));
+        toast("Done!", { type: "success" });
+        getSMM();
     }
 
     return (
@@ -84,6 +88,7 @@ const UserPage = () => {
                                     <Select className={classes.fileInput} options={smms} value={smm} fullWidth onChange={handleSelectUsers} />
                                     <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Confirm</Button>
                                     <Button variant="contained" color="secondary" size="small" onClick={clearSMM} fullWidth>Remove SMM</Button>
+                                    <ToastContainer autoClose={1000} hideProgressBar={true} />
                                 </form>
                             </Paper>
                         }

@@ -44,4 +44,17 @@ export const addChannel = async (req, res) => {
     }
 }
 
+export const updateChannel = async (req, res) => {
+    const id = req.params.id;
+    const channel = req.body;
+
+    try {
+        const updatedChannel = await ChannelSchema.findByIdAndUpdate(id, channel, { new: true });
+        //console.log(updatedChannel);
+        res.status(201).json(updatedChannel);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export default router;

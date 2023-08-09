@@ -7,6 +7,8 @@ const router = express.Router();
 
 export const getPosts = async (req, res) => {
     const { page } = req.query;
+    //const id = req.params.id;
+    //console.log(id);
 
     try {
         const LIMIT = 12;
@@ -55,7 +57,7 @@ export const getPostsByUser = async (req, res) => {
     const userId = req.params.id;
 
     try {
-        const posts = await PostMessage.find({ creator: userId });
+        const posts = await PostMessage.find({ creator: userId }).sort({ _id: -1 });
         res.status(200).json({ data: posts });
     } catch (error) {
         res.status(500).json(error);
