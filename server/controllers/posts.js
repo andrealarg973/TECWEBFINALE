@@ -2,20 +2,28 @@ import express from 'express';
 import mongoose from 'mongoose';
 
 import PostMessage from '../models/postMessage.js';
+import ChannelSchema from '../models/channel.js';
 
 const router = express.Router();
 
 export const getPosts = async (req, res) => {
     const { page } = req.query;
-    //const id = req.params.id;
+    const id = req.params.id;
     //console.log(id);
 
     try {
         const LIMIT = 12;
         const startIndex = (Number(page) - 1) * LIMIT; // get the starting index of every page
-        const total = await PostMessage.countDocuments({});
+        //const total = await PostMessage.countDocuments({});
 
-        const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+        // ottiene tutti i canali per i quali l'utente può visualizzare/postare messaggi (e che non siano chiusi)
+        const canali = await ChannelSchema.find({ $and: [{ $or: [{ owner: id }, { participants: { $in: id } }, { privacy: 'public' }] }, { privacy: { $ne: 'closed' } }] });
+        //console.log(canali);
+
+        // ottiene tutti i post visualizzabili dall'utente in questione
+        const posts = await PostMessage.find({ $or: [{ creator: id }, { destinatariPrivati: { $in: id } }, { destinatari: { $in: canali.map((canale) => canale.value) } }] }).sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+
+        const total = posts.length;
 
         res.status(200).json({ data: posts, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT) });
     } catch (error) {

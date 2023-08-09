@@ -7,7 +7,7 @@ const router = express.Router();
 
 // http://localhost:5000/posts
 router.get('/search', getPostsBySearch);
-router.get('/', getPosts);
+router.get('/:id/all', getPosts);
 router.get('/:id', getPost);
 router.get('/:id/posts', auth, getPostsByUser);
 router.patch('/:id/visual', updateVisual);
