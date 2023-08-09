@@ -25,7 +25,14 @@ export const getUsers = async (req, res) => {
 export const getSMM = async (req, res) => {
     try {
         const smms = await User.find({ role: 'smm' });
-        const values = smms.map((user) => ({ value: String(user._id), label: user.name }));
+        const takenSmms = await User.find({ $and: [{ smm: { $ne: '' } }, { smm: { $exists: true } }] });
+        //console.log(smms);
+        const filter = takenSmms.map((user) => user.smm);
+        //console.log(filter);
+        const values = smms.map((user) => (filter.includes(String(user._id)) ? {} : { value: String(user._id), label: user.name }))
+            .filter((user) => Object.keys(user).length !== 0);  // get all free SMMs
+        //const values = smms.map((user) => ({ value: String(user._id), label: user.name }));
+        //console.log(values);
         res.status(200).json(values);
     } catch (error) {
         console.log(error);

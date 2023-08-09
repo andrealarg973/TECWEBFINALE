@@ -37,8 +37,9 @@ const UserPage = () => {
     useEffect(() => {
         dispatch(getPostsByUser(user.result._id));
         if (user) {
-            getSMM();
             getMySmm();
+            getSMM();
+            //setSmms(smms.concat(smm));
             //console.log(smm);
         }
         //console.log(user?.result);
