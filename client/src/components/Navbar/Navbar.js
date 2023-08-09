@@ -55,6 +55,12 @@ const Navbar = () => {
                 <Typography component={Link} to="/posts" onClick={handleBackHomePage} className={classes.heading} variant="h2" align="center">Squealer</Typography>
                 <img className={classes.image} src={avvoltoio} alt="squealer" height="60" style={{ cursor: "pointer" }} onClick={handleBackHomePage} />
             </div>
+            <div>
+                <Typography variant="h6">Caratteri restanti:</Typography>
+                <span>Month: 45</span>&nbsp;
+                <span>Week: 43</span>
+                <span>Day: 65</span>
+            </div>
             <Toolbar className={classes.toolbar}>
                 {user ? (
                     <div className={classes.profile}>
