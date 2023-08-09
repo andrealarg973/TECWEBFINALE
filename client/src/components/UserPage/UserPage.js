@@ -4,8 +4,9 @@ import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Select from 'react-select';
 import { getSMMs, setSMM, getMySMM } from '../../actions/auth';
-import { getPosts, getPostsBySearch, getPostsByUser } from '../../actions/posts';
+import { getPostsByUser } from '../../actions/posts';
 import ChannelManager from './manageChannel/ChannelManager';
+import { getMyChannels } from '../../actions/channels';
 
 import Posts from '../Posts/Posts';
 
@@ -20,6 +21,11 @@ const UserPage = () => {
     const [smm, setSmm] = useState('');
     const [channels, setChannels] = useState([]);
 
+    const getChannels = async () => {
+        await dispatch(getMyChannels(user.result._id)).then((res) => {
+            setChannels(res);
+        });
+    }
 
 
     const getSMM = async () => {
@@ -39,6 +45,7 @@ const UserPage = () => {
         if (user) {
             getMySmm();
             getSMM();
+            getChannels();
             //setSmms(smms.concat(smm));
             //console.log(smm);
         }
@@ -47,10 +54,6 @@ const UserPage = () => {
 
     const handleSelectUsers = (selectedOption, actionMeta) => {
         setSmm(selectedOption);
-        //console.log(smm);
-        //console.log(selectedOption);
-        //setPostData({ ...postData, destinatariPrivati: selectedOption.map((dest) => dest.value) });
-        //console.log(postData);
     }
 
     const clearSMM = () => {
@@ -87,11 +90,13 @@ const UserPage = () => {
                         <Paper className={classes.paper} elevation={6}>
                             <Typography variant="h5">Gestione canali</Typography>
                             {channels.length > 0 ? (
-                                <> <Typography variant="h6">canali</Typography></>
+                                <>
+                                    <ChannelManager channels={channels}></ChannelManager>
+                                </>
                             ) : (
                                 <>
                                     <Typography variant="h6">Non possiedi nessun canale</Typography>
-                                    <ChannelManager></ChannelManager>
+
                                 </>
                             )}
                         </Paper>

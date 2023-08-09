@@ -12,15 +12,9 @@ const authReducers = (state = { authData: null }, action) => {
         case UPDATE_QUOTA:
             return { ...state, authData: action.data };
         case GET_CAR:
-            //console.log('REDU', action.payload);
-            return action.payload;
         case GET_USERS:
-            //console.log('REDU', action.payload);
-            return action.payload;
         case GET_SMMS:
-            return action.payload;
         case SET_SMM:
-            return action.payload;
         case GET_MY_SMM:
             return action.payload;
         default:

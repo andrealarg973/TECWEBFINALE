@@ -23,3 +23,4 @@ export const GET_MY_SMM = 'GET_MY_SMM';
 
 export const GET_CHANNELS = 'GET_CHANNELS';
 export const CREATE_CHANNEL = 'CREATE_CHANNEL';
+export const GET_MY_CHANNELS = 'GET_MY_CHANNELS';

@@ -9,13 +9,20 @@ export const getChannels = async (req, res) => {
     const id = req.params.id;
     //console.log('BODY', id);
     try {
-        /*
-            to get all channels (only for moderators): 
-            const channels = await ChannelSchema.find();
-        */
-
-        //const posts = await PostMessage.find({ $or: [{ title }, { message }, { tags: { $in: tags.split(',') } }] }); // find post based on two criteria: title or tags
         const channels = await ChannelSchema.find({ $or: [{ privacy: 'public' }, { owner: id }, { participants: { $in: id } }] });
+        //console.log(channels);
+
+        res.status(200).json(channels);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getMyChannels = async (req, res) => {
+    const id = req.params.id;
+    //console.log('BODY', id);
+    try {
+        const channels = await ChannelSchema.find({ owner: id });
         //console.log(channels);
 
         res.status(200).json(channels);
