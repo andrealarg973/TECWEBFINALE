@@ -5,7 +5,7 @@ import avvoltoio from '../../images/avvoltoio.jpg';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import decode from 'jwt-decode';
-import { getQuotas } from '../../actions/auth';
+import { getQuotas, getCar } from '../../actions/auth';
 
 import useStyles from './styles';
 
@@ -13,6 +13,11 @@ const Navbar = () => {
     const classes = useStyles();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [quotas, setQuotas] = useState({
+        day: 0,
+        week: 0,
+        month: 0
+    });
+    const [maxCar, setMaxCar] = useState({
         day: 0,
         week: 0,
         month: 0
@@ -45,6 +50,13 @@ const Navbar = () => {
         });
     }
 
+    const getChars = async () => {
+
+        await dispatch(getCar({ user: user?.result?._id })).then((res) => {
+            setMaxCar(res);
+        });
+    }
+
     useEffect(() => {
         const token = user?.token;
         if (token) {
@@ -60,6 +72,7 @@ const Navbar = () => {
 
         if (user) {
             getQTAs();
+            getChars();
         }
 
     }, [location]);
@@ -75,9 +88,9 @@ const Navbar = () => {
 
                 <div>
                     <Typography variant="h6">Caratteri restanti:</Typography>
-                    <span>Month: {quotas.month}</span>&nbsp;
-                    <span>Week: {quotas.week}</span>&nbsp;
-                    <span>Day: {quotas.day}</span>&nbsp;
+                    <span>Month: {maxCar.month - quotas.month}</span>&nbsp;
+                    <span>Week: {maxCar.week - quotas.week}</span>&nbsp;
+                    <span>Day: {maxCar.day - quotas.day}</span>&nbsp;
                 </div>
             )}
             <Toolbar className={classes.toolbar}>
