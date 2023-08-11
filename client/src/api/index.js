@@ -24,6 +24,7 @@ export const likePost = (id) => API.patch(`/posts/${id}/likePost`);
 export const dislikePost = (id) => API.patch(`/posts/${id}/dislikePost`);
 export const commentPost = (value, id) => API.post(`/posts/${id}/commentPost`, { value });
 
+export const getQuotas = (id) => API.get(`/users/${id}/getQuotas`);
 export const getUsers = (id) => API.get(`/users/${id}/getUsers`);
 export const getSMMs = () => API.get(`/users/getSMM`);
 export const getMySMM = (id) => API.get(`/users/${id}/getSMM`);

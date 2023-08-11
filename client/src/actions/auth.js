@@ -1,4 +1,4 @@
-import { AUTH, UPDATE_QUOTA, GET_CAR, GET_USERS, GET_SMMS, GET_MY_SMM, SET_SMM } from '../constants/actionTypes';
+import { AUTH, UPDATE_QUOTA, GET_CAR, GET_USERS, GET_SMMS, GET_MY_SMM, SET_SMM, GET_QUOTA } from '../constants/actionTypes';
 import * as api from '../api';
 
 export const getUsers = (id) => async (dispatch) => {
@@ -94,4 +94,15 @@ export const getCar = (id) => async (dispatch) => {
         console.log(error);
     }
 
+}
+
+export const getQuotas = (id) => async (dispatch) => {
+    try {
+        const { data } = await api.getQuotas(id);
+        //console.log('data', data);
+        dispatch({ type: GET_QUOTA, payload: data });
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
 }

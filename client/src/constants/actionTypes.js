@@ -20,6 +20,7 @@ export const GET_USERS = 'GET_USERS';
 export const GET_SMMS = 'GET_SMMS';
 export const SET_SMM = 'SET_SMM';
 export const GET_MY_SMM = 'GET_MY_SMM';
+export const GET_QUOTA = 'GET_QUOTA';
 
 export const GET_CHANNELS = 'GET_CHANNELS';
 export const CREATE_CHANNEL = 'CREATE_CHANNEL';

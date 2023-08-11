@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 
 import User from '../models/user.js';
 import QuotaSchema from '../models/quota.js';
+import PostMessage from '../models/postMessage.js';
 
 const router = express.Router();
 
@@ -168,6 +169,57 @@ export const getCar = async (req, res) => {
 
         res.status(200).json(temp);
     } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getQuotas = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const dateDay = new Date();
+        dateDay.setHours(0, 0, 0, 0);
+
+        const dateWeek = new Date();
+        let daysUntilMonday = (1 - dateWeek.getDay() + 7) % 7;
+        const mondayOfThisWeek = new Date(dateWeek);
+        mondayOfThisWeek.setDate(dateWeek.getDate() - daysUntilMonday);
+        mondayOfThisWeek.setHours(0, 0, 0, 0);
+        //console.log(mondayOfThisWeek);
+
+        const dateMonth = new Date();
+        const firstDayOfMonth = new Date(dateMonth);
+        firstDayOfMonth.setDate(1);
+        firstDayOfMonth.setHours(0, 0, 0, 0);
+        //console.log(firstDayOfMonth);
+
+        const day = await PostMessage.find({ $and: [{ createdAt: { $gte: dateDay } }, { creator: id }, { destinatari: { $ne: [] } }] });
+
+        //console.log(day.length);
+        const week = await PostMessage.find({ $and: [{ createdAt: { $gte: mondayOfThisWeek } }, { creator: id }, { destinatari: { $ne: [] } }] });
+        //console.log(week.length);
+        const month = await PostMessage.find({ $and: [{ createdAt: { $gte: firstDayOfMonth } }, { creator: id }, { destinatari: { $ne: [] } }] });
+        //console.log(month.length);
+
+        let sumDay = 0;
+        day.map((post) => {
+            sumDay += post.message.length
+        });
+
+        let sumWeek = 0;
+        week.map((post) => {
+            sumWeek += post.message.length
+        });
+
+        let sumMonth = 0;
+        month.map((post) => {
+            sumMonth += post.message.length
+        });
+        //console.log(sum);
+
+        res.status(200).json({ day: sumDay, week: sumWeek, month: sumMonth });
+    } catch (error) {
+        res.status(500).json({ message: "Couldn't count charachters left" });
         console.log(error);
     }
 }

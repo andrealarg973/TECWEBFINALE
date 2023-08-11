@@ -8,6 +8,7 @@ import Select from 'react-select';
 import useStyles from './styles';
 import { createPost, updatePost } from '../../actions/posts';
 import { getUsers, updateQuota, getCar } from '../../actions/auth';
+import { getQuotas } from '../../actions/auth';
 import { getChannels, createChannel } from '../../actions/channels';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,11 +33,17 @@ const Form = ({ currentId, setCurrentId }) => {
     const DAILY = 100;
     const [channels, setChannels] = useState([]);
     const [users, setUsers] = useState([]);
-    const options = [
-        { value: "OFFICIAL", label: "OFFICIAL" },
-        { value: "CONTROVERSIAL", label: "CONTROVERSIAL" },
-        { value: "RANDOM", label: "RANDOM" },
-    ];
+    const [quotas, setQuotas] = useState({
+        day: 0,
+        week: 0,
+        month: 0
+    });
+
+    const getQTAs = async () => {
+        await dispatch(getQuotas(user.result._id)).then((res) => {
+            setQuotas(res);
+        });
+    }
 
     const getChars = async () => {
         if (user) {
@@ -69,6 +76,7 @@ const Form = ({ currentId, setCurrentId }) => {
         if (user) {
             getChanns();
             getUsrs();
+            getQTAs();
             getChars().then((res) => {
                 setInitialCar(res?.quota);
                 //console.log('res', res);
@@ -140,13 +148,14 @@ const Form = ({ currentId, setCurrentId }) => {
         //console.log('handleInputSelect', inputValue, actionMeta);
     }
 
+    /*
     const loadOptions = (searchValue, callback) => {
         setTimeout(() => {
             const filteredOptions = options.filter((option) => option.label.toLowerCase().includes(searchValue.toLowerCase()));
             //console.log('loadOptions', searchValue, filteredOptions);
             callback(filteredOptions);
         }, 1000);
-    }
+    }*/
 
     const nome = (c) => {
         const foundItem = users.find(item => item.value === c);
@@ -168,7 +177,7 @@ const Form = ({ currentId, setCurrentId }) => {
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                 <Typography variant="h6">{currentId ? 'Edit Post' : 'Create Post'}</Typography>
                 <TextField name="title" variant="outlined" label="Title" fullWidth value={postData.title} onChange={(e) => setPostData({ ...postData, title: e.target.value })} />
-                <Typography variant="h6" style={(DAILY - initialCar - caratteri < 0) ? { color: 'red' } : { color: 'black' }}> Caratteri restanti: {DAILY - initialCar - caratteri}</Typography>
+                <Typography variant="h6" style={(DAILY - initialCar - caratteri < 0) ? { color: 'red' } : { color: 'black' }}> Caratteri restanti: {Math.min(quotas.day, quotas.week, quotas.month)}</Typography>
                 <TextField name="message" variant="outlined" label="Message" fullWidth multiline minRows={4} value={postData.message} onChange={handleMessage} />
                 <TextField name="tags" variant="outlined" label="Tags (coma separated)" fullWidth value={postData.tags} onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })} />
                 <Typography variant="h6">Destinatari (canali)</Typography>

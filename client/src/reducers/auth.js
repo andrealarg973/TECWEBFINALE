@@ -1,4 +1,4 @@
-import { AUTH, LOGOUT, UPDATE_QUOTA, GET_CAR, GET_USERS, GET_SMMS, SET_SMM, GET_MY_SMM } from '../constants/actionTypes';
+import { AUTH, LOGOUT, UPDATE_QUOTA, GET_CAR, GET_USERS, GET_SMMS, SET_SMM, GET_MY_SMM, GET_QUOTA } from '../constants/actionTypes';
 
 const authReducers = (state = { authData: null }, action) => {
     switch (action.type) {
@@ -16,6 +16,7 @@ const authReducers = (state = { authData: null }, action) => {
         case GET_SMMS:
         case SET_SMM:
         case GET_MY_SMM:
+        case GET_QUOTA:
             return action.payload;
         default:
             return state;

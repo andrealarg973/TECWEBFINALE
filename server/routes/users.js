@@ -1,10 +1,11 @@
 import express from 'express';
 
-import { signin, signup, updateQuota, getCar, getUsers, getSMM, setSMM, getMySMM } from '../controllers/users.js';
+import { signin, signup, updateQuota, getCar, getUsers, getSMM, setSMM, getMySMM, getQuotas } from '../controllers/users.js';
 
 const router = express.Router();
 
 // http://localhost:5000/users
+router.get('/:id/getQuotas', getQuotas);
 router.get('/getSMM', getSMM);
 router.get('/:id/getSMM', getMySMM);
 router.get('/:id/getUsers', getUsers);
