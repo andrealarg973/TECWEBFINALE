@@ -14,7 +14,7 @@ export const getUsers = async (req, res) => {
     //console.log(id);
 
     try {
-        const users = await User.find({ $and: [{ _id: { $ne: id } }, { $or: [{ role: 'user' }, { role: 'vip' }] }] }); // get all users (except mod, smm and yourself)
+        const users = await User.find({ $and: [{ $or: [{ role: 'user' }, { role: 'vip' }] }] }); // get all users (except mod, smm and yourself)
         const values = users.map((user) => ({ value: String(user._id), label: user.name }));
         //console.log(values);
         res.status(200).json(values);

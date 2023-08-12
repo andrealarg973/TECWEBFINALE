@@ -7,7 +7,10 @@ const channelSchema = mongoose.Schema({
         type: String,
         default: 'public'
     },
-    owner: String,
+    owner: {
+        type: [String],
+        default: []
+    },
     participants: {
         type: [String],
         default: []

@@ -34,6 +34,7 @@ const Post = ({ post, setCurrentId }) => {
             setLikes(post.likes.filter((id) => id !== userId));
         } else {
             setLikes([...post.likes, userId]);
+            dispatch(updateVisual(post._id));
         }
 
     }
@@ -45,6 +46,7 @@ const Post = ({ post, setCurrentId }) => {
             setDislikes(post.dislikes.filter((id) => id !== userId));
         } else {
             setDislikes([...post.dislikes, userId]);
+            dispatch(updateVisual(post._id));
         }
     }
 

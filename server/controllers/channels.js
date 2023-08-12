@@ -22,7 +22,7 @@ export const getMyChannels = async (req, res) => {
     const id = req.params.id;
     //console.log('BODY', id);
     try {
-        const channels = await ChannelSchema.find({ owner: id });
+        const channels = await ChannelSchema.find({ owner: { $in: id } });
         //console.log(channels);
 
         res.status(200).json(channels);

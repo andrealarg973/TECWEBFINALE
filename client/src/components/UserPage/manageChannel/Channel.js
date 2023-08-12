@@ -16,6 +16,7 @@ const Channel = ({ channel }) => {
         privacy: '',
         value: '',
         label: '',
+        owner: [],
         participants: []
     });
     //const [participants, setParticipants] = useState([]);
@@ -48,6 +49,13 @@ const Channel = ({ channel }) => {
         //console.log(channelData);
     }
 
+    const handleSelectOwner = (selectedOption, actionMeta) => {
+        //console.log('handleSelect', selectedOption, actionMeta);
+        setChannelData({ ...channelData, owner: selectedOption.map((dest) => dest.value) });
+        //console.log(channelData);
+    }
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -70,6 +78,10 @@ const Channel = ({ channel }) => {
         <Paper className={classes.paper} elevation={6}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                 <Typography variant="h6">{channelData.value}</Typography>
+                <Select className={classes.fileInput} isMulti value={channelData.owner.map((participant) => ({
+                    value: participant, label: nome(participant)
+                }))} onChange={handleSelectOwner} options={users} />
+                <Typography variant="h6">Participants:</Typography>
                 {channelData.privacy !== 'private' ? (
                     <>
                         <Select isDisabled className={classes.fileInput} isMulti value={channelData.participants.map((participant) => ({

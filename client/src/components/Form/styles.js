@@ -22,4 +22,17 @@ export default makeStyles((theme) => ({
     buttonSubmit: {
         marginBottom: 10,
     },
+    charLeft: {
+        alignContent: "right"
+
+    },
+    inputTime: {
+        marginBottom: 10,
+        width: '40%',
+        fontSize: '26px'
+    },
+    check: {
+        width: '20px',
+        height: '20px'
+    }
 }));
