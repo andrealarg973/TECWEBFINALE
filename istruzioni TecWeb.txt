@@ -1,0 +1,69 @@
+AVVIO
+cd /home/web/site212215/html
+
+gocker 
+start node-17 site212215 index2.js (avvio a mano)
+nodemon							(avvio automatico)
+comando per vedere l'ultimo errore (nel gocker): logs site212215
+
+NPM
+(nella cartella html col file package.json)
+/usr/local/node/bin/npm
+
+GOCKER
+ssh andrea.largura@gocker.cs.unibo.it
+
+errore -122
+npm cache clean --force
+
+index.js
+
+aggiungere le pagine come indirizzo/sito
+
+il front-end usa angular
+
+file html in public
+file js   in script
+
+apri index2.js e aggiungi app.get con file.html
+
+PERMESSI
+chmod 
+
+AGGIUNGERE UNA PAGINA
+aggiungi su index2.js
+
+DOVE VANNO LE COSE
+html --> tpl2
+css, js --> public2
+
+COME FAR ANDARE IN LOCALE:
+scarica cartella
+npm run build
+sposta dist in server/static
+avvio su unibo indicando index nella cartella server
+
+se sposto il progetto senza installare nulla, non copiare node modules
+per testare in locale faccio:
+npm run dev
+
+
+--------------------------------------------------------------------
+start node-20 site222316 vuect/server/index.js
+
+TODO
+- routing (passaggio tra pagine)
+rafce
+
+--------------------------------------------------------------------
+MODIFICHE
+--------------------------------------------------------------------
+- canali riservati: di squealer, solo il mod può usarli (alla fine)
+
+- aumento/riduzione quota rispetto a reazioni
+- messaggi automatici (temporali, random quote ed un altro)
+- risposta squeal
+
+COMPLETATI:
+- canali privati: più proprietari, gestione lettura/scrittura
+- destinatari: pubblico, privato, canale (slide 15 e slide 20)
