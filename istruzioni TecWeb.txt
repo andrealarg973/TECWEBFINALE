@@ -67,3 +67,14 @@ MODIFICHE
 COMPLETATI:
 - canali privati: più proprietari, gestione lettura/scrittura
 - destinatari: pubblico, privato, canale (slide 15 e slide 20)
+
+
+PER CREARE UNA API:
+server: 
+    - routes
+    - controller
+
+client:
+    - api/index.js
+    - actions
+    - reducers
