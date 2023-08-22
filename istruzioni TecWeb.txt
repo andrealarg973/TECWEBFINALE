@@ -60,13 +60,24 @@ MODIFICHE
 --------------------------------------------------------------------
 - canali riservati: di squealer, solo il mod può usarli (alla fine)
 
-- aumento/riduzione quota rispetto a reazioni
+- aumento/riduzione quota rispetto a reazioni (IMPEGNATIVO)
 - messaggi automatici (temporali, random quote ed un altro)
 - risposta squeal
+- pagina iscrizione/visualizzazione canali
+- creazione CANALI PUBBLICI, popolazione automatica
+- pulizia database 
+- acquisto caratteri
+- quota iniziale caratteri
+- georeferenziazione
+- homepage senza login (solo canali RISERVATI)
+- notifica per msg privato
+- ricerca per canale
+
 
 COMPLETATI:
 - canali privati: più proprietari, gestione lettura/scrittura
 - destinatari: pubblico, privato, canale (slide 15 e slide 20)
+- messagi variabili: {TIME}, {DATE}, ecc.
 
 
 PER CREARE UNA API:

@@ -23,12 +23,18 @@ const Post = ({ post, setCurrentId }) => {
     const [dislikes, setDislikes] = useState(post?.dislikes);
 
     const userId = user?.result?.sub || user?.result?._id;
+
     const hasLikedPost = post?.likes?.find((like) => like === userId);
     const hasDislikedPost = post?.dislikes?.find((dislike) => dislike === userId);
+    const hasReacted = hasLikedPost || hasDislikedPost;
 
 
     const handleLike = async () => {
         dispatch(likePost(post._id));
+
+        if (hasDislikedPost) {
+            setDislikes(post.dislikes.filter((id) => id !== userId));
+        }
 
         if (hasLikedPost) {
             setLikes(post.likes.filter((id) => id !== userId));
@@ -41,6 +47,10 @@ const Post = ({ post, setCurrentId }) => {
 
     const handleDislike = async () => {
         dispatch(dislikePost(post._id));
+
+        if (hasLikedPost) {
+            setLikes(post.likes.filter((id) => id !== userId));
+        }
 
         if (hasDislikedPost) {
             setDislikes(post.dislikes.filter((id) => id !== userId));

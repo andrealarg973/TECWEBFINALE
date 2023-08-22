@@ -17,7 +17,7 @@ export const getPosts = async (req, res) => {
         //const total = await PostMessage.countDocuments({});
 
         // ottiene tutti i canali per i quali l'utente può visualizzare/postare messaggi (e che non siano chiusi)
-        const canali = await ChannelSchema.find({ $and: [{ $or: [{ owner: id }, { participants: { $in: id } }, { privacy: 'public' }] }, { privacy: { $ne: 'closed' } }] });
+        const canali = await ChannelSchema.find({ $and: [{ $or: [{ owner: { $in: id } }, { participants: { $in: id } }, { privacy: 'public' }] }, { privacy: { $ne: 'closed' } }] });
         //console.log(canali);
 
         // ottiene tutti i post visualizzabili dall'utente in questione
@@ -49,14 +49,23 @@ export const getPost = async (req, res) => {
 export const getPostsBySearch = async (req, res) => {
     //console.log('SEARCH');
     const { searchQuery, tags } = req.query;
+    //console.log(tags);
 
     try {
         const title = new RegExp(searchQuery, 'i'); // test Test TEST TEsT
         const message = new RegExp(searchQuery, 'i');
 
-        const posts = await PostMessage.find({ $or: [{ title }, { message }, { tags: { $in: tags.split(',') } }] }); // find post based on two criteria: title or tags
+        if (tags !== '') {
+            //console.log('tag not empty', tags);
+            const posts = await PostMessage.find({ $or: [{ title }, { message }, { tags: { $in: tags.split(',') } }] }); // find post based on two criteria: title or tags
+            res.json({ data: posts });
+        } else {
+            const posts = await PostMessage.find({ $or: [{ title }, { message }] }); // find post based on two criteria: title or tags
+            res.json({ data: posts });
+        }
+
         //console.log(posts);
-        res.json({ data: posts });
+
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
@@ -73,9 +82,35 @@ export const getPostsByUser = async (req, res) => {
     }
 }
 
+function replacePlaceholders(inputString) {
+    const currentDate = new Date();
+
+    const dateOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
+
+    const timeOptions = {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    };
+
+    const replacedString = inputString
+        .replace(/{DATE}/g, currentDate.toLocaleDateString(undefined, dateOptions))
+        .replace(/{TIME}/g, currentDate.toLocaleTimeString(undefined, timeOptions));
+
+    return replacedString;
+}
+
 export const createPost = async (req, res) => {
     const post = req.body;
     const newPostMessage = new PostMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString() });
+
+    newPostMessage.message = replacePlaceholders(newPostMessage.message);
+
+    console.log(newPostMessage);
 
     try {
         await newPostMessage.save();
@@ -133,6 +168,11 @@ export const likePost = async (req, res) => {
     const post = await PostMessage.findById(id);
 
     const index = post.likes.findIndex((id) => id === String(req.userId));
+    const index1 = post.dislikes.findIndex((id) => id === String(req.userId));
+
+    if (index1 !== -1) {
+        post.dislikes = post.dislikes.filter((id) => id !== String(req.userId));
+    }
 
     if (index === -1) {
         post.likes.push(req.userId);
@@ -155,6 +195,11 @@ export const dislikePost = async (req, res) => {
     const post = await PostMessage.findById(id);
 
     const index = post.dislikes.findIndex((id) => id === String(req.userId));
+    const index1 = post.likes.findIndex((id) => id === String(req.userId));
+
+    if (index1 !== -1) {
+        post.likes = post.likes.filter((id) => id !== String(req.userId));
+    }
 
     if (index === -1) {
         post.dislikes.push(req.userId);
