@@ -29,10 +29,7 @@ const Home = () => {
     const [search, setSearch] = useState('');
     const [tags, setTags] = useState([]);
     const [channels, setChannels] = useState([]);
-    const [channel, setChannel] = useState({
-        value: '',
-        label: ''
-    });
+    const [channel, setChannel] = useState();
 
     const getChanns = async () => {
         await dispatch(getChannels(user?.result?._id)).then((res) => {
@@ -64,7 +61,11 @@ const Home = () => {
 
     const handleSelectChannel = (selectedOption, actionMeta) => {
         //console.log(selectedOption, actionMeta);
-        setChannel({ label: selectedOption.label, value: selectedOption.value });
+        if (selectedOption !== null) {
+            setChannel({ label: selectedOption.label, value: selectedOption.value });
+        } else {
+            setChannel('');
+        }
         //console.log(channel);
     }
 
@@ -83,7 +84,7 @@ const Home = () => {
                         <AppBar className={classes.appBarSearch} position="static" color="inherit">
                             <TextField name="search" variant="outlined" label="Search Post" onKeyUp={handleKeyPress} fullWidth value={search} onChange={(e) => { setSearch(e.target.value) }} />
                             <ChipInput style={{ margin: '10px 0' }} value={tags} onAdd={handleAdd} onDelete={handleDelete} label="Search Tags" variant="outlined" />
-                            <Select fullWidth className={classes.fileInput} options={channels} value={channel} onChange={handleSelectChannel} />
+                            <Select fullWidth placeholder="Search Channel" isClearable className={classes.fileInput} options={channels} value={channel} onChange={handleSelectChannel} />
                             <Button onClick={searchPost} className={classes.searchButton} variant="contained" color="primary">Search</Button>
                         </AppBar>
                         <Form currentId={currentId} setCurrentId={setCurrentId} />

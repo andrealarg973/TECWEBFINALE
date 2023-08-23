@@ -121,7 +121,7 @@ const Form = ({ currentId, setCurrentId }) => {
         e.preventDefault();
 
         if (currentId === 0 || currentId === null) {
-            if ((Math.min(maxCar.day, maxCar.week, maxCar.month) - Math.min(quotas.day, quotas.week, quotas.month) - caratteri >= 0) || !(postData.destinatari.length > 0)) {
+            if ((Math.min(maxCar.day, maxCar.week, maxCar.month) - Math.min(quotas.day, quotas.week, quotas.month) - caratteri >= 0) || !(postData.destinatari.length > 0) || temporal) {
                 //if (postData.destinatari.length < 1 && postData.destinatariPrivati.length < 1) {
                 //alert('Devi selezionare almeno un destinatario!');
                 //} else {

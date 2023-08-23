@@ -137,7 +137,7 @@ export const createPost = async (req, res) => {
 
 export const createAutomaticPost = async (req, res) => {
     const post = req.body;
-    const newPostMessageTemporal = new PostMessageTemporal({ ...post, creator: req.userId });
+    const newPostMessageTemporal = new PostMessageTemporal({ ...post, creator: req.userId, createdAt: new Date().toISOString() });
 
 
     //console.log(newPostMessageTemporal);

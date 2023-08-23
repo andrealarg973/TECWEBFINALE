@@ -37,6 +37,10 @@ const postSchemaTemporal = mongoose.Schema({
         type: [String],
         default: [],
     },
+    createdAt: {
+        type: Date,
+        default: new Date(),
+    },
 });
 
 const PostMessageTemporal = mongoose.model('PostMessageTemporal', postSchemaTemporal);
