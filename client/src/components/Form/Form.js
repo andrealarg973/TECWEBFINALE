@@ -7,7 +7,7 @@ import Select from 'react-select';
 import ChipInput from 'material-ui-chip-input';
 
 import useStyles from './styles';
-import { createPost, updatePost } from '../../actions/posts';
+import { createPost, createPostTemporal, updatePost } from '../../actions/posts';
 import { getUsers, updateQuota, getCar, getQuotas } from '../../actions/auth';
 import { getChannels, createChannel } from '../../actions/channels';
 import { useNavigate } from 'react-router-dom';
@@ -38,6 +38,7 @@ const Form = ({ currentId, setCurrentId }) => {
     });
     const [temporal, setTemporal] = useState(false);
     const [channels, setChannels] = useState([]);
+    const [time, setTime] = useState(10);
     const [users, setUsers] = useState([]);
     const [quotas, setQuotas] = useState({
         day: 0,
@@ -124,9 +125,12 @@ const Form = ({ currentId, setCurrentId }) => {
                 //if (postData.destinatari.length < 1 && postData.destinatariPrivati.length < 1) {
                 //alert('Devi selezionare almeno un destinatario!');
                 //} else {
-
-                dispatch(createPost({ ...postData, name: user?.result?.name }));
-                console.log(postData);
+                if (temporal) {
+                    dispatch(createPostTemporal({ ...postData, name: user?.result?.name, repeat: time }));
+                } else {
+                    dispatch(createPost({ ...postData, name: user?.result?.name }));
+                }
+                //console.log(postData);
                 if (postData.destinatari.length > 0) {
                     dispatch(updateQuota({ ...caratteri, user: user?.result?._id, quota: caratteri }));
                 }
@@ -257,12 +261,13 @@ const Form = ({ currentId, setCurrentId }) => {
                     </>
                 )}
                 <div className={classes.fileInput}><FileBase type="file" multiple={false} onDone={({ base64 }) => setPostData({ ...postData, selectedFile: base64 })} /></div>
-                <input name="temporal" type="CHECKBOX" value="temporal" className={classes.check} onChange={handleRadioClick} /><Typography variant="h6">Messaggio Automatico</Typography>
+                <Button className={classes.buttonSubmit} variant="contained" color="primary" onClick={getRandomQuote} size="large" type="button">Random Quote</Button>
+                <Typography variant="h6">Messaggio Temporizzato</Typography>
+                <input name="temporal" type="CHECKBOX" placeholder='ciao' value="temporal" className={classes.check} onChange={handleRadioClick} />
                 {temporal && (
                     <>
                         <div style={{ marginBottom: '10px' }}>Ogni quanto vuoi pubblicare il messaggio? (in secondi)</div>
-                        <input className={classes.inputTime} type="number"></input>
-                        <Button className={classes.buttonSubmit} variant="contained" color="primary" onClick={getRandomQuote} size="large" type="button">Random Quote</Button>
+                        <input className={classes.inputTime} min="10" value={time} onChange={(e) => setTime(e.target.value >= 10 ? e.target.value : 10)} type="number"></input>
                     </>
                 )}
                 <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>

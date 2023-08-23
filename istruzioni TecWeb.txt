@@ -58,27 +58,31 @@ rafce
 --------------------------------------------------------------------
 MODIFICHE
 --------------------------------------------------------------------
-- canali riservati: di squealer, solo il mod può usarli (alla fine)
 
+HARD
 - aumento/riduzione quota rispetto a reazioni (IMPEGNATIVO)
+MEDIUM
 - messaggi automatici (temporali, random quote ed un altro)
+- canali riservati: di squealer, solo il mod può usarli (alla fine)
 - risposta squeal
+- notifica per msg privato
+- georeferenziazione
+EASY
 - pagina iscrizione/visualizzazione canali
 - creazione CANALI PUBBLICI, popolazione automatica
 - pulizia database 
 - acquisto caratteri
 - quota iniziale caratteri
-- georeferenziazione
 - homepage senza login (solo canali RISERVATI)
-- notifica per msg privato
-- ricerca per canale
+
+
 
 
 COMPLETATI:
 - canali privati: più proprietari, gestione lettura/scrittura
 - destinatari: pubblico, privato, canale (slide 15 e slide 20)
 - messagi variabili: {TIME}, {DATE}, ecc.
-
+- ricerca per canale
 
 PER CREARE UNA API:
 server: 

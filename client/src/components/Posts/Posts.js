@@ -9,7 +9,7 @@ const Posts = ({ setCurrentId }) => {
     const { posts, isLoading } = useSelector((state) => state.posts);
     const classes = useStyles();
 
-    if (!posts && !isLoading) return 'no posts';
+    if (posts.length <= 0 && !isLoading) return 'no posts';
 
     //console.log(posts);
     return (

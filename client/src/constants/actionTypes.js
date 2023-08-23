@@ -1,4 +1,5 @@
 export const CREATE = 'CREATE';
+export const CREATE_TEMPORAL = 'CREATE_TEMPORAL';
 export const UPDATE = 'UPDATE';
 export const LIKE = 'LIKE';
 export const DISLIKE = 'DISLIKE';

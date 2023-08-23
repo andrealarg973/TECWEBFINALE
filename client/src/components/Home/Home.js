@@ -3,6 +3,8 @@ import { Container, Grow, Grid, Paper, AppBar, TextField, Button } from '@materi
 import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ChipInput from 'material-ui-chip-input';
+import Select from 'react-select';
+import { getChannels } from '../../actions/channels';
 
 import { getPostsBySearch } from '../../actions/posts';
 import Posts from '../Posts/Posts';
@@ -22,9 +24,23 @@ const Home = () => {
     const navigate = useNavigate();
     const page = query.get('page') || 1;
     const searchQuery = query.get('searchQuery');
+    const user = JSON.parse(localStorage.getItem('profile'));
     const classes = useStyles();
     const [search, setSearch] = useState('');
     const [tags, setTags] = useState([]);
+    const [channels, setChannels] = useState([]);
+    const [channel, setChannel] = useState({
+        value: '',
+        label: ''
+    });
+
+    const getChanns = async () => {
+        await dispatch(getChannels(user?.result?._id)).then((res) => {
+            //console.log('channels:', res);
+            setChannels(res);
+        });
+        //console.log('channels:', channels);
+    }
 
     const handleKeyPress = (e) => {
         if (e.keyCode === 13) {
@@ -37,14 +53,24 @@ const Home = () => {
     const handleDelete = (tagToDelete) => setTags(tags.filter((tag) => tag !== tagToDelete));
 
     const searchPost = () => {
-        if (search.trim() || tags) {
+        if (search.trim() || tags || channel) {
             // dispatch -> fetch search post
-            dispatch(getPostsBySearch({ search, tags: tags.join(', ') }));
-            navigate(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`);
+            dispatch(getPostsBySearch({ search, tags: tags.join(', '), channel: channel.value }));
+            navigate(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}&channel=${channel.value}`);
         } else {
             navigate('/');
         }
     }
+
+    const handleSelectChannel = (selectedOption, actionMeta) => {
+        //console.log(selectedOption, actionMeta);
+        setChannel({ label: selectedOption.label, value: selectedOption.value });
+        //console.log(channel);
+    }
+
+    useEffect(() => {
+        getChanns();
+    }, []);
 
     return (
         <Grow in>
@@ -57,6 +83,7 @@ const Home = () => {
                         <AppBar className={classes.appBarSearch} position="static" color="inherit">
                             <TextField name="search" variant="outlined" label="Search Post" onKeyUp={handleKeyPress} fullWidth value={search} onChange={(e) => { setSearch(e.target.value) }} />
                             <ChipInput style={{ margin: '10px 0' }} value={tags} onAdd={handleAdd} onDelete={handleDelete} label="Search Tags" variant="outlined" />
+                            <Select fullWidth className={classes.fileInput} options={channels} value={channel} onChange={handleSelectChannel} />
                             <Button onClick={searchPost} className={classes.searchButton} variant="contained" color="primary">Search</Button>
                         </AppBar>
                         <Form currentId={currentId} setCurrentId={setCurrentId} />

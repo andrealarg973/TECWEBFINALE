@@ -17,4 +17,8 @@ export default makeStyles((theme) => ({
             flexDirection: 'column-reverse',
         },
     },
+    fileInput: {
+        width: '97%',
+        margin: '10px 0',
+    },
 }));

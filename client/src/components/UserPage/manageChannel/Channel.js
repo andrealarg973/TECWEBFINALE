@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grow, Grid, Paper, AppBar, TextField, Button, Typography } from '@material-ui/core';
+import { Container, Grow, Grid, Paper, AppBar, TextField, Button, Typography, CardContent } from '@material-ui/core';
 import { getUsers } from '../../../actions/auth';
 import { updateChannel } from '../../../actions/channels';
 import { useDispatch } from 'react-redux';
@@ -77,7 +77,10 @@ const Channel = ({ channel }) => {
     return (
         <Paper className={classes.paper} elevation={6}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
-                <Typography variant="h6">{channelData.value}</Typography>
+                <div style={{ flexDirection: 'column' }}>
+                    <Typography variant="h4" paragraph className={classes.channelTitle}>${channelData.value}</Typography>
+                    <Typography variant="h6" style={{ textAlign: 'center' }}>Owners:</Typography>
+                </div>
                 <Select className={classes.fileInput} isMulti value={channelData.owner.map((participant) => ({
                     value: participant, label: nome(participant)
                 }))} onChange={handleSelectOwner} options={users} />

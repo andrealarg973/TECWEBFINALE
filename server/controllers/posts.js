@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 
 import PostMessage from '../models/postMessage.js';
+import PostMessageTemporal from '../models/postMessageTemporal.js';
 import ChannelSchema from '../models/channel.js';
 
 const router = express.Router();
@@ -48,19 +49,22 @@ export const getPost = async (req, res) => {
 // PARAMS -> /posts/123 -> id = 123
 export const getPostsBySearch = async (req, res) => {
     //console.log('SEARCH');
-    const { searchQuery, tags } = req.query;
+    const { searchQuery, tags, channel } = req.query;
     //console.log(tags);
 
     try {
         const title = new RegExp(searchQuery, 'i'); // test Test TEST TEsT
         const message = new RegExp(searchQuery, 'i');
+        //console.log(channel);
+
 
         if (tags !== '') {
             //console.log('tag not empty', tags);
-            const posts = await PostMessage.find({ $or: [{ title }, { message }, { tags: { $in: tags.split(',') } }] }); // find post based on two criteria: title or tags
+            const posts = await PostMessage.find({ $or: [{ title }, { message }, { destinatari: { $in: channel } }, { tags: { $in: tags.split(',') } }] }).sort({ _id: -1 }); // find post based on two criteria: title or tags
             res.json({ data: posts });
         } else {
-            const posts = await PostMessage.find({ $or: [{ title }, { message }] }); // find post based on two criteria: title or tags
+            const posts = await PostMessage.find({ $or: [{ title }, { message }, { destinatari: { $in: channel } }] }).sort({ _id: -1 }); // find post based on two criteria: title or tags
+            //console.log(posts);
             res.json({ data: posts });
         }
 
@@ -76,6 +80,17 @@ export const getPostsByUser = async (req, res) => {
 
     try {
         const posts = await PostMessage.find({ creator: userId }).sort({ _id: -1 });
+        res.status(200).json({ data: posts });
+    } catch (error) {
+        res.status(500).json(error);
+    }
+}
+
+export const getPostsByChannel = async (req, res) => {
+    const channel = req.params.value;
+
+    try {
+        const posts = await PostMessage.find({ destinatari: { $in: channel } }).sort({ _id: -1 });
         res.status(200).json({ data: posts });
     } catch (error) {
         res.status(500).json(error);
@@ -110,11 +125,26 @@ export const createPost = async (req, res) => {
 
     newPostMessage.message = replacePlaceholders(newPostMessage.message);
 
-    console.log(newPostMessage);
+    //console.log(newPostMessage);
 
     try {
         await newPostMessage.save();
         res.status(201).json(newPostMessage);
+    } catch (error) {
+        res.status(409).json({ message: error.message });
+    }
+}
+
+export const createAutomaticPost = async (req, res) => {
+    const post = req.body;
+    const newPostMessageTemporal = new PostMessageTemporal({ ...post, creator: req.userId });
+
+
+    //console.log(newPostMessageTemporal);
+
+    try {
+        await newPostMessageTemporal.save();
+        res.status(201).json(newPostMessageTemporal);
     } catch (error) {
         res.status(409).json({ message: error.message });
     }

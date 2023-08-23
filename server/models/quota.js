@@ -18,6 +18,18 @@ const quotaSchema = mongoose.Schema({
         type: Number,
         default: MONTH
     },
+    extraDay: {
+        type: Number,
+        default: 0
+    },
+    extraWeek: {
+        type: Number,
+        default: 0
+    },
+    extraMonth: {
+        type: Number,
+        default: 0
+    },
 });
 
 const QuotaSchema = mongoose.model('QuotaSchema', quotaSchema);

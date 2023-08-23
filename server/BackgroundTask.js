@@ -1,5 +1,6 @@
 // backgroundTasks.js
 import PostMessage from './models/postMessage.js';
+import PostMessageTemporal from './models/postMessageTemporal.js';
 
 async function doSomething(arg) {
     const dateDay = new Date();
@@ -34,8 +35,16 @@ async function doSomething(arg) {
     return db;
 }
 
+async function automaticPosts() {
+    //console.log("ciao");
+
+    const temporals = await PostMessageTemporal.find({ active: true });
+    //console.log(temporals);
+}
+
 let values = ['ciao', 'ciao2'];
 
-const delay = 3; // time in seconds
+const delay = 1; // time in seconds
 // Call the doSomething function every 5 seconds (5000 milliseconds)
-setInterval(() => { values = doSomething(values) }, delay * 1000);
+//setInterval(() => { values = doSomething(values) }, delay * 1000);
+setInterval(automaticPosts, delay * 1000);

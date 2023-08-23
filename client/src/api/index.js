@@ -15,8 +15,9 @@ API.interceptors.request.use((req) => {
 export const fetchPosts = (page, userId) => API.get(`/posts/${userId}/all?page=${page}`, userId);
 export const fetchPost = (id) => API.get(`/posts/${id}`);
 export const fetchPostsByUser = (id) => API.get(`/posts/${id}/posts`);
-export const fetchPostsBySearch = (searchQuery) => API.get(`/posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${searchQuery.tags}`);
+export const fetchPostsBySearch = (searchQuery) => API.get(`/posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${searchQuery.tags}&channel=${searchQuery.channel}`);
 export const createPost = (newPost) => API.post('/posts', newPost);
+export const createPostTemporal = (newPost) => API.post('/posts/automatic', newPost);
 export const updatePost = (id, updatedPost) => API.patch(`/posts/${id}`, updatedPost);
 export const updateVisual = (id) => API.patch(`/posts/${id}/visual`);
 export const deletePost = (id) => API.delete(`/posts/${id}`);

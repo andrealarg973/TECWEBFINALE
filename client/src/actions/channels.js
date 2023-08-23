@@ -29,6 +29,7 @@ export const createChannel = (channel) => async (dispatch) => {
     try {
         const { data } = await api.createChannel(channel);
         dispatch({ type: CREATE_CHANNEL, payload: data });
+        return data;
     } catch (error) {
         console.log(error);
     }

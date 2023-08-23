@@ -39,5 +39,8 @@ export default makeStyles((theme) => ({
     buttonSubmit: {
         marginBottom: 10,
     },
+    channelTitle: {
+        color: 'cyan',
+    }
 
 }));

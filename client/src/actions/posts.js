@@ -1,4 +1,4 @@
-import { FETCH_ALL, FETCH_POST, FETCH_BY_SEARCH, FETCH_BY_USER, CREATE, UPDATE, DELETE, START_LOADING, STOP_LOADING, COMMENT } from '../constants/actionTypes';
+import { FETCH_ALL, FETCH_POST, FETCH_BY_SEARCH, FETCH_BY_USER, CREATE, CREATE_TEMPORAL, UPDATE, DELETE, START_LOADING, STOP_LOADING, COMMENT } from '../constants/actionTypes';
 import * as api from '../api';
 
 // Action Creators (functions that return an action)
@@ -64,6 +64,16 @@ export const createPost = (post) => async (dispatch) => {
         const { data } = await api.createPost(post);
 
         dispatch({ type: CREATE, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const createPostTemporal = (post) => async (dispatch) => {
+    try {
+        const { data } = await api.createPostTemporal(post);
+
+        dispatch({ type: CREATE_TEMPORAL, payload: data });
     } catch (error) {
         console.log(error);
     }
