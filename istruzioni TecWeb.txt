@@ -62,6 +62,7 @@ MODIFICHE
 HARD
 - aumento/riduzione quota rispetto a reazioni (IMPEGNATIVO)
 MEDIUM
+- fix quota divisa in due chiamate
 - messaggi automatici temporizzati (controllo caratteri e gestione)
 - canali riservati: di squealer, solo il mod può usarli (alla fine)
 - risposta squeal
