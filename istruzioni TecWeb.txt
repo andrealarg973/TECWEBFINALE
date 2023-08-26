@@ -63,14 +63,15 @@ HARD
 - aumento/riduzione quota rispetto a reazioni (IMPEGNATIVO)
 MEDIUM
 - messaggi sono testo/foto/video/posizioni
+- upload video
 - messaggi automatici temporizzati (gestione)
 - canali riservati: di squealer, solo il mod può usarli (alla fine)
 - risposta squeal
 - notifica per msg privato
 - georeferenziazione
-EASY
-- pagina iscrizione/visualizzazione canali
 - creazione CANALI PUBBLICI, popolazione automatica
+- pagina iscrizione/visualizzazione canali
+EASY
 - pulizia database 
 - acquisto caratteri
 - quota iniziale caratteri
