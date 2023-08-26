@@ -121,7 +121,7 @@ const Form = ({ currentId, setCurrentId }) => {
         e.preventDefault();
 
         if (currentId === 0 || currentId === null) {
-            if ((Math.min(maxCar.day, maxCar.week, maxCar.month) - Math.min(quotas.day, quotas.week, quotas.month) - caratteri >= 0) || !(postData.destinatari.length > 0) || temporal) {
+            if ((Math.min(quotas.day, quotas.week, quotas.month) - caratteri >= 0) || !(postData.destinatari.length > 0) || temporal) {
                 //if (postData.destinatari.length < 1 && postData.destinatariPrivati.length < 1) {
                 //alert('Devi selezionare almeno un destinatario!');
                 //} else {
@@ -245,7 +245,7 @@ const Form = ({ currentId, setCurrentId }) => {
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                 <Typography variant="h6">{currentId ? 'Edit Post' : 'Create Post'}</Typography>
                 <TextField required name="message" variant="outlined" label="Message" fullWidth multiline minRows={4} value={postData.message} onChange={handleMessage} />
-                <Typography align="right" className={classes.charLeft} variant="h6" style={(Math.min(maxCar.day, maxCar.week, maxCar.month) - Math.min(quotas.day, quotas.week, quotas.month) - caratteri < 0) ? { color: 'red' } : { color: 'black' }}> Caratteri restanti: {Math.min(maxCar.day, maxCar.week, maxCar.month) - Math.min(quotas.day, quotas.week, quotas.month) - caratteri}</Typography>
+                <Typography align="right" className={classes.charLeft} variant="h6" style={(Math.min(quotas.day, quotas.week, quotas.month) - caratteri < 0) ? { color: 'red' } : { color: 'black' }}> Caratteri restanti: {Math.min(quotas.day, quotas.week, quotas.month) - caratteri}</Typography>
 
                 <ChipInput helperText="All spaces will be removed" style={{ margin: '10px 0' }} onChange={handleChangeTags} label="Tags" variant="outlined" fullWidth />
                 {postData.destinatariPrivati.length <= 0 && (

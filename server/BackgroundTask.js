@@ -86,11 +86,7 @@ async function automaticPosts() {
                     .then(async (usati) => {
                         // Process the data returned from the API
 
-                        const totali = await QuotaSchema.findOne({ user: newPost.creator });
-                        console.log('data: ', usati);
-                        console.log(totali);
-
-                        const car = Math.min(totali.month - usati.month, totali.week - usati.week, totali.day - usati.day) - newPost.message.length;
+                        const car = Math.min(usati.month, usati.week, usati.day) - newPost.message.length;
                         console.log('Quota', car);
                         if (car >= 0) {
                             try {

@@ -217,7 +217,17 @@ export const getQuotas = async (req, res) => {
         });
         //console.log(sum);
 
-        res.status(200).json({ day: sumDay, week: sumWeek, month: sumMonth });
+        const iniziale = await QuotaSchema.findOne({ user: id });
+        //console.log(iniziale);
+
+        const resp = {
+            day: iniziale.day - sumDay + iniziale.extraDay,
+            week: iniziale.week - sumWeek + iniziale.extraWeek,
+            month: iniziale.month - sumMonth + iniziale.extraMonth
+        };
+        //console.log(resp);
+
+        res.status(200).json(resp);
     } catch (error) {
         res.status(500).json({ message: "Couldn't count charachters left" });
         console.log(error);

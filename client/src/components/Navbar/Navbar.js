@@ -72,7 +72,7 @@ const Navbar = () => {
 
         if (user) {
             getQTAs();
-            getChars();
+            //getChars();
         }
 
     }, [location]);
@@ -88,9 +88,9 @@ const Navbar = () => {
 
                 <div>
                     <Typography variant="h6">Caratteri restanti:</Typography>
-                    <span>Month: {maxCar.month - quotas.month}</span>&nbsp;
-                    <span>Week: {maxCar.week - quotas.week}</span>&nbsp;
-                    <span>Day: {maxCar.day - quotas.day}</span>&nbsp;
+                    <span>Month: {(quotas.month >= 0 ? quotas.month : 0)}</span>&nbsp;
+                    <span>Week: {(quotas.week >= 0 ? quotas.week : 0)}</span>&nbsp;
+                    <span>Day: {(quotas.day >= 0 ? quotas.day : 0)}</span>&nbsp;
                 </div>
             )}
             <Toolbar className={classes.toolbar}>

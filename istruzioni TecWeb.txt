@@ -62,8 +62,8 @@ MODIFICHE
 HARD
 - aumento/riduzione quota rispetto a reazioni (IMPEGNATIVO)
 MEDIUM
-- fix quota divisa in due chiamate
-- messaggi automatici temporizzati (controllo caratteri e gestione)
+- messaggi sono testo/foto/video/posizioni
+- messaggi automatici temporizzati (gestione)
 - canali riservati: di squealer, solo il mod può usarli (alla fine)
 - risposta squeal
 - notifica per msg privato
@@ -84,6 +84,7 @@ COMPLETATI:
 - destinatari: pubblico, privato, canale (slide 15 e slide 20)
 - messagi variabili: {TIME}, {DATE}, ecc.
 - ricerca per canale
+- fix quota divisa in due chiamate
 
 PER CREARE UNA API:
 server: 
