@@ -3,29 +3,29 @@ import PostMessage from './models/postMessage.js';
 import PostMessageTemporal from './models/postMessageTemporal.js';
 import QuotaSchema from './models/quota.js';
 
-async function doSomething(arg) {
-    const dateDay = new Date();
-    dateDay.setHours(17, 0, 0, 0);
-    let db = arg;
+async function updateQuotas() {
+    //const dateDay = new Date();
+    //dateDay.setHours(17, 0, 0, 0);
+    //let db = arg;
 
-    /*
-    const day = await PostMessage.find({ createdAt: { $gte: dateDay } });
+
+    const posts = await PostMessage.find();
     //console.log(day);
-    day.map((post) => {
+    posts.map((post) => {
         if (post.likes.length > (0.25 * post.visual) && post.dislikes.length > (0.25 * post.visual)) {
-            console.log("CONTROVERSO: ", post._id);
+            console.log("CONTROVERSO: ", post.message, post.likes.length, post.dislikes.length, post.visual);
         } else {
             if (post.likes.length > (0.25 * post.visual)) {
-                console.log("POPOLARE: ", post._id);
+                console.log("POPOLARE: ", post.message, post.likes.length, post.visual);
             }
             else if (post.dislikes.length > (0.25 * post.visual)) {
-                console.log("IMPOPOLARE: ", post._id);
+                console.log("IMPOPOLARE: ", post.message, post.dislikes.length, post.visual);
             }
         }
 
     });
     console.log("-------------------------------------------");
-    */
+
 
 
     //db.push('wewe');
@@ -33,7 +33,6 @@ async function doSomething(arg) {
     //const posts = await PostMessage.find();
     // Your periodic action code here
     //console.log("Background task executed");
-    return db;
 }
 
 function replacePlaceholders(inputString) {
@@ -124,9 +123,8 @@ async function automaticPosts() {
     //console.log(temporals);
 }
 
-let values = ['ciao', 'ciao2'];
-
-const delay = 3; // time in seconds
+const delay = 1; // time in seconds
 // Call the doSomething function every 5 seconds (5000 milliseconds)
 //setInterval(() => { values = doSomething(values) }, delay * 1000);
 setInterval(automaticPosts, delay * 1000);
+setInterval(updateQuotas, delay * 1000);

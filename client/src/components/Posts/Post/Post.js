@@ -21,16 +21,19 @@ const Post = ({ post, setCurrentId }) => {
     const user = JSON.parse(localStorage.getItem('profile'));
     const [likes, setLikes] = useState(post?.likes);
     const [dislikes, setDislikes] = useState(post?.dislikes);
+    const [hasReacted, setHasReacted] = useState(false);
 
     const userId = user?.result?.sub || user?.result?._id;
 
     const hasLikedPost = post?.likes?.find((like) => like === userId);
     const hasDislikedPost = post?.dislikes?.find((dislike) => dislike === userId);
-    const hasReacted = hasLikedPost || hasDislikedPost;
+    //const hasReacted = hasLikedPost || hasDislikedPost;
 
 
     const handleLike = async () => {
         dispatch(likePost(post._id));
+        if (!hasReacted) dispatch(updateVisual(post._id));
+        setHasReacted(true);
 
         if (hasDislikedPost) {
             setDislikes(post.dislikes.filter((id) => id !== userId));
@@ -40,13 +43,15 @@ const Post = ({ post, setCurrentId }) => {
             setLikes(post.likes.filter((id) => id !== userId));
         } else {
             setLikes([...post.likes, userId]);
-            dispatch(updateVisual(post._id));
+
         }
 
     }
 
     const handleDislike = async () => {
         dispatch(dislikePost(post._id));
+        if (!hasReacted) dispatch(updateVisual(post._id));
+        setHasReacted(true);
 
         if (hasLikedPost) {
             setLikes(post.likes.filter((id) => id !== userId));
@@ -56,7 +61,6 @@ const Post = ({ post, setCurrentId }) => {
             setDislikes(post.dislikes.filter((id) => id !== userId));
         } else {
             setDislikes([...post.dislikes, userId]);
-            dispatch(updateVisual(post._id));
         }
     }
 
