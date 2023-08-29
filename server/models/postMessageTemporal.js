@@ -10,6 +10,8 @@ const postSchemaTemporal = mongoose.Schema({
     message: String,
     name: String,
     creator: String,
+    type: String,
+    location: [Number],
     tags: [String],
     selectedFile: String,
     privacy: String,

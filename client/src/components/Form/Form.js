@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Typography, Paper } from '@material-ui/core';
+import { TextField, Button, Typography, Paper, CircularProgress } from '@material-ui/core';
 import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
 import CreateSelect from 'react-select/creatable';
@@ -11,6 +11,9 @@ import { createPost, createPostTemporal, updatePost } from '../../actions/posts'
 import { getUsers, updateQuota, getCar, getQuotas } from '../../actions/auth';
 import { getChannels, createChannel } from '../../actions/channels';
 import { useNavigate } from 'react-router-dom';
+import Map from '../Map/Map';
+
+//import { Marker, Popup } from 'leaflet';
 
 // get the current id of the post
 
@@ -21,6 +24,8 @@ const Form = ({ currentId, setCurrentId }) => {
         tags: [],
         selectedFile: '',
         privacy: 'public',
+        type: 'text',
+        location: [],
         destinatari: [],
         destinatariPrivati: [],
     });
@@ -45,7 +50,8 @@ const Form = ({ currentId, setCurrentId }) => {
         week: 0,
         month: 0
     });
-    const [tags, setTags] = useState([]);
+    const [location, setLocation] = useState([]);
+    const [locationLoaded, setLocationLoaded] = useState(false);
 
     const getQTAs = async () => {
         await dispatch(getQuotas(user.result._id)).then((res) => {
@@ -94,11 +100,11 @@ const Form = ({ currentId, setCurrentId }) => {
 
 
     useEffect(() => {
-
         //console.log('ID', user?.result?._id);
         //getChannels();
 
         if (user) {
+            //console.log(user);
             //getChars();
             getChanns();
             getUsrs();
@@ -119,16 +125,18 @@ const Form = ({ currentId, setCurrentId }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        //setPostData({ ...postData, location: location });
+        //console.log(postData);
 
         if (currentId === 0 || currentId === null) {
-            if ((Math.min(quotas.day, quotas.week, quotas.month) - caratteri >= 0) || !(postData.destinatari.length > 0) || temporal) {
+            if ((Math.min(quotas.day, quotas.week, quotas.month) - caratteri >= 0) || (postData.destinatariPrivati.length > 0) || temporal) {
                 //if (postData.destinatari.length < 1 && postData.destinatariPrivati.length < 1) {
                 //alert('Devi selezionare almeno un destinatario!');
                 //} else {
                 if (temporal) {
-                    dispatch(createPostTemporal({ ...postData, name: user?.result?.name, repeat: time }));
+                    dispatch(createPostTemporal({ ...postData, name: user?.result?.name, location: location, repeat: time }));
                 } else {
-                    dispatch(createPost({ ...postData, name: user?.result?.name }));
+                    dispatch(createPost({ ...postData, name: user?.result?.name, location: location }));
                 }
                 //console.log(postData);
                 if (postData.destinatari.length > 0) {
@@ -138,9 +146,8 @@ const Form = ({ currentId, setCurrentId }) => {
                 navigate('/');
                 //}
             } else {
-                if (postData.destinatari.length > 0) {
-                    alert('Quota insufficiente');
-                }
+                alert('Quota insufficiente');
+
             }
         } else {
 
@@ -158,7 +165,8 @@ const Form = ({ currentId, setCurrentId }) => {
 
     const clear = () => {
         setCurrentId(null);
-        setPostData({ title: '', message: '', tags: '', selectedFile: '', privacy: '', destinatari: [], destinatariPrivati: [] });
+        setCaratteri(0);
+        setPostData({ title: '', message: '', tags: '', selectedFile: '', type: 'text', privacy: '', location: [], destinatari: [], destinatariPrivati: [] });
     }
     /*
     if (postData.destinatariPrivati.length <= 0 && postData.destinatari.length <= 0) {
@@ -237,14 +245,93 @@ const Form = ({ currentId, setCurrentId }) => {
         )
     }
 
+    const handlePostTypeClick = (e) => {
+
+        if (e.target.value === 'location') {
+            //console.log("LOCATION...");
+            if ('geolocation' in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        //setPostData({ ...postData, location: [latitude, longitude] });
+                        setLocation([latitude, longitude]);
+                        setCaratteri(125);
+                        //console.log('Latitude:', latitude);
+                        //console.log('Longitude:', longitude);
+                        // Use latitude and longitude to display the user's location on a map, for example
+                    },
+                    (error) => {
+                        console.error('Error getting location:', error.message);
+                        // Handle error, e.g., show an error message to the user
+                    }
+                );
+            } else {
+                console.log("IMPOSSIBILE ACCEDERE ALLA POSIZIONE");
+            }
+        }
+        if (e.target.value === 'media') {
+            setCaratteri(postData.selectedFile ? 125 : 0);
+        }
+        if (e.target.value === 'text') {
+            setCaratteri(postData.message.length);
+        }
+
+        setPostData({ ...postData, type: e.target.value });
+
+        //console.log(postData.type);
+    };
+
+    const isChecked = (value) => {
+        return value === postData.type;
+    }
+
+    const RadioButtons = () => {
+        return (
+            <div style={{ marginBottom: '10px' }}>
+                <Typography variant="h6" style={{ textAlign: 'center' }}>Post type:</Typography>
+                <input name="role" type="radio" value="text" onChange={handlePostTypeClick} checked={isChecked('text')} />Text
+                <input name="role" type="radio" value="media" onChange={handlePostTypeClick} checked={isChecked('media')} />Media
+                <input name="role" type="radio" value="location" onChange={handlePostTypeClick} checked={isChecked('location')} />Location
+            </div>
+        );
+    }
+
+    const Maps = () => {
+        //<GetUserLocation />
+        if (location.length > 0) {
+            const position = [location[0], location[1]];
+            return (
+                <Map position={position} height={'50vh'} zoom={10} scrollWheelZoom={true} />
+            );
+        } else {
+            return (
+                <CircularProgress />
+            );
+        }
+    }
+
     // <TextField name="title" variant="outlined" label="Title" fullWidth value={postData.title} onChange={(e) => setPostData({ ...postData, title: e.target.value })} />
     // <TextField name="tags" variant="outlined" label="Tags (coma separated)" fullWidth value={postData.tags} onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })} />
 
     return (
         <Paper className={classes.paper} elevation={6}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
-                <Typography variant="h6">{currentId ? 'Edit Post' : 'Create Post'}</Typography>
-                <TextField required name="message" variant="outlined" label="Message" fullWidth multiline minRows={4} value={postData.message} onChange={handleMessage} />
+                <div style={{ flexDirection: 'column' }}>
+                    <Typography style={{ textAlign: 'center' }} variant="h4">{currentId ? 'Edit Post' : 'Create Post'}</Typography>
+                    <RadioButtons />
+                </div>
+
+                {postData.type === 'text' && (
+                    <TextField required name="message" variant="outlined" label="Message" fullWidth multiline minRows={4} value={postData.message} onChange={handleMessage} />
+                )}
+                {postData.type === 'media' && (
+                    <div className={classes.fileInput}><FileBase type="file" multiple={false} onDone={({ base64 }) => { setPostData({ ...postData, selectedFile: base64 }); setCaratteri(125); }} /></div>
+                )}
+                {postData.type === 'location' && (
+                    <>
+                        <Maps />
+                    </>
+                )}
                 <Typography align="right" className={classes.charLeft} variant="h6" style={(Math.min(quotas.day, quotas.week, quotas.month) - caratteri < 0) ? { color: 'red' } : { color: 'black' }}> Caratteri restanti: {Math.min(quotas.day, quotas.week, quotas.month) - caratteri}</Typography>
 
                 <ChipInput helperText="All spaces will be removed" style={{ margin: '10px 0' }} onChange={handleChangeTags} label="Tags" variant="outlined" fullWidth />
@@ -260,8 +347,11 @@ const Form = ({ currentId, setCurrentId }) => {
                         <Select className={classes.fileInput} value={postData.destinatariPrivati.map((c) => ({ value: c, label: "@" + nome(c) }))} isMulti options={users} onChange={handleSelectUsers} onInputChange={handleInputSelect} />
                     </>
                 )}
-                <div className={classes.fileInput}><FileBase type="file" multiple={false} onDone={({ base64 }) => setPostData({ ...postData, selectedFile: base64 })} /></div>
-                <Button className={classes.buttonSubmit} variant="contained" color="primary" onClick={getRandomQuote} size="large" type="button">Random Quote</Button>
+
+                {postData.type === 'text' && (
+                    <Button className={classes.buttonSubmit} variant="contained" color="primary" onClick={getRandomQuote} size="large" type="button">Random Quote</Button>
+                )}
+
                 <Typography variant="h6">Messaggio Temporizzato</Typography>
                 <input name="temporal" type="CHECKBOX" placeholder='ciao' value="temporal" className={classes.check} onChange={handleRadioClick} />
                 {temporal && (

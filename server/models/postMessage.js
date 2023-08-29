@@ -6,8 +6,10 @@ const postSchema = mongoose.Schema({
     name: String,
     creator: String,
     tags: [String],
+    type: String,
     selectedFile: String,
     privacy: String,
+    location: [Number],
     visual: {
         type: Number,
         default: 0,

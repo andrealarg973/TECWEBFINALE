@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
 
+import Map from '../Map/Map';
 import CommentSection from './CommentSection';
 import { getPost } from '../../actions/posts';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -38,15 +39,21 @@ const PostDetails = () => {
                     <Typography variant="h6">Created by: {post.name}</Typography>
                     <Typography variant="body1">{moment(post.createdAt).fromNow()}</Typography>
                     <Typography gutterBottom variant="h6" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
-                    {post.selectedFile ? (
+                    {post.type === 'media' && (
                         <>
                             <div className={classes.imageSection}>
                                 <img className={classes.media} src={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} alt={post.title} />
                             </div>
                         </>
-                    ) : (
+                    )}
+                    {post.type === 'text' && (
                         <>
                             <Typography gutterBottom variant="body1" component="p">{post.message}</Typography>
+                        </>
+                    )}
+                    {post.type === 'location' && (
+                        <>
+                            <Map position={post.location} height={'69vh'} zoom={8} scrollWheelZoom={true} />
                         </>
                     )}
                     <Divider style={{ margin: '20px 0' }} />
