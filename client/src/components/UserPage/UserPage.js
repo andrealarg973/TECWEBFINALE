@@ -22,6 +22,7 @@ const UserPage = () => {
     const [smms, setSmms] = useState([]);
     const [smm, setSmm] = useState('');
     const [channels, setChannels] = useState([]);
+    const [newQuota, setNewQuota] = useState({ day: 0, week: 0, month: 0 });
 
     const getChannels = async () => {
         await dispatch(getMyChannels(user.result._id)).then((res) => {
@@ -63,12 +64,16 @@ const UserPage = () => {
     }
 
 
-    const handleSubmit = async (e) => {
+    const handleSubmitSMM = async (e) => {
         e.preventDefault();
 
         dispatch(setSMM(user.result._id, (smm.value ? smm.value : '')));
         toast("Done!", { type: "success" });
         getSMM();
+    }
+
+    const handleSubmitQuota = async (e) => {
+        e.preventDefault();
     }
 
     return (
@@ -83,8 +88,8 @@ const UserPage = () => {
 
                         {user.result.role === 'vip' &&
                             <Paper className={classes.paper} elevation={6}>
-                                <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
-                                    <Typography variant="h6">Selezione SMM</Typography>
+                                <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmitSMM}>
+                                    <Typography variant="h6">Select SMM</Typography>
                                     <Select className={classes.fileInput} options={smms} value={smm} fullWidth onChange={handleSelectUsers} />
                                     <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Confirm</Button>
                                     <Button variant="contained" color="secondary" size="small" onClick={clearSMM} fullWidth>Remove SMM</Button>
@@ -93,7 +98,14 @@ const UserPage = () => {
                             </Paper>
                         }
                         <Paper className={classes.paper} elevation={6}>
-                            <Typography variant="h5">Gestione canali</Typography>
+                            <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmitQuota}>
+                                <Typography variant="h6">Increase Quota</Typography>
+                                <TextField required variant="outlined" label="Channel Name" fullWidth value={0} onChange={(e) => setNewQuota(e.target.value)}></TextField>
+                                <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Create</Button>
+                            </form>
+                        </Paper>
+                        <Paper className={classes.paper} elevation={6}>
+                            <Typography variant="h5" style={{ textAlign: 'center' }}>Channel Manager</Typography>
                             {channels.length > 0 ? (
                                 <>
                                     <ChannelManager channels={channels}></ChannelManager>
