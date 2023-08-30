@@ -62,33 +62,35 @@ MODIFICHE
 HARD
 - aumento/riduzione quota rispetto a reazioni (come fare? e aggiungi tabella per statistiche 
     (diff tra scorsa iterazione e questa)), esegui ogni minuto?
-MEDIUM
 - upload video
+
+MEDIUM
 - messaggi automatici temporizzati (gestione)
 - risposta squeal
 - notifica per msg privato
-- quota iniziale caratteri (valore salvato in DB, modificabile dal mod)
 - pagina iscrizione/visualizzazione canali
+
+EASY
+- pulizia database 
+- acquisto caratteri
 
 MODERATORE
 - canali riservati: di squealer, solo il mod può usarli (alla fine)
 - creazione CANALI PUBBLICI, popolazione automatica
 - homepage senza login (solo canali RISERVATI)
 
-EASY
-- fix tra i destinatari dei post vedo me stesso
-- pulizia database 
-- acquisto caratteri
 
 
-
-NON MIA:
+NON MIE:
 - gestione posizione: posizione corrente (SMM usa posizione fittizzia)
-
+- quota iniziale caratteri modificabile dal mod (API già fatta)
 
 
 
 COMPLETATI:
+- random quote con {QUOTE} anche nei msg automatici
+- visualizzazione destinatari dei post (anche aperto)
+- quota iniziale caratteri (valore salvato in DB, modificabile dal mod)
 - crea componente mappa
 - creazione post: selezione testo/foto/video/posizioni
 - canali privati: più proprietari, gestione lettura/scrittura
@@ -96,6 +98,8 @@ COMPLETATI:
 - messagi variabili: {TIME}, {DATE}, ecc.
 - ricerca per canale
 - fix quota divisa in due chiamate
+
+
 
 PER CREARE UNA API:
 server: 

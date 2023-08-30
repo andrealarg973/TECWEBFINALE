@@ -35,12 +35,13 @@ const Form = ({ currentId, setCurrentId }) => {
     const user = JSON.parse(localStorage.getItem('profile'));
     const navigate = useNavigate();
     const [caratteri, setCaratteri] = useState(0);
+    /*
     const [initialCar, setInitialCar] = useState(0);
     const [maxCar, setMaxCar] = useState({
         day: 0,
         week: 0,
         month: 0
-    });
+    });*/
     const [temporal, setTemporal] = useState(false);
     const [channels, setChannels] = useState([]);
     const [time, setTime] = useState(10);
@@ -57,17 +58,20 @@ const Form = ({ currentId, setCurrentId }) => {
         await dispatch(getQuotas(user.result._id)).then((res) => {
             setQuotas(res);
         });
+        /*
         await dispatch(getCar({ user: user?.result?._id })).then((res) => {
             setMaxCar(res);
             setInitialCar(Math.min(res.day, res.week, res.month) - Math.min(quotas.day, quotas.week, quotas.month));
         });
+        */
     }
-
+    /*
     const getChars = async () => {
         await dispatch(getCar({ user: user?.result?._id })).then((res) => {
             setMaxCar(res);
         });
     }
+    */
 
     const getUsrs = async () => {
         await dispatch(getUsers(user?.result?._id)).then((res) => {
@@ -166,7 +170,7 @@ const Form = ({ currentId, setCurrentId }) => {
     const clear = () => {
         setCurrentId(null);
         setCaratteri(0);
-        setPostData({ title: '', message: '', tags: '', selectedFile: '', type: 'text', privacy: '', location: [], destinatari: [], destinatariPrivati: [] });
+        setPostData({ title: '', message: '', tags: '', selectedFile: '', type: 'text', privacy: 'public', location: [], destinatari: [], destinatariPrivati: [] });
     }
     /*
     if (postData.destinatariPrivati.length <= 0 && postData.destinatari.length <= 0) {
@@ -301,7 +305,7 @@ const Form = ({ currentId, setCurrentId }) => {
         if (location.length > 0) {
             const position = [location[0], location[1]];
             return (
-                <Map position={position} height={'50vh'} zoom={10} scrollWheelZoom={true} />
+                <Map position={position} height={'50vh'} zoom={13} scrollWheelZoom={true} />
             );
         } else {
             return (

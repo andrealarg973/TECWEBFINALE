@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 import QuotaSchema from '../models/quota.js';
 import PostMessage from '../models/postMessage.js';
+import InitialQuotaSchema from '../models/initialQuota.js';
 
 const router = express.Router();
 
@@ -116,7 +117,9 @@ export const signup = async (req, res) => {
 
         const result = await User.create({ email, password: hashedPassword, name: temp, role });
 
-        const quota = await QuotaSchema.create({ user: result._id });
+        const initialQuota = await InitialQuotaSchema.findOne();
+
+        const quota = await QuotaSchema.create({ user: result._id, day: initialQuota.day, week: initialQuota.week, month: initialQuota.month });
 
         //console.log(result);
 
@@ -193,12 +196,12 @@ export const getQuotas = async (req, res) => {
         firstDayOfMonth.setHours(0, 0, 0, 0);
         //console.log(firstDayOfMonth);
 
-        const day = await PostMessage.find({ $and: [{ createdAt: { $gte: dateDay } }, { creator: id }, { destinatari: { $ne: [] } }] });
+        const day = await PostMessage.find({ $and: [{ createdAt: { $gte: dateDay } }, { creator: id }, { $or: [{ destinatari: { $ne: [] } }, { privacy: 'public' }] }] });
 
         //console.log(day.length);
-        const week = await PostMessage.find({ $and: [{ createdAt: { $gte: mondayOfThisWeek } }, { creator: id }, { destinatari: { $ne: [] } }] });
+        const week = await PostMessage.find({ $and: [{ createdAt: { $gte: mondayOfThisWeek } }, { creator: id }, { $or: [{ destinatari: { $ne: [] } }, { privacy: 'public' }] }] });
         //console.log(week.length);
-        const month = await PostMessage.find({ $and: [{ createdAt: { $gte: firstDayOfMonth } }, { creator: id }, { destinatari: { $ne: [] } }] });
+        const month = await PostMessage.find({ $and: [{ createdAt: { $gte: firstDayOfMonth } }, { creator: id }, { $or: [{ destinatari: { $ne: [] } }, { privacy: 'public' }] }] });
         //console.log(month.length);
 
         let sumDay = 0;
@@ -247,3 +250,23 @@ export const getQuotas = async (req, res) => {
         console.log(error);
     }
 }
+
+export const getInitialQuota = async (req, res) => {
+    try {
+        const initialQuota = await InitialQuotaSchema.findOne();
+        res.status(200).json(initialQuota);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const setInitialQuota = async (req, res) => {
+    const { day, week, month } = req.body;
+    //console.log(req.body);
+    try {
+        const newQuota = await InitialQuotaSchema.findOneAndUpdate({}, { day: day, week: week, month: month }, { new: true });
+        res.status(200).json(newQuota);
+    } catch (error) {
+        console.log(error);
+    }
+};

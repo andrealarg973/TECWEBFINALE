@@ -17,7 +17,7 @@ import { deletePost, likePost, dislikePost, updateVisual } from '../../../action
 import useStyles from './styles';
 
 
-const Post = ({ post, setCurrentId }) => {
+const Post = ({ post, setCurrentId, users }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -35,8 +35,11 @@ const Post = ({ post, setCurrentId }) => {
 
     const handleLike = async () => {
         dispatch(likePost(post._id));
-        if (!hasReacted) dispatch(updateVisual(post._id));
-        setHasReacted(true);
+        if (!hasReacted) {
+            //console.log('first reaction');
+            dispatch(updateVisual(post._id));
+            setHasReacted(true);
+        }
 
         if (hasDislikedPost) {
             setDislikes(post.dislikes.filter((id) => id !== userId));
@@ -53,8 +56,11 @@ const Post = ({ post, setCurrentId }) => {
 
     const handleDislike = async () => {
         dispatch(dislikePost(post._id));
-        if (!hasReacted) dispatch(updateVisual(post._id));
-        setHasReacted(true);
+        if (!hasReacted) {
+            //console.log('first reaction');
+            dispatch(updateVisual(post._id));
+            setHasReacted(true);
+        }
 
         if (hasLikedPost) {
             setLikes(post.likes.filter((id) => id !== userId));
@@ -98,6 +104,11 @@ const Post = ({ post, setCurrentId }) => {
         navigate(`/posts/${post._id}`);
     }
 
+    const name = (c) => {
+        const foundItem = users.find(item => item.value === c);
+        return (foundItem ? '@' + foundItem.label + ' ' : user.result.name);
+    }
+
     // IMG:
     // <CardMedia className={classes.media} image={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
     // usa classes.overlay per scrivere sopra l'immagine
@@ -115,6 +126,26 @@ const Post = ({ post, setCurrentId }) => {
                         <CreateIcon onClick={() => { setCurrentId(post._id) }} fontSize="medium" />
                     </div>
                 )}
+                {post.destinatari.length > 0 && (
+                    <div className={classes.details}>
+                        <Typography variant="body1" style={{ color: 'cyan' }} component="h2">{post.destinatari.map((tag) => `$${tag} `)}</Typography>
+                    </div>
+                )}
+                {(post.destinatariPrivati.find((dest) => dest === user?.result?._id) || post.creator === user?.result?._id) && (
+                    <div className={classes.details}>
+                        <Typography variant="body1" style={{ color: 'cyan' }} component="h2">
+                            {
+                                (post.creator === user?.result?._id ? (
+                                    post.destinatariPrivati.map((tag) => (users.find((user) => user.value === tag) ? name(tag) : ''))
+                                ) : (
+                                    post.destinatariPrivati.map((tag) => (tag === user?.result?._id ? `@${user?.result?.name} ` : ''))
+                                ))
+
+                            }
+                        </Typography>
+                    </div>
+                )}
+
 
                 <div className={classes.details}>
                     <Typography variant="body2" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>

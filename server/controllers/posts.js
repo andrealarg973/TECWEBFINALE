@@ -97,7 +97,7 @@ export const getPostsByChannel = async (req, res) => {
     }
 }
 
-function replacePlaceholders(inputString) {
+async function fetchDataAndReplace(inputString) {
     const currentDate = new Date();
 
     const dateOptions = {
@@ -112,27 +112,48 @@ function replacePlaceholders(inputString) {
         hour12: true
     };
 
-    const replacedString = inputString
-        .replace(/{DATE}/g, currentDate.toLocaleDateString(undefined, dateOptions))
-        .replace(/{TIME}/g, currentDate.toLocaleTimeString(undefined, timeOptions));
+    const apiUrl = 'https://api.quotable.io/random';
 
-    return replacedString;
+    return fetch(apiUrl)
+        .then(response => response.json())
+        .then(postInfo => {
+            const data = postInfo.content;
+
+            const replacedString = inputString
+                .replace(/{DATE}/g, currentDate.toLocaleDateString(undefined, dateOptions))
+                .replace(/{TIME}/g, currentDate.toLocaleTimeString(undefined, timeOptions))
+                .replace(/{QUOTE}/g, data);
+
+            return replacedString;
+        });
 }
 
 export const createPost = async (req, res) => {
     const post = req.body;
     const newPostMessage = new PostMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString() });
 
-    newPostMessage.message = replacePlaceholders(newPostMessage.message);
+    fetchDataAndReplace(newPostMessage.message)
+        .then(replacedString => {
+            //console.log("VAL: ", replacedString);
+            newPostMessage.message = replacedString;
+
+            try {
+                newPostMessage.save();
+                //console.log("msg: ", newPostMessage);
+                res.status(201).json(newPostMessage);
+            } catch (error) {
+                res.status(409).json({ message: error.message });
+            }
+
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    //newPostMessage.message = await replacePlaceholders(newPostMessage.message);
 
     //console.log(newPostMessage);
 
-    try {
-        await newPostMessage.save();
-        res.status(201).json(newPostMessage);
-    } catch (error) {
-        res.status(409).json({ message: error.message });
-    }
+
 }
 
 export const createAutomaticPost = async (req, res) => {
@@ -171,6 +192,7 @@ export const updateVisual = async (req, res) => {
     const post = await PostMessage.findById(id);
 
     const updatedPost = await PostMessage.findByIdAndUpdate(id, { visual: post.visual + 1 }, { new: true });
+    //console.log(updatedPost.visual);
 
     res.json(updatedPost);
 

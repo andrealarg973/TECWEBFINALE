@@ -7,10 +7,13 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
 let DefaultIcon = L.icon({
     iconUrl: icon,
-    shadowUrl: iconShadow
+    shadowUrl: iconShadow,
+    iconSize: [24, 36],
+    iconAnchor: [12, 36]
 });
 
 L.Marker.prototype.options.icon = DefaultIcon;
+
 
 const Map = ({ position, height, zoom, scrollWheelZoom }) => {
     return (
