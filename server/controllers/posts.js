@@ -114,20 +114,47 @@ async function fetchDataAndReplace(inputString) {
         hour12: true
     };
 
-    const apiUrl = 'https://api.quotable.io/random';
+    const quoteUrl = 'https://api.quotable.io/random';
+    const newsUrl = 'https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=ff7e09cfb7464b1c974afc87efe0ee54';
 
-    return fetch(apiUrl)
-        .then(response => response.json())
-        .then(postInfo => {
-            const data = postInfo.content;
+    if (inputString.includes('{QUOTE}')) {
+        return fetch(quoteUrl)
+            .then(response => response.json())
+            .then(postInfo => {
+                const data = postInfo.content;
 
-            const replacedString = inputString
-                .replace(/{DATE}/g, currentDate.toLocaleDateString(undefined, dateOptions))
-                .replace(/{TIME}/g, currentDate.toLocaleTimeString(undefined, timeOptions))
-                .replace(/{QUOTE}/g, data);
+                const replacedString = inputString
+                    .replace(/{DATE}/g, currentDate.toLocaleDateString(undefined, dateOptions))
+                    .replace(/{TIME}/g, currentDate.toLocaleTimeString(undefined, timeOptions))
+                    .replace(/{QUOTE}/g, data);
 
-            return replacedString;
-        });
+                return replacedString;
+            });
+    } else if (inputString.includes('{NEWS}')) {
+        console.log('NEWS');
+        return fetch(newsUrl)
+            .then(response => response.json())
+            .then(postInfo => {
+                const num = postInfo.totalResults;
+                //console.log(postInfo.articles);
+                const article = postInfo.articles[Math.floor(Math.random() * num)];
+                const msg = "From " + article.author + ": " + article.title + "\n" + article.description + "...\n" + "Continue reading at: " + article.url;
+                //console.log(msg);
+
+                const replacedString = inputString
+                    .replace(/{DATE}/g, currentDate.toLocaleDateString(undefined, dateOptions))
+                    .replace(/{TIME}/g, currentDate.toLocaleTimeString(undefined, timeOptions))
+                    .replace(/{NEWS}/g, msg);
+
+                return replacedString;
+            });
+    } else {
+        const replacedString = inputString
+            .replace(/{DATE}/g, currentDate.toLocaleDateString(undefined, dateOptions))
+            .replace(/{TIME}/g, currentDate.toLocaleTimeString(undefined, timeOptions));
+
+        return replacedString;
+    }
 }
 
 export const createPost = async (req, res) => {

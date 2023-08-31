@@ -5,6 +5,7 @@ import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined';
 import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
 import ThumbDownAltOutlined from '@material-ui/icons/ThumbDownAltOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ReplyIcon from '@mui/icons-material/Reply';
 //import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import CreateIcon from '@material-ui/icons/Create';
 import moment from 'moment';
@@ -121,7 +122,7 @@ const Post = ({ post, setCurrentId, users }) => {
                     <Typography variant="h6">{post.name}</Typography>
                     <Typography variant="body2">{moment(post.createdAt).fromNow()}</Typography>
                 </div>
-                {(user?.result?.sub === post?.creator || user?.result?._id === post?.creator) && (
+                {(user?.result?.sub === post?.creator || user?.result?._id === post?.creator) && false && (
                     <div className={classes.overlay2}>
                         <CreateIcon onClick={() => { setCurrentId(post._id) }} fontSize="medium" />
                     </div>
@@ -159,7 +160,7 @@ const Post = ({ post, setCurrentId, users }) => {
                     )}
                     {post.type === 'text' && (
                         <>
-                            <Typography variant="body2" color="textSecondary" component="p">{post.message}</Typography>
+                            <Typography variant="body2" component="p">{post.message}</Typography>
                         </>
                     )}
                     {post.type === 'location' && (
@@ -181,7 +182,7 @@ const Post = ({ post, setCurrentId, users }) => {
                 </div>
                 {(user?.result?.sub === post?.creator || user?.result?._id === post?.creator) && (
                     <Button size="small" color="secondary" onClick={() => { dispatch(deletePost(post._id)) }}>
-                        <DeleteIcon fontSize="small" /> Delete
+                        <ReplyIcon fontSize="small" /> Delete
                     </Button>
                 )}
 

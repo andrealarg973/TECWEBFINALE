@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import CreateSelect from 'react-select/creatable';
 import Select from 'react-select';
 import ChipInput from 'material-ui-chip-input';
+import Tooltip from '@mui/material/Tooltip';
 
 import useStyles from './styles';
 import { createPost, createPostTemporal, updatePost } from '../../actions/posts';
@@ -52,7 +53,6 @@ const Form = ({ currentId, setCurrentId }) => {
         month: 0
     });
     const [location, setLocation] = useState([]);
-    const [locationLoaded, setLocationLoaded] = useState(false);
 
     const getQTAs = async () => {
         await dispatch(getQuotas(user.result._id)).then((res) => {
@@ -98,6 +98,22 @@ const Form = ({ currentId, setCurrentId }) => {
                 response.json().then(postInfo => {
                     setPostData({ ...postData, message: postInfo.content });
                     setCaratteri(postInfo.content.length);
+                });
+            });
+    }
+
+    const getRandomNews = async () => {
+        //https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=ff7e09cfb7464b1c974afc87efe0ee54
+        fetch('https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=ff7e09cfb7464b1c974afc87efe0ee54')
+            .then(response => {
+                response.json().then(postInfo => {
+                    const num = postInfo.totalResults;
+                    //console.log(postInfo.articles);
+                    const article = postInfo.articles[Math.floor(Math.random() * num)];
+                    const msg = "From " + article.author + ": " + article.title + "\n" + article.description + "...\n" + "Continue reading at: " + article.url;
+                    //console.log(msg);
+                    setPostData({ ...postData, message: msg });
+                    setCaratteri(msg.length);
                 });
             });
     }
@@ -326,7 +342,9 @@ const Form = ({ currentId, setCurrentId }) => {
                 </div>
 
                 {postData.type === 'text' && (
-                    <TextField required name="message" variant="outlined" label="Message" fullWidth multiline minRows={4} value={postData.message} onChange={handleMessage} />
+                    <Tooltip title="You can also use variables like {TIME}, {DATE}, {QUOTE} or {NEWS}. It will be changed after the post has been published" placement="top">
+                        <TextField required name="message" variant="outlined" label="Message" fullWidth multiline minRows={4} value={postData.message} onChange={handleMessage} />
+                    </Tooltip>
                 )}
                 {postData.type === 'media' && (
                     <div className={classes.fileInput}><FileBase type="file" multiple={false} onDone={({ base64 }) => { setPostData({ ...postData, selectedFile: base64 }); setCaratteri(125); }} /></div>
@@ -353,7 +371,10 @@ const Form = ({ currentId, setCurrentId }) => {
                 )}
 
                 {postData.type === 'text' && (
-                    <Button className={classes.buttonSubmit} variant="contained" color="primary" onClick={getRandomQuote} size="large" type="button">Random Quote</Button>
+                    <>
+                        <Button className={classes.buttonSubmit} variant="contained" color="primary" onClick={getRandomQuote} size="large" type="button">Random Quote</Button>
+                        <Button className={classes.buttonSubmit} variant="contained" color="primary" onClick={getRandomNews} size="large" type="button">Random Tech News</Button>
+                    </>
                 )}
 
                 <Typography variant="h6">Messaggio Temporizzato</Typography>
