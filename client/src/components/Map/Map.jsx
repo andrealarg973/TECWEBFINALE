@@ -15,9 +15,9 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 
-const Map = ({ position, height, zoom, scrollWheelZoom }) => {
+const Map = ({ position, height, zoom, scrollWheelZoom, dragging }) => {
     return (
-        <MapContainer center={position} zoom={zoom} scrollWheelZoom={scrollWheelZoom} style={{ width: "100%", height: height }}>
+        <MapContainer center={position} dragging={dragging} zoom={zoom} scrollWheelZoom={scrollWheelZoom} style={{ width: "100%", height: height }}>
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

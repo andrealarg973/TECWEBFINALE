@@ -164,7 +164,7 @@ const Post = ({ post, setCurrentId, users }) => {
                     )}
                     {post.type === 'location' && (
                         <>
-                            <Map position={post.location} height={'26vh'} zoom={10} scrollWheelZoom={false} />
+                            <Map position={post.location} height={'26vh'} zoom={10} scrollWheelZoom={false} dragging={false} />
                         </>
                     )}
 

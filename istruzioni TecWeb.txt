@@ -65,19 +65,20 @@ HARD
 - upload video
 
 MEDIUM
-- messaggi automatici temporizzati (gestione)
 - risposta squeal
+- messaggi automatici temporizzati (gestione)
 - notifica per msg privato
 - pagina iscrizione/visualizzazione canali
+- (menzioni nel testo colorate?)
 
 EASY
 - pulizia database 
-- acquisto caratteri
 
 MODERATORE
 - canali riservati: di squealer, solo il mod può usarli (alla fine)
 - creazione CANALI PUBBLICI, popolazione automatica
 - homepage senza login (solo canali RISERVATI)
+- iscrizione automatica CANALI RISERVATI (es. controverso)
 
 
 
@@ -88,6 +89,7 @@ NON MIE:
 
 
 COMPLETATI:
+- acquisto caratteri
 - random quote con {QUOTE} anche nei msg automatici
 - visualizzazione destinatari dei post (anche aperto)
 - quota iniziale caratteri (valore salvato in DB, modificabile dal mod)

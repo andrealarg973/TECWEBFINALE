@@ -88,7 +88,7 @@ const PostDetails = () => {
                     )}
                     {post.type === 'location' && (
                         <>
-                            <Map position={post.location} height={'69vh'} zoom={8} scrollWheelZoom={true} />
+                            <Map position={post.location} height={'69vh'} zoom={8} scrollWheelZoom={true} dragging={true} />
                         </>
                     )}
                     <Divider style={{ margin: '20px 0' }} />

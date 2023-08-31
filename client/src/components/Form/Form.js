@@ -144,7 +144,7 @@ const Form = ({ currentId, setCurrentId }) => {
                 }
                 //console.log(postData);
                 if (postData.destinatari.length > 0) {
-                    dispatch(updateQuota({ ...caratteri, user: user?.result?._id, quota: caratteri }));
+                    //dispatch(updateQuota({ ...caratteri, user: user?.result?._id, quota: caratteri }));
                 }
                 clear();
                 navigate('/');
@@ -305,7 +305,7 @@ const Form = ({ currentId, setCurrentId }) => {
         if (location.length > 0) {
             const position = [location[0], location[1]];
             return (
-                <Map position={position} height={'50vh'} zoom={13} scrollWheelZoom={true} />
+                <Map position={position} height={'50vh'} zoom={13} scrollWheelZoom={true} dragging={true} />
             );
         } else {
             return (

@@ -136,17 +136,21 @@ export const signup = async (req, res) => {
 export const updateQuota = async (req, res) => {
     //console.log(req.body);
     const id = req.body.user;
-    const quota = req.body.quota;
+    //const quota = req.body.quota;
     //console.log(quota);
-    if (quota < 0) res.status(500).json({ message: "You exceeded your quota!!!!" });
+    //if (quota < 0) res.status(500).json({ message: "You exceeded your quota!!!!" });
 
     try {
         const message = new RegExp(id, 'i');
 
         const temp = await QuotaSchema.findOne({ $or: [{ user: message }] });
         //console.log('USER', temp);
-        temp.quota += quota;
+        //temp.quota += quota;
         //console.log('USER', temp);
+
+        temp.extraDay += temp.day;
+        temp.extraWeek += temp.week;
+        temp.extraMonth += temp.month;
 
         /*
         const user = await User.findById(id);
