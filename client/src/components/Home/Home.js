@@ -29,7 +29,7 @@ const Home = () => {
     const [search, setSearch] = useState('');
     const [tags, setTags] = useState([]);
     const [channels, setChannels] = useState([]);
-    const [channel, setChannel] = useState();
+    const [channel, setChannel] = useState('');
 
     const getChanns = async () => {
         await dispatch(getChannels(user?.result?._id)).then((res) => {

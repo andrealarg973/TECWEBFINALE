@@ -50,7 +50,6 @@ export const getPost = async (req, res) => {
 export const getPostsBySearch = async (req, res) => {
     //console.log('SEARCH');
     const { searchQuery, tags, channel } = req.query;
-    //console.log(tags);
 
     try {
         const title = new RegExp(searchQuery, 'i'); // test Test TEST TEsT
@@ -60,7 +59,10 @@ export const getPostsBySearch = async (req, res) => {
 
         if (tags !== '') {
             //console.log('tag not empty', tags);
-            const posts = await PostMessage.find({ $or: [{ title }, { message }, { destinatari: { $in: channel } }, { tags: { $in: tags.split(',') } }] }).sort({ _id: -1 }); // find post based on two criteria: title or tags
+            const myTags = tags.split(',');
+            const trimmedTags = myTags.map(tag => tag.trim());  // rimuove gli spazi tra i tag
+            //console.log(trimmedTags);
+            const posts = await PostMessage.find({ $or: [{ title }, { message }, { destinatari: { $in: channel } }, { tags: { $in: trimmedTags } }] }).sort({ _id: -1 }); // find post based on two criteria: title or tags
             res.json({ data: posts });
         } else {
             const posts = await PostMessage.find({ $or: [{ title }, { message }, { destinatari: { $in: channel } }] }).sort({ _id: -1 }); // find post based on two criteria: title or tags
