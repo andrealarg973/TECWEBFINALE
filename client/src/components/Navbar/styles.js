@@ -35,7 +35,7 @@ export default makeStyles((theme) => ({
     quotabar: {
         display: 'flex',
         justifyContent: 'flex-center',
-        width: '400px',
+        width: '600px',
         alignItems: 'center',
         [theme.breakpoints.down('md')]: {
             width: 'auto',
@@ -73,6 +73,7 @@ export default makeStyles((theme) => ({
     brandContainer: {
         display: 'flex',
         alignItems: 'center',
+        width: 'auto'
     },
     purple: {
         color: theme.palette.getContrastText(deepPurple[500]),
