@@ -154,7 +154,7 @@ const Form = ({ currentId, setCurrentId }) => {
                 //alert('Devi selezionare almeno un destinatario!');
                 //} else {
                 if (temporal) {
-                    dispatch(createPostTemporal({ ...postData, name: user?.result?.name, location: location, repeat: time }));
+                    dispatch(createPostTemporal({ ...postData, name: user?.result?.name, location: location, repeat: (time >= 10 ? time : 10) }));
                 } else {
                     dispatch(createPost({ ...postData, name: user?.result?.name, location: location }));
                 }
@@ -342,7 +342,7 @@ const Form = ({ currentId, setCurrentId }) => {
                 </div>
 
                 {postData.type === 'text' && (
-                    <Tooltip title="You can also use variables like {TIME}, {DATE}, {QUOTE} or {NEWS}. It will be changed after the post has been published" placement="top">
+                    <Tooltip placement="top" title="You can also use variables like {TIME}, {DATE}, {QUOTE} or {NEWS}. It will be changed after the post has been published">
                         <TextField required name="message" variant="outlined" label="Message" fullWidth multiline minRows={4} value={postData.message} onChange={handleMessage} />
                     </Tooltip>
                 )}
@@ -382,7 +382,9 @@ const Form = ({ currentId, setCurrentId }) => {
                 {temporal && (
                     <>
                         <div style={{ marginBottom: '10px' }}>Ogni quanto vuoi pubblicare il messaggio? (in secondi)</div>
-                        <input className={classes.inputTime} min="10" value={time} onChange={(e) => setTime(e.target.value >= 10 ? e.target.value : 10)} type="number"></input>
+                        <Tooltip placement="top" title="Minimum 10 seconds, it will set automatically to 10 if lower">
+                            <input className={classes.inputTime} min="10" value={time} onChange={(e) => setTime(e.target.value)} type="number"></input>
+                        </Tooltip>
                     </>
                 )}
                 <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
