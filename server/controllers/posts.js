@@ -22,9 +22,9 @@ export const getPosts = async (req, res) => {
         //console.log(canali);
 
         // ottiene tutti i post visualizzabili dall'utente in questione
-        const posts = await PostMessage.find({ $or: [{ creator: id }, { destinatariPrivati: { $in: id } }, { destinatari: { $in: canali.map((canale) => canale.value) } }] }).sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+        const posts = await PostMessage.find({ $or: [{ creator: id }, { destinatariPrivati: { $in: id } }, { privacy: 'public' }, { destinatari: { $in: canali.map((canale) => canale.value) } }] }).sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
 
-        const total = await PostMessage.find({ $or: [{ creator: id }, { destinatariPrivati: { $in: id } }, { destinatari: { $in: canali.map((canale) => canale.value) } }] }).sort({ _id: -1 }).countDocuments({});
+        const total = await PostMessage.find({ $or: [{ creator: id }, { destinatariPrivati: { $in: id } }, { privacy: 'public' }, { destinatari: { $in: canali.map((canale) => canale.value) } }] }).sort({ _id: -1 }).countDocuments({});
         //console.log(total);
 
         res.status(200).json({ data: posts, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT) });

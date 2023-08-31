@@ -244,7 +244,10 @@ export const getQuotas = async (req, res) => {
         const resp = {
             day: iniziale.day - sumDay + iniziale.extraDay,
             week: iniziale.week - sumWeek + iniziale.extraWeek,
-            month: iniziale.month - sumMonth + iniziale.extraMonth
+            month: iniziale.month - sumMonth + iniziale.extraMonth,
+            dayTot: iniziale.day + iniziale.extraDay,
+            weekTot: iniziale.week + iniziale.extraWeek,
+            monthTot: iniziale.month + iniziale.extraMonth
         };
         //console.log(resp);
 

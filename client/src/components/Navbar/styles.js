@@ -27,24 +27,40 @@ export default makeStyles((theme) => ({
     toolbar: {
         display: 'flex',
         justifyContent: 'flex-end',
-        width: '600px',
+        width: '400px',
         [theme.breakpoints.down('sm')]: {
             width: 'auto',
+        },
+    },
+    quotabar: {
+        display: 'flex',
+        justifyContent: 'flex-center',
+        width: '400px',
+        alignItems: 'center',
+        [theme.breakpoints.down('md')]: {
+            width: 'auto',
+        },
+        [theme.breakpoints.down('md')]: {
+            width: 'auto',
+            flexDirection: 'column',
         },
     },
     profile: {
         display: 'flex',
         justifyContent: 'space-between',
-        width: '600px',
+        width: '400px',
         alignItems: 'center',
         [theme.breakpoints.down('sm')]: {
             width: 'auto',
             marginTop: 20,
             justifyContent: 'center',
         },
-    },
-    quota: {
-
+        [theme.breakpoints.down('md')]: {
+            width: 'auto',
+        },
+        [theme.breakpoints.down('lg')]: {
+            width: '300px',
+        },
     },
     logout: {
         marginLeft: '20px',
@@ -62,4 +78,15 @@ export default makeStyles((theme) => ({
         color: theme.palette.getContrastText(deepPurple[500]),
         backgroundColor: deepPurple[500],
     },
+    wrapper: {
+        border: '2px solid black',
+        borderRadius: '50px',
+        width: '190px',
+        [theme.breakpoints.down('lg')]: {
+            width: '130px',
+        },
+        [theme.breakpoints.down('md')]: {
+            width: '190px',
+        },
+    }
 }));
