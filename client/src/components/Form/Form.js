@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TextField, Button, Typography, Paper, CircularProgress } from '@material-ui/core';
 import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,6 +26,7 @@ const Form = ({ currentId, setCurrentId }) => {
         selectedFile: '',
         privacy: 'public',
         type: 'text',
+        reply: '',
         location: [],
         destinatari: [],
         destinatariPrivati: [],
@@ -53,6 +54,7 @@ const Form = ({ currentId, setCurrentId }) => {
         month: 0
     });
     const [location, setLocation] = useState([]);
+    const replyRef = useRef();
 
     const getQTAs = async () => {
         await dispatch(getQuotas(user.result._id)).then((res) => {
@@ -139,7 +141,10 @@ const Form = ({ currentId, setCurrentId }) => {
         }
 
         if (post) {
-            setPostData(post);
+            setPostData({ ...postData, reply: post._id, destinatari: post.destinatari, privacy: post.privacy });
+            replyRef.current.scrollIntoView({ behavior: 'smooth' });
+            //setPostData(post);
+            //console.log(postData);
         }
     }, [post]);
 
@@ -170,10 +175,31 @@ const Form = ({ currentId, setCurrentId }) => {
 
             }
         } else {
-
+            /*
             dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
             clear();
             navigate('/');
+            */
+            if ((Math.min(quotas.day, quotas.week, quotas.month) - caratteri >= 0) || (postData.destinatariPrivati.length > 0) || temporal) {
+                //if (postData.destinatari.length < 1 && postData.destinatariPrivati.length < 1) {
+                //alert('Devi selezionare almeno un destinatario!');
+                //} else {
+                if (temporal) {
+                    dispatch(createPostTemporal({ ...postData, name: user?.result?.name, reply: currentId, location: location, repeat: (time >= 10 ? time : 10) }));
+                } else {
+                    dispatch(createPost({ ...postData, name: user?.result?.name, reply: currentId, location: location }));
+                }
+                //console.log(postData);
+                if (postData.destinatari.length > 0) {
+                    //dispatch(updateQuota({ ...caratteri, user: user?.result?._id, quota: caratteri }));
+                }
+                clear();
+                navigate('/');
+                //}
+            } else {
+                alert('Quota insufficiente');
+
+            }
         }
 
     }
@@ -186,7 +212,7 @@ const Form = ({ currentId, setCurrentId }) => {
     const clear = () => {
         setCurrentId(null);
         setCaratteri(0);
-        setPostData({ title: '', message: '', tags: '', selectedFile: '', type: 'text', privacy: 'public', location: [], destinatari: [], destinatariPrivati: [] });
+        setPostData({ title: '', message: '', tags: '', selectedFile: '', type: 'text', privacy: 'public', reply: '', location: [], destinatari: [], destinatariPrivati: [] });
     }
     /*
     if (postData.destinatariPrivati.length <= 0 && postData.destinatari.length <= 0) {
@@ -307,8 +333,8 @@ const Form = ({ currentId, setCurrentId }) => {
 
     const RadioButtons = () => {
         return (
-            <div style={{ marginBottom: '10px' }}>
-                <Typography variant="h6" style={{ textAlign: 'center' }}>Post type:</Typography>
+            <div style={{ marginBottom: '10px', textAlign: 'center' }}>
+                <Typography variant="h6">Post type:</Typography>
                 <input name="role" type="radio" value="text" onChange={handlePostTypeClick} checked={isChecked('text')} />Text
                 <input name="role" type="radio" value="media" onChange={handlePostTypeClick} checked={isChecked('media')} />Media
                 <input name="role" type="radio" value="location" onChange={handlePostTypeClick} checked={isChecked('location')} />Location
@@ -335,16 +361,18 @@ const Form = ({ currentId, setCurrentId }) => {
 
     return (
         <Paper className={classes.paper} elevation={6}>
-            <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
+            <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit} ref={replyRef}>
                 <div style={{ flexDirection: 'column' }}>
-                    <Typography style={{ textAlign: 'center' }} variant="h4">{currentId ? 'Edit Post' : 'Create Post'}</Typography>
+                    <Typography style={{ textAlign: 'center' }} variant="h4">{currentId ? 'Reply to ' + post.name : 'Create Post'}</Typography>
                     <RadioButtons />
                 </div>
 
                 {postData.type === 'text' && (
-                    <Tooltip placement="top" title="You can also use variables like {TIME}, {DATE}, {QUOTE} or {NEWS}. It will be changed after the post has been published">
-                        <TextField required name="message" variant="outlined" label="Message" fullWidth multiline minRows={4} value={postData.message} onChange={handleMessage} />
-                    </Tooltip>
+                    <>
+                        <Tooltip placement="top" title="You can also use variables like {TIME}, {DATE}, {QUOTE} or {NEWS}. It will be changed after the post has been published">
+                            <TextField required focused={currentId ? true : false} name="message" variant="outlined" label="Message" fullWidth multiline minRows={4} value={postData.message} onChange={handleMessage} />
+                        </Tooltip>
+                    </>
                 )}
                 {postData.type === 'media' && (
                     <div className={classes.fileInput}><FileBase type="file" multiple={false} onDone={({ base64 }) => { setPostData({ ...postData, selectedFile: base64 }); setCaratteri(125); }} /></div>

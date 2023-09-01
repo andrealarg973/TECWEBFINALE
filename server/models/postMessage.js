@@ -10,6 +10,10 @@ const postSchema = mongoose.Schema({
     selectedFile: String,
     privacy: String,
     location: [Number],
+    reply: {
+        type: String,
+        default: '',
+    },
     visual: {
         type: Number,
         default: 0,

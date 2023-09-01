@@ -34,7 +34,7 @@ const PostDetails = () => {
 
     const name = (c) => {
         const foundItem = users.find(item => item.value === c);
-        return (foundItem ? '@' + foundItem.label + ' ' : user.result.name);
+        return (foundItem ? '@' + foundItem.label + ' ' : '@' + user?.result?.name);
     }
 
     if (!post) return null;

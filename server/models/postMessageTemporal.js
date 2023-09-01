@@ -15,6 +15,10 @@ const postSchemaTemporal = mongoose.Schema({
     tags: [String],
     selectedFile: String,
     privacy: String,
+    reply: {
+        type: String,
+        default: '',
+    },
     visual: {
         type: Number,
         default: 0,

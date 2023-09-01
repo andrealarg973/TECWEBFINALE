@@ -21,6 +21,18 @@ export default makeStyles({
         height: '100%',
         position: 'relative',
     },
+    cardReply: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        borderRadius: '15px',
+        height: '100%',
+        width: '90%',
+        marginLeft: '5%',
+        marginTop: '5px',
+        marginBottom: '10px',
+        position: 'relative',
+    },
     overlay: {
         position: 'absolute',
         top: '20px',

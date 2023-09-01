@@ -65,7 +65,7 @@ HARD
 - upload video
 
 MEDIUM
-- risposta squeal
+- risposta squeal (visualizza riassunto risposta)
 - messaggi automatici temporizzati (gestione)
 - notifica per msg privato
 - pagina iscrizione/visualizzazione canali

@@ -1,4 +1,4 @@
-import { START_LOADING, STOP_LOADING, FETCH_ALL, FETCH_BY_SEARCH, FETCH_BY_USER, FETCH_POST, CREATE, CREATE_TEMPORAL, UPDATE, DELETE, LIKE, COMMENT } from '../constants/actionTypes';
+import { START_LOADING, STOP_LOADING, FETCH_ALL, FETCH_BY_SEARCH, FETCH_BY_USER, FETCH_POST, FETCH_REPLY_POST, CREATE, CREATE_TEMPORAL, UPDATE, DELETE, LIKE, COMMENT } from '../constants/actionTypes';
 
 const postReducers = (state = { isLoading: true, posts: [] }, action) => {
     switch (action.type) {
@@ -19,6 +19,8 @@ const postReducers = (state = { isLoading: true, posts: [] }, action) => {
             return { ...state, posts: action.payload.data };
         case FETCH_POST:
             return { ...state, post: action.payload };
+        case FETCH_REPLY_POST:
+            return action.payload;
         case LIKE:
             return { ...state, posts: state.posts.map((post) => (post._id === action.payload._id ? action.payload : post)) };
         case COMMENT:

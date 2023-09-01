@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardActions, CardContent, CardMedia, Button, Typography, ButtonBase } from '@material-ui/core';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined';
@@ -13,7 +13,7 @@ import Map from '../../Map/Map';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { deletePost, likePost, dislikePost, updateVisual } from '../../../actions/posts';
+import { deletePost, likePost, dislikePost, updateVisual, getPost } from '../../../actions/posts';
 
 import useStyles from './styles';
 
@@ -31,8 +31,36 @@ const Post = ({ post, setCurrentId, users }) => {
 
     const hasLikedPost = post?.likes?.find((like) => like === userId);
     const hasDislikedPost = post?.dislikes?.find((dislike) => dislike === userId);
+    const [replyPost, setReplyPost] = useState({
+        title: '',
+        message: '',
+        tags: [],
+        selectedFile: '',
+        privacy: 'public',
+        type: 'text',
+        reply: '',
+        location: [],
+        destinatari: [],
+        destinatariPrivati: [],
+    });
     //const hasReacted = hasLikedPost || hasDislikedPost;
 
+    const getReplyPost = async () => {
+        await dispatch(getReplyPost({ id: post.reply })).then((res) => {
+            //console.log('res:', res);
+            setReplyPost(res);
+        });
+    }
+
+    useEffect(() => {
+        if (post.reply !== '') {
+            // DO NOT UNCOMMENT
+            //getReplyPost();
+            //console.log('reply: ', replyPost);
+            //console.log("REPLY ", post.message);
+        }
+
+    }, [post]);
 
     const handleLike = async () => {
         dispatch(likePost(post._id));
@@ -105,9 +133,15 @@ const Post = ({ post, setCurrentId, users }) => {
         navigate(`/posts/${post._id}`);
     }
 
+    const postReplied = () => {
+        dispatch(updateVisual(post.reply));
+        navigate(`/posts/${post.reply}`);
+        //console.log(post);
+    }
+
     const name = (c) => {
         const foundItem = users.find(item => item.value === c);
-        return (foundItem ? '@' + foundItem.label + ' ' : user?.result?.name);
+        return (foundItem ? '@' + foundItem.label + ' ' : '@' + user?.result?.name);
     }
 
     // IMG:
@@ -171,6 +205,16 @@ const Post = ({ post, setCurrentId, users }) => {
 
                 </CardContent>
             </ButtonBase>
+            {post.reply !== '' && (
+                <>
+                    <Card className={classes.cardReply} raised elevation={6}>
+                        <ButtonBase className={classes.cardAction} onClick={postReplied}>
+                            <Typography variant="body2">Reply to: {post.reply}</Typography>
+                        </ButtonBase>
+                    </Card>
+                </>
+            )}
+
             <CardActions className={classes.cardActions}>
                 <div>
                     <Button size="small" color="primary" disabled={!user?.result} onClick={handleLike}>
@@ -180,15 +224,16 @@ const Post = ({ post, setCurrentId, users }) => {
                         <Dislikes />
                     </Button>
                 </div>
-                {(user?.result?.sub === post?.creator || user?.result?._id === post?.creator) && (
-                    <Button size="small" color="secondary" onClick={() => { dispatch(deletePost(post._id)) }}>
-                        <ReplyIcon fontSize="small" /> Delete
-                    </Button>
-                )}
+
+                <Button size="small" color="primary" onClick={() => { setCurrentId(post._id) }}>
+                    <ReplyIcon fontSize="small" /> Reply
+                </Button>
+
 
             </CardActions>
         </Card >
     );
 }
+//{(user?.result?.sub === post?.creator || user?.result?._id === post?.creator) && ()}
 
 export default Post;

@@ -128,7 +128,7 @@ async function automaticPosts() {
             //console.log("manca", secondsDiff - post.repeat);
 
             if (secondsDiff - post.repeat > 0) {
-                const newPost = new PostMessage({ createdAt: new Date().toISOString(), title: post.title, type: post.type, location: post.location, message: post.message, name: post.name, creator: post.creator, tags: post.tags, selectedFile: post.selectedFile, privacy: post.privacy, visual: post.visual, likes: post.likes, comments: post.comments, dislikes: post.islikes, comments: post.comments, destinatari: post.destinatari, destinatariPrivati: post.destinatariPrivati });
+                const newPost = new PostMessage({ createdAt: new Date().toISOString(), title: post.title, reply: post.reply, type: post.type, location: post.location, message: post.message, name: post.name, creator: post.creator, tags: post.tags, selectedFile: post.selectedFile, privacy: post.privacy, visual: post.visual, likes: post.likes, comments: post.comments, dislikes: post.islikes, comments: post.comments, destinatari: post.destinatari, destinatariPrivati: post.destinatariPrivati });
                 //newPost.message = replacePlaceholders(newPost.message);
 
                 const apiUrl = `http://localhost:5000/users/${newPost.creator}/getQuotas`;
@@ -153,7 +153,7 @@ async function automaticPosts() {
                                 if (car >= 0) {
                                     try {
                                         await newPost.save();
-                                        const newTemporal = await PostMessageTemporal.findByIdAndUpdate(String(post._id), { createdAt: timeNow, title: post.title, location: post.location, type: post.type, message: post.message, name: post.name, creator: post.creator, tags: post.tags, selectedFile: post.selectedFile, privacy: post.privacy, visual: post.visual, likes: post.likes, comments: post.comments, dislikes: post.islikes, comments: post.comments, destinatari: post.destinatari, destinatariPrivati: post.destinatariPrivati }, { new: true });
+                                        const newTemporal = await PostMessageTemporal.findByIdAndUpdate(String(post._id), { createdAt: timeNow, title: post.title, reply: post.reply, location: post.location, type: post.type, message: post.message, name: post.name, creator: post.creator, tags: post.tags, selectedFile: post.selectedFile, privacy: post.privacy, visual: post.visual, likes: post.likes, comments: post.comments, dislikes: post.islikes, comments: post.comments, destinatari: post.destinatari, destinatariPrivati: post.destinatariPrivati }, { new: true });
                                         //console.log("before:", post.createdAt);
                                         //console.log("saved!", newTemporal.createdAt);
                                     } catch (error) {
@@ -162,7 +162,7 @@ async function automaticPosts() {
                                 } else {
                                     try {
                                         //await newPost.save();
-                                        const newTemporal = await PostMessageTemporal.findByIdAndUpdate(String(post._id), { createdAt: timeNow, active: false, title: post.title, location: post.location, type: post.type, message: post.message, name: post.name, creator: post.creator, tags: post.tags, selectedFile: post.selectedFile, privacy: post.privacy, visual: post.visual, likes: post.likes, comments: post.comments, dislikes: post.islikes, comments: post.comments, destinatari: post.destinatari, destinatariPrivati: post.destinatariPrivati }, { new: true });
+                                        const newTemporal = await PostMessageTemporal.findByIdAndUpdate(String(post._id), { createdAt: timeNow, active: false, title: post.title, reply: post.reply, location: post.location, type: post.type, message: post.message, name: post.name, creator: post.creator, tags: post.tags, selectedFile: post.selectedFile, privacy: post.privacy, visual: post.visual, likes: post.likes, comments: post.comments, dislikes: post.islikes, comments: post.comments, destinatari: post.destinatari, destinatariPrivati: post.destinatariPrivati }, { new: true });
                                         //console.log("before:", post.createdAt);
                                         //console.log("saved!", newTemporal.createdAt);
                                     } catch (error) {
