@@ -59,13 +59,13 @@ MODIFICHE
 
 HARD
 - notifica per msg privato (crea notifica db, aggiungi creazione notifica (se necessario) quando creo post)
+- upload video (riorganizzazione file multimediali)
+- messaggi automatici temporizzati (gestione)
 - aumento/riduzione quota rispetto a reazioni (come fare? e aggiungi tabella per statistiche 
     (diff tra scorsa iterazione e questa)), esegui ogni minuto?
-- upload video (riorganizzazione file multimediali)
 - canali popolati automaticamente?
 
 MEDIUM
-- messaggi automatici temporizzati (gestione)
 - pagina iscrizione/visualizzazione canali
 - (menzioni nel testo colorate?)
 

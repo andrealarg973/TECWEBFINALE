@@ -173,7 +173,7 @@ const Post = ({ post, setCurrentId, users }) => {
     // usa classes.overlay per scrivere sopra l'immagine
 
     return (
-        <Card className={classes.card} raised elevation={6}>
+        <Card className={classes.card} style={post.destinatariPrivati.length > 0 ? { border: '2px dashed blue' } : {}} raised elevation={6}>
             <ButtonBase className={classes.cardAction} onClick={openPost}>
 
                 <div className={classes.details} >
