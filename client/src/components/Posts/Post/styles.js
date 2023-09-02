@@ -26,7 +26,6 @@ export default makeStyles({
         flexDirection: 'column',
         justifyContent: 'space-between',
         borderRadius: '10px',
-        height: '100%',
         width: '90%',
         marginLeft: '5%',
         marginTop: '5px',
