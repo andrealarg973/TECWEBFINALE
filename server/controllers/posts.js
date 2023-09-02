@@ -84,11 +84,17 @@ export const getPostsBySearch = async (req, res) => {
             const trimmedTags = myTags.map(tag => tag.trim());  // rimuove gli spazi tra i tag
             //console.log(trimmedTags);
             const posts = await PostMessage.find({ $or: [{ title }, { message }, { destinatari: { $in: channel } }, { tags: { $in: trimmedTags } }] }).sort({ _id: -1 }); // find post based on two criteria: title or tags
-            res.json({ data: posts });
+            const replyPostsId = posts.filter(post => post.reply !== '').map(post => post.reply);
+
+            const replyPosts = await PostMessage.find({ _id: { $in: replyPostsId } });
+            res.json({ data: posts, replyPosts: replyPosts });
         } else {
             const posts = await PostMessage.find({ $or: [{ title }, { message }, { destinatari: { $in: channel } }] }).sort({ _id: -1 }); // find post based on two criteria: title or tags
             //console.log(posts);
-            res.json({ data: posts });
+            const replyPostsId = posts.filter(post => post.reply !== '').map(post => post.reply);
+
+            const replyPosts = await PostMessage.find({ _id: { $in: replyPostsId } });
+            res.json({ data: posts, replyPosts: replyPosts });
         }
 
         //console.log(posts);
@@ -103,7 +109,10 @@ export const getPostsByUser = async (req, res) => {
 
     try {
         const posts = await PostMessage.find({ creator: userId }).sort({ _id: -1 });
-        res.status(200).json({ data: posts });
+        const replyPostsId = posts.filter(post => post.reply !== '').map(post => post.reply);
+
+        const replyPosts = await PostMessage.find({ _id: { $in: replyPostsId } });
+        res.status(200).json({ data: posts, replyPosts: replyPosts });
     } catch (error) {
         res.status(500).json(error);
     }

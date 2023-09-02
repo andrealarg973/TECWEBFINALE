@@ -51,11 +51,12 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
 
     try {
         dispatch({ type: START_LOADING });
-        const { data: { data } } = await api.fetchPostsBySearch(searchQuery);
+        const { data } = await api.fetchPostsBySearch(searchQuery);
         //console.log("ACTIONS");
 
-        dispatch({ type: FETCH_BY_SEARCH, payload: { data } });
+        dispatch({ type: FETCH_BY_SEARCH, payload: data });
         dispatch({ type: STOP_LOADING });
+        return data;
     } catch (error) {
         console.log(error);
     }
@@ -64,11 +65,12 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
 export const getPostsByUser = (id) => async (dispatch) => {
     try {
         dispatch({ type: START_LOADING });
-        const { data: { data } } = await api.fetchPostsByUser(id);
+        const { data } = await api.fetchPostsByUser(id);
         //console.log('data', data);
 
-        dispatch({ type: FETCH_BY_USER, payload: { data } });
+        dispatch({ type: FETCH_BY_USER, payload: data });
         dispatch({ type: STOP_LOADING });
+        return data;
     } catch (error) {
         console.log(error);
     }

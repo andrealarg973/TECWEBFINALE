@@ -43,7 +43,7 @@ const Post = ({ post, setCurrentId, users }) => {
         destinatari: [],
         destinatariPrivati: [],
     });*/
-    const replyPosts = useSelector((state) => (state.posts.replyPosts));
+    const replyPosts = useSelector((state) => (state.posts.replyPosts ? state.posts.replyPosts : []));
     //const hasReacted = hasLikedPost || hasDislikedPost;
 
 
@@ -133,7 +133,7 @@ const Post = ({ post, setCurrentId, users }) => {
     const postInfo = (id) => {
         const foundItem = replyPosts.find(item => item._id === id);
         //console.log(foundItem);
-        return (foundItem ? foundItem : null);
+        return (foundItem ? foundItem : { name: '', type: 'text', message: '' });
     }
 
     const PostReply = ({ repPost }) => {

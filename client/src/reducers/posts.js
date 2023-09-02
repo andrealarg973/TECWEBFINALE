@@ -15,9 +15,9 @@ const postReducers = (state = { isLoading: true, posts: [] }, action) => {
                 numberOfPages: action.payload.numberOfPages,
             };
         case FETCH_BY_SEARCH:
-            return { ...state, posts: action.payload.data };
+            return { ...state, posts: action.payload.data, replyPosts: action.payload.replyPosts };
         case FETCH_BY_USER:
-            return { ...state, posts: action.payload.data };
+            return { ...state, posts: action.payload.data, replyPosts: action.payload.replyPosts };
         case FETCH_POST:
             return { ...state, post: action.payload.data, replyPost: action.payload.replyPost };
         case FETCH_REPLY_POST:

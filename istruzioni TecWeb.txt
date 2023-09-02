@@ -51,8 +51,6 @@ npm run dev
 --------------------------------------------------------------------
 start node-20 site222316 vuect/server/index.js
 
-TODO
-- routing (passaggio tra pagine)
 rafce
 
 --------------------------------------------------------------------
@@ -60,18 +58,20 @@ MODIFICHE
 --------------------------------------------------------------------
 
 HARD
+- notifica per msg privato (crea notifica db, aggiungi creazione notifica (se necessario) quando creo post)
 - aumento/riduzione quota rispetto a reazioni (come fare? e aggiungi tabella per statistiche 
     (diff tra scorsa iterazione e questa)), esegui ogni minuto?
-- upload video
+- upload video (riorganizzazione file multimediali)
+- canali popolati automaticamente?
 
 MEDIUM
 - messaggi automatici temporizzati (gestione)
-- notifica per msg privato
 - pagina iscrizione/visualizzazione canali
 - (menzioni nel testo colorate?)
 
 EASY
 - pulizia database 
+- acquisto quota (scade dopo un anno)
 
 MODERATORE
 - canali riservati: di squealer, solo il mod può usarli (alla fine)
