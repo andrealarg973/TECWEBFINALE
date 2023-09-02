@@ -27,7 +27,12 @@ export const getPosts = async (req, res) => {
         const total = await PostMessage.find({ $or: [{ creator: id }, { destinatariPrivati: { $in: id } }, { privacy: 'public' }, { destinatari: { $in: canali.map((canale) => canale.value) } }] }).sort({ _id: -1 }).countDocuments({});
         //console.log(total);
 
-        res.status(200).json({ data: posts, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT) });
+        const replyPostsId = posts.filter(post => post.reply !== '').map(post => post.reply);
+
+        const replyPosts = await PostMessage.find({ _id: { $in: replyPostsId } });
+        //console.log(replyPosts);
+
+        res.status(200).json({ data: posts, replyPosts: replyPosts, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT) });
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
@@ -38,8 +43,12 @@ export const getPost = async (req, res) => {
 
     try {
         const post = await PostMessage.findById(id);
+        if (post.reply !== '') {
+            const replyPost = await PostMessage.findById(post.reply);
+            return res.status(200).json({ data: post, replyPost: replyPost });
+        }
 
-        res.status(200).json(post);
+        res.status(200).json({ data: post });
     } catch (error) {
         res.status(404).json({ message: error.message });
     }

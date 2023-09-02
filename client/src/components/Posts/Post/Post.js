@@ -10,7 +10,7 @@ import ReplyIcon from '@mui/icons-material/Reply';
 import CreateIcon from '@material-ui/icons/Create';
 import moment from 'moment';
 import Map from '../../Map/Map';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { deletePost, likePost, dislikePost, updateVisual, getPost } from '../../../actions/posts';
@@ -31,7 +31,7 @@ const Post = ({ post, setCurrentId, users }) => {
 
     const hasLikedPost = post?.likes?.find((like) => like === userId);
     const hasDislikedPost = post?.dislikes?.find((dislike) => dislike === userId);
-    const [replyPost, setReplyPost] = useState({
+    /*const [replyPost, setReplyPost] = useState({
         title: '',
         message: '',
         tags: [],
@@ -42,25 +42,11 @@ const Post = ({ post, setCurrentId, users }) => {
         location: [],
         destinatari: [],
         destinatariPrivati: [],
-    });
+    });*/
+    const replyPosts = useSelector((state) => (state.posts.replyPosts));
     //const hasReacted = hasLikedPost || hasDislikedPost;
 
-    const getReplyPost = async () => {
-        await dispatch(getReplyPost({ id: post.reply })).then((res) => {
-            //console.log('res:', res);
-            setReplyPost(res);
-        });
-    }
 
-    useEffect(() => {
-        if (post.reply !== '') {
-            // DO NOT UNCOMMENT
-            //getReplyPost();
-            //console.log('reply: ', replyPost);
-            //console.log("REPLY ", post.message);
-        }
-
-    }, [post]);
 
     const handleLike = async () => {
         dispatch(likePost(post._id));
@@ -144,6 +130,44 @@ const Post = ({ post, setCurrentId, users }) => {
         return (foundItem ? '@' + foundItem.label + ' ' : '@' + user?.result?.name);
     }
 
+    const postInfo = (id) => {
+        const foundItem = replyPosts.find(item => item._id === id);
+        //console.log(foundItem);
+        return (foundItem ? foundItem : null);
+    }
+
+    const PostReply = ({ repPost }) => {
+        return (
+            <>
+                <Card className={classes.cardReply} raised elevation={8}>
+                    <ButtonBase className={classes.cardAction} onClick={postReplied}>
+                        <div className={classes.details} >
+                            <Typography variant="body2">Reply to: {repPost.name}</Typography>
+                        </div>
+                        <CardContent>
+                            {repPost.type === 'media' && (
+                                <>
+                                    <CardMedia className={classes.media} image={repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
+                                </>
+                            )}
+                            {repPost.type === 'text' && (
+                                <>
+                                    <Typography variant="body2" component="p">{repPost.message}</Typography>
+                                </>
+                            )}
+                            {repPost.type === 'location' && (
+                                <>
+                                    <Map position={repPost.location} height={'20vh'} zoom={10} scrollWheelZoom={false} dragging={false} />
+                                </>
+                            )}
+
+                        </CardContent>
+                    </ButtonBase>
+                </Card>
+            </>
+        );
+    }
+
     // IMG:
     // <CardMedia className={classes.media} image={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
     // usa classes.overlay per scrivere sopra l'immagine
@@ -206,13 +230,7 @@ const Post = ({ post, setCurrentId, users }) => {
                 </CardContent>
             </ButtonBase>
             {post.reply !== '' && (
-                <>
-                    <Card className={classes.cardReply} raised elevation={6}>
-                        <ButtonBase className={classes.cardAction} onClick={postReplied}>
-                            <Typography variant="body2">Reply to: {post.reply}</Typography>
-                        </ButtonBase>
-                    </Card>
-                </>
+                <PostReply repPost={postInfo(post.reply)} />
             )}
 
             <CardActions className={classes.cardActions}>

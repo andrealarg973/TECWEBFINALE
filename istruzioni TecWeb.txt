@@ -65,7 +65,6 @@ HARD
 - upload video
 
 MEDIUM
-- risposta squeal (visualizza riassunto risposta)
 - messaggi automatici temporizzati (gestione)
 - notifica per msg privato
 - pagina iscrizione/visualizzazione canali
@@ -89,6 +88,7 @@ NON MIE:
 
 
 COMPLETATI:
+- risposta squeal (visualizza riassunto risposta anche nella pagina dettagli)
 - acquisto caratteri
 - random quote con {QUOTE} anche nei msg automatici
 - visualizzazione destinatari dei post (anche aperto)

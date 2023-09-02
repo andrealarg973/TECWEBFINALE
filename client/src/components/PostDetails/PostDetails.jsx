@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Paper, Typography, CircularProgress, Divider } from '@material-ui/core';
+import { Paper, Typography, CircularProgress, Divider, CardMedia, Card, ButtonBase, CardContent } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
@@ -10,10 +10,13 @@ import { getPost } from '../../actions/posts';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import useStyles from './styles';
 import { getUsers } from '../../actions/auth';
+import { useNavigate } from 'react-router-dom';
+import { updateVisual } from '../../actions/posts';
 
 const PostDetails = () => {
-    const { post, isLoading } = useSelector((state) => state.posts);
+    const { post, isLoading, replyPost } = useSelector((state) => state.posts);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const user = JSON.parse(localStorage.getItem('profile'));
     //const navigate = useNavigate();
@@ -30,6 +33,7 @@ const PostDetails = () => {
     useEffect(() => {
         dispatch(getPost(id));
         getUsrs();
+        //console.log(replyPost);
     }, [dispatch, id]);
 
     const name = (c) => {
@@ -44,6 +48,44 @@ const PostDetails = () => {
             <Paper elevation={6} className={classes.loadingPaper}>
                 <CircularProgress size="7em" className={classes.progress} />
             </Paper>
+        );
+    }
+
+    const postReplied = () => {
+        dispatch(updateVisual(post.reply));
+        navigate(`/posts/${post.reply}`);
+        //console.log(post);
+    }
+
+    const PostReply = ({ repPost }) => {
+        return (
+            <>
+                <Card className={classes.cardReply} raised elevation={8}>
+                    <ButtonBase className={classes.cardAction} onClick={postReplied}>
+                        <div className={classes.details} >
+                            <Typography variant="body2">Reply to: {repPost.name}</Typography>
+                        </div>
+                        <CardContent>
+                            {repPost.type === 'media' && (
+                                <>
+                                    <CardMedia className={classes.media1} image={repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
+                                </>
+                            )}
+                            {repPost.type === 'text' && (
+                                <>
+                                    <Typography variant="body2" component="p">{repPost.message}</Typography>
+                                </>
+                            )}
+                            {repPost.type === 'location' && (
+                                <>
+                                    <Map position={repPost.location} height={'50vh'} zoom={10} scrollWheelZoom={false} dragging={false} />
+                                </>
+                            )}
+
+                        </CardContent>
+                    </ButtonBase>
+                </Card>
+            </>
         );
     }
 
@@ -90,6 +132,10 @@ const PostDetails = () => {
                         <>
                             <Map position={post.location} height={'69vh'} zoom={8} scrollWheelZoom={true} dragging={true} />
                         </>
+                    )}
+
+                    {post.reply !== '' && (
+                        <PostReply repPost={replyPost} />
                     )}
                     <Divider style={{ margin: '20px 0' }} />
                     <Typography variant="h6" >

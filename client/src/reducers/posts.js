@@ -9,6 +9,7 @@ const postReducers = (state = { isLoading: true, posts: [] }, action) => {
         case FETCH_ALL:
             return {
                 ...state,
+                replyPosts: action.payload.replyPosts,
                 posts: action.payload.data,
                 currentPage: action.payload.currentPage,
                 numberOfPages: action.payload.numberOfPages,
@@ -18,9 +19,9 @@ const postReducers = (state = { isLoading: true, posts: [] }, action) => {
         case FETCH_BY_USER:
             return { ...state, posts: action.payload.data };
         case FETCH_POST:
-            return { ...state, post: action.payload };
+            return { ...state, post: action.payload.data, replyPost: action.payload.replyPost };
         case FETCH_REPLY_POST:
-            return action.payload;
+            return { ...state, replyPost: action.payload };
         case LIKE:
             return { ...state, posts: state.posts.map((post) => (post._id === action.payload._id ? action.payload : post)) };
         case COMMENT:
