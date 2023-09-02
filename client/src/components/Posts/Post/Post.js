@@ -142,7 +142,7 @@ const Post = ({ post, setCurrentId, users }) => {
                 <Card className={classes.cardReply} raised elevation={8}>
                     <ButtonBase className={classes.cardAction} onClick={postReplied}>
                         <div className={classes.details} >
-                            <Typography variant="body2">Reply to: {repPost.name}</Typography>
+                            <Typography variant="h6">Reply to: {repPost.name}</Typography>
                         </div>
                         <CardContent>
                             {repPost.type === 'media' && (

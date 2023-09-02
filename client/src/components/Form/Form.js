@@ -360,8 +360,8 @@ const Form = ({ currentId, setCurrentId }) => {
     // <TextField name="tags" variant="outlined" label="Tags (coma separated)" fullWidth value={postData.tags} onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })} />
 
     return (
-        <Paper className={classes.paper} elevation={6}>
-            <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit} ref={replyRef}>
+        <Paper className={classes.paper} elevation={6} ref={replyRef}>
+            <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                 <div style={{ flexDirection: 'column' }}>
                     <Typography style={{ textAlign: 'center' }} variant="h4">{currentId ? 'Reply to ' + post.name : 'Create Post'}</Typography>
                     <RadioButtons />
