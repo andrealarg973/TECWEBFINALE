@@ -26,8 +26,8 @@ export default makeStyles((theme) => ({
     },
     toolbar: {
         display: 'flex',
-        justifyContent: 'flex-end',
-        width: '400px',
+        justifyContent: 'flex-center',
+
         [theme.breakpoints.down('sm')]: {
             width: 'auto',
         },
@@ -35,7 +35,7 @@ export default makeStyles((theme) => ({
     quotabar: {
         display: 'flex',
         justifyContent: 'flex-center',
-        width: '600px',
+        width: 'auto',
         alignItems: 'center',
         [theme.breakpoints.down('md')]: {
             width: 'auto',
@@ -47,19 +47,20 @@ export default makeStyles((theme) => ({
     },
     profile: {
         display: 'flex',
-        justifyContent: 'space-between',
-        width: '400px',
+        justifyContent: 'right',
+        width: 'auto',
         alignItems: 'center',
         [theme.breakpoints.down('sm')]: {
             width: 'auto',
             marginTop: 20,
-            justifyContent: 'center',
+            justifyContent: 'right',
+            alignItems: 'center',
         },
         [theme.breakpoints.down('md')]: {
             width: 'auto',
         },
         [theme.breakpoints.down('lg')]: {
-            width: '300px',
+            width: 'auto',
         },
     },
     logout: {

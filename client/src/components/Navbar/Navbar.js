@@ -7,10 +7,54 @@ import { useDispatch } from 'react-redux';
 import decode from 'jwt-decode';
 import { getQuotas, getCar } from '../../actions/auth';
 import ProgressBar from "@ramonak/react-progress-bar";
+import Notification from './Notification/Notification';
 
 import useStyles from './styles';
 
 const Navbar = () => {
+    const listItems = [
+        {
+            UTC: "1408648665",
+            list: [
+                {
+                    type: "Message",
+                    content: "A messgae description for testing notofication bar",
+                    count: 3,
+                    timestamp: "1PM"
+                }
+            ]
+        },
+        {
+            UTC: "1598103780",
+            list: [
+                {
+                    type: "Login",
+                    content: "A messgae description for testing notofication bar",
+                    count: 1
+                }
+            ]
+        },
+        {
+            UTC: "1595594400",
+            list: [
+                {
+                    type: "Login",
+                    content: "A messgae description for testing notofication bar",
+                    count: 4
+                }
+            ]
+        },
+        {
+            UTC: "1595575200",
+            list: [
+                {
+                    type: "Critical",
+                    content: "A messgae description for testing notofication bar",
+                    count: 3
+                }
+            ]
+        }
+    ];
     const classes = useStyles();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [quotas, setQuotas] = useState({
@@ -26,6 +70,19 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
+
+    const [windowSize, setWindowSize] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight,
+    });
+
+    // Function to update the window size
+    const updateWindowSize = () => {
+        setWindowSize({
+            width: window.innerWidth,
+            height: window.innerHeight,
+        });
+    };
 
     const handleBackHomePage = () => {
         //dispatch(getPosts());
@@ -60,6 +117,7 @@ const Navbar = () => {
 
     useEffect(() => {
         const token = user?.token;
+
         if (token) {
             const decodedToken = decode(token);
 
@@ -75,6 +133,13 @@ const Navbar = () => {
             getQTAs();
             //getChars();
         }
+
+        window.addEventListener('resize', updateWindowSize);
+
+        // Clean up the event listener when the component unmounts
+        return () => {
+            window.removeEventListener('resize', updateWindowSize);
+        };
 
     }, [location]);
 
@@ -107,8 +172,14 @@ const Navbar = () => {
             <Toolbar className={classes.toolbar}>
                 {user ? (
                     <div className={classes.profile}>
+                        <div style={{ marginRight: '35px' }}>
+                            <Notification listItems={listItems} />
+                        </div>
                         <Avatar className={classes.purple} alt={user.result.name} src={user.result.picture} style={{ cursor: "pointer" }} onClick={openUserPage}>{user.result.name.charAt(0)}</Avatar>
-                        <Typography className={classes.username} variant="h6" style={{ cursor: "pointer" }} onClick={openUserPage}>{user.result.name}</Typography>
+                        {window.innerWidth > 430 && (
+                            <Typography className={classes.username} variant="h6" style={{ cursor: "pointer" }} onClick={openUserPage}>{user.result.name}</Typography>
+                        )}
+
                         <Button variant="contained" className={classes.logout} color="secondary" onClick={logout}>Logout</Button>
                     </div>
                 ) : (
