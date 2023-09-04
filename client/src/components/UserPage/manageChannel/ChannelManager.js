@@ -26,7 +26,7 @@ const ChannelManager = ({ channels }) => {
     }
 
     return (
-        <>
+        <Container maxWidth="xs">
             <Paper className={classes.paper} elevation={6}>
                 <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                     <Typography variant="h6">Create Channel</Typography>
@@ -40,7 +40,7 @@ const ChannelManager = ({ channels }) => {
                     <Channel channel={channel} />
                 </Grid>
             ))}
-        </>
+        </Container>
     );
 }
 
