@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
 
+
 export default makeStyles((theme) => ({
     appBar: {
         borderRadius: 15,
@@ -37,9 +38,6 @@ export default makeStyles((theme) => ({
         justifyContent: 'flex-center',
         width: 'auto',
         alignItems: 'center',
-        [theme.breakpoints.down('md')]: {
-            width: 'auto',
-        },
         [theme.breakpoints.down('md')]: {
             width: 'auto',
             flexDirection: 'column',
@@ -84,11 +82,18 @@ export default makeStyles((theme) => ({
         border: '2px solid black',
         borderRadius: '50px',
         width: '190px',
-        [theme.breakpoints.down('lg')]: {
-            width: '130px',
+        [theme.breakpoints.down(1670)]: {
+            width: '150px',
+        },
+        [theme.breakpoints.down(1450)]: {
+            width: '100px',
+        },
+        [theme.breakpoints.down(1250)]: {
+            width: '100px',
         },
         [theme.breakpoints.down('md')]: {
             width: '190px',
         },
+
     }
 }));

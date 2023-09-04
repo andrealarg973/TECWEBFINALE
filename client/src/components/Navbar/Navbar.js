@@ -8,6 +8,7 @@ import decode from 'jwt-decode';
 import { getQuotas, getCar, getNotifications } from '../../actions/auth';
 import ProgressBar from "@ramonak/react-progress-bar";
 import Notification from './Notification/Notification';
+import Menu from './Menu/Menu';
 
 import useStyles from './styles';
 
@@ -140,13 +141,11 @@ const Navbar = () => {
             <Toolbar className={classes.toolbar}>
                 {user ? (
                     <div className={classes.profile}>
-                        <div style={{ marginRight: '35px' }}>
+                        <div>
                             <Notification windowSize={window.innerWidth} notifications={notifications} />
                         </div>
-                        <Avatar className={classes.purple} alt={user.result.name} src={user.result.picture} style={{ cursor: "pointer" }} onClick={openUserPage}>{user.result.name.charAt(0)}</Avatar>
-                        {window.innerWidth > 430 && (
-                            <Typography className={classes.username} variant="h6" style={{ cursor: "pointer" }} onClick={openUserPage}>{user.result.name}</Typography>
-                        )}
+                        <Menu windowSize={window.innerWidth} notifications={notifications} />
+
 
                         <Button variant="contained" className={classes.logout} color="secondary" onClick={logout}>Logout</Button>
                     </div>

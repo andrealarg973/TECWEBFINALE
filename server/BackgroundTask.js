@@ -160,6 +160,17 @@ async function automaticPosts() {
                                                 newNotify.save();
                                             });
                                         }
+
+                                        if (newPost.reply !== '') {
+                                            const dest = await PostMessage.findById(newPost.reply);
+                                            if (dest.creator !== newPost.creator) {
+                                                const msg = ' replied at your post.';
+                                                const newNotify = NotificationlSchema({ postId: newPost._id, userId: dest.creator, createdAt: newPost.createdAt, content: msg, sender: '@' + newPost.name });
+                                                newNotify.save();
+                                            }
+                                            //console.log(newNotify);
+                                        }
+
                                         await newPost.save();
                                         const newTemporal = await PostMessageTemporal.findByIdAndUpdate(String(post._id), { createdAt: timeNow, title: post.title, reply: post.reply, location: post.location, type: post.type, message: post.message, name: post.name, creator: post.creator, tags: post.tags, selectedFile: post.selectedFile, privacy: post.privacy, visual: post.visual, likes: post.likes, comments: post.comments, dislikes: post.islikes, comments: post.comments, destinatari: post.destinatari, destinatariPrivati: post.destinatariPrivati }, { new: true });
                                         //console.log("before:", post.createdAt);

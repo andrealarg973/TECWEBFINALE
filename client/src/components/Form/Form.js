@@ -400,7 +400,7 @@ const Form = ({ currentId, setCurrentId }) => {
 
                 {postData.type === 'text' && (
                     <>
-                        <Button className={classes.buttonSubmit} variant="contained" color="primary" onClick={getRandomQuote} size="large" type="button">Random Quote</Button>
+                        <Button className={classes.buttonSubmit} style={{ marginRight: '15px' }} variant="contained" color="primary" onClick={getRandomQuote} size="large" type="button">Random Quote</Button>
                         <Button className={classes.buttonSubmit} variant="contained" color="primary" onClick={getRandomNews} size="large" type="button">Random Tech News</Button>
                     </>
                 )}

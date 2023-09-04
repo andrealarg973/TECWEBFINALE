@@ -207,9 +207,11 @@ export const createPost = async (req, res) => {
 
             if (newPostMessage.reply !== '') {
                 const dest = await PostMessage.findById(newPostMessage.reply);
-                const msg = ' replied at your post.';
-                const newNotify = NotificationlSchema({ postId: newPostMessage._id, userId: dest.creator, createdAt: newPostMessage.createdAt, content: msg, sender: '@' + newPostMessage.name });
-                newNotify.save();
+                if (dest.creator !== newPostMessage.creator) {
+                    const msg = ' replied at your post.';
+                    const newNotify = NotificationlSchema({ postId: newPostMessage._id, userId: dest.creator, createdAt: newPostMessage.createdAt, content: msg, sender: '@' + newPostMessage.name });
+                    newNotify.save();
+                }
                 //console.log(newNotify);
             }
 

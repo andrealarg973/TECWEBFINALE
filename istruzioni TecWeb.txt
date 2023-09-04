@@ -65,8 +65,8 @@ HARD
 - canali popolati automaticamente?
 
 MEDIUM
-- pagina iscrizione/visualizzazione canali
 - notifica per msg privato (aggiornamento real-time)
+- pagina iscrizione/visualizzazione canali
 - (menzioni nel testo colorate?)
 
 EASY

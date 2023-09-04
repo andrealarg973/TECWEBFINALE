@@ -77,10 +77,10 @@ const Home = () => {
         <Grow in>
             <Container maxWidth="xl">
                 <Grid className={classes.gridContainer} container justifyContent="space-between" alignItems="stretch" spacing={3}>
-                    <Grid item xs={12} sm={6} md={8}>
+                    <Grid item xs={12} sm={6} md={8} xl={9}>
                         <Posts setCurrentId={setCurrentId} />
                     </Grid>
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid item xs={12} sm={6} md={4} xl={3}>
                         <AppBar className={classes.appBarSearch} position="static" color="inherit">
                             <TextField name="search" variant="outlined" label="Search Post" onKeyUp={handleKeyPress} fullWidth value={search} onChange={(e) => { setSearch(e.target.value) }} />
                             <ChipInput style={{ margin: '10px 0' }} value={tags} onAdd={handleAdd} onDelete={handleDelete} label="Search Tags" variant="outlined" />

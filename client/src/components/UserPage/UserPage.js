@@ -10,7 +10,7 @@ import { getMyChannels } from '../../actions/channels';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { updateQuota } from '../../actions/auth';
-import Input from '../Auth/Input';
+import IncreaseQuota from '../IncreaseQuota/IncreaseQuota';
 
 import Posts from '../Posts/Posts';
 
@@ -110,10 +110,10 @@ const UserPage = () => {
         <Grow in>
             <Container maxWidth="xl">
                 <Grid container className={classes.gridContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>
-                    <Grid item xs={12} sm={6} md={8}>
+                    <Grid item xs={12} sm={6} md={8} xl={9}>
                         <Posts setCurrentId={setCurrentId} />
                     </Grid>
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid item xs={12} sm={6} md={4} xl={3}>
                         {user.result.role === 'vip' &&
                             <Paper className={classes.paper} elevation={6}>
                                 <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmitSMM}>
@@ -125,14 +125,7 @@ const UserPage = () => {
                                 </form>
                             </Paper>
                         }
-                        <Paper className={classes.paper} elevation={6}>
-                            <form autoComplete="off" noValidate className={`${classes.form}`} onSubmit={handleSubmitQuota}>
-                                <Typography variant="h6">Increase Quota (for 1 year)</Typography>
-                                <CreditCard />
-                                <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Buy</Button>
-                                <ToastContainer autoClose={1000} hideProgressBar={true} />
-                            </form>
-                        </Paper>
+                        <IncreaseQuota />
                         <Paper className={classes.paper} elevation={6}>
                             <Typography variant="h5" style={{ textAlign: 'center' }}>Channel Manager</Typography>
                             {channels.length > 0 ? (

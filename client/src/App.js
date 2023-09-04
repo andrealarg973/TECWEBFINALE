@@ -8,6 +8,7 @@ import Home from "./components/Home/Home";
 import Auth from "./components/Auth/Auth";
 import PostDetails from "./components/PostDetails/PostDetails";
 import UserPage from "./components/UserPage/UserPage";
+import IncreaseQuota from "./components/IncreaseQuota/IncreaseQuota";
 
 const App = () => {
 
@@ -24,6 +25,7 @@ const App = () => {
                     <Route path="/posts/:id" element={<PostDetails />} />
                     <Route path="/auth" exact element={!user ? <Auth /> : <Navigate to="/posts" />} />
                     <Route path="/profile" exact element={<UserPage />} />
+                    <Route path="/buyQuota" exact element={<IncreaseQuota />} />
                 </Routes>
             </Container>
         </BrowserRouter>
