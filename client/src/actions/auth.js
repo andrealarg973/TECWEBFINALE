@@ -1,4 +1,4 @@
-import { AUTH, UPDATE_QUOTA, GET_CAR, GET_USERS, GET_SMMS, GET_MY_SMM, SET_SMM, GET_QUOTA } from '../constants/actionTypes';
+import { AUTH, UPDATE_QUOTA, GET_CAR, GET_USERS, GET_SMMS, GET_MY_SMM, SET_SMM, GET_QUOTA, GET_NOTIFICATIONS, READ_NOTIFICATION } from '../constants/actionTypes';
 import * as api from '../api';
 
 export const getUsers = (id) => async (dispatch) => {
@@ -89,6 +89,30 @@ export const getCar = (id) => async (dispatch) => {
         const { data } = await api.getCar(id);
         //console.log('data', data);
         dispatch({ type: GET_CAR, payload: data });
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
+export const getNotifications = (id) => async (dispatch) => {
+    try {
+        const { data } = await api.getNotifications(id);
+        //console.log('data', data);
+        dispatch({ type: GET_NOTIFICATIONS, payload: data });
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
+export const readNotification = (id) => async (dispatch) => {
+    try {
+        const { data } = await api.readNotification(id);
+        //console.log('data', data);
+        dispatch({ type: READ_NOTIFICATION, payload: data });
         return data;
     } catch (error) {
         console.log(error);

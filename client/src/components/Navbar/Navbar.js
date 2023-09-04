@@ -3,58 +3,18 @@ import { AppBar, Avatar, Button, Toolbar, Typography } from '@material-ui/core';
 //import memories from '../../images/memories.png';
 import avvoltoio from '../../images/avvoltoio.jpg';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import decode from 'jwt-decode';
-import { getQuotas, getCar } from '../../actions/auth';
+import { getQuotas, getCar, getNotifications } from '../../actions/auth';
 import ProgressBar from "@ramonak/react-progress-bar";
 import Notification from './Notification/Notification';
 
 import useStyles from './styles';
 
 const Navbar = () => {
-    const listItems = [
-        {
-            UTC: "1408648665",
-            list: [
-                {
-                    type: "Message",
-                    content: "A messgae description for testing notofication bar",
-                    count: 3,
-                    timestamp: "1PM"
-                }
-            ]
-        },
-        {
-            UTC: "1598103780",
-            list: [
-                {
-                    type: "Login",
-                    content: "A messgae description for testing notofication bar",
-                    count: 1
-                }
-            ]
-        },
-        {
-            UTC: "1595594400",
-            list: [
-                {
-                    type: "Login",
-                    content: "A messgae description for testing notofication bar",
-                    count: 4
-                }
-            ]
-        },
-        {
-            UTC: "1595575200",
-            list: [
-                {
-                    type: "Critical",
-                    content: "A messgae description for testing notofication bar",
-                    count: 3
-                }
-            ]
-        }
-    ];
+    const [notifications, setNotifications] = useState([]);
+    //const notifications = useSelector((state) => state.auth.notifications);
+
     const classes = useStyles();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [quotas, setQuotas] = useState({
@@ -108,6 +68,13 @@ const Navbar = () => {
         });
     }
 
+    const getNotifys = async () => {
+        await dispatch(getNotifications(user?.result?._id)).then((res) => {
+            setNotifications(res);
+            //console.log(res);
+        });
+    }
+
     const getChars = async () => {
 
         await dispatch(getCar({ user: user?.result?._id })).then((res) => {
@@ -131,7 +98,8 @@ const Navbar = () => {
 
         if (user) {
             getQTAs();
-            //getChars();
+            getNotifys();
+            //dispatch(getNotifications(user?.result?._id));
         }
 
         window.addEventListener('resize', updateWindowSize);
@@ -173,7 +141,7 @@ const Navbar = () => {
                 {user ? (
                     <div className={classes.profile}>
                         <div style={{ marginRight: '35px' }}>
-                            <Notification listItems={listItems} />
+                            <Notification windowSize={window.innerWidth} notifications={notifications} />
                         </div>
                         <Avatar className={classes.purple} alt={user.result.name} src={user.result.picture} style={{ cursor: "pointer" }} onClick={openUserPage}>{user.result.name.charAt(0)}</Avatar>
                         {window.innerWidth > 430 && (

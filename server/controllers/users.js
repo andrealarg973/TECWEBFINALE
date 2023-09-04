@@ -7,6 +7,7 @@ import User from '../models/user.js';
 import QuotaSchema from '../models/quota.js';
 import PostMessage from '../models/postMessage.js';
 import InitialQuotaSchema from '../models/initialQuota.js';
+import NotificationlSchema from '../models/notification.js';
 
 const router = express.Router();
 
@@ -175,6 +176,26 @@ export const getCar = async (req, res) => {
         //console.log('TEMP: ', temp);
 
         res.status(200).json(temp);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getNotifications = async (req, res) => {
+    const user = req.params.id;
+    try {
+        const notifications = await NotificationlSchema.find({ $and: [{ userId: user }, { read: false }] });
+        res.status(200).json(notifications);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const readNotification = async (req, res) => {
+    const id = req.body.id;
+    try {
+        const readNotify = await NotificationlSchema.findByIdAndUpdate(id, { read: true }, { new: true });
+        res.status(200).json(readNotify);
     } catch (error) {
         console.log(error);
     }

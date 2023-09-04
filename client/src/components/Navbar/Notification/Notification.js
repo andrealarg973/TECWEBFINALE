@@ -1,197 +1,144 @@
-import React from "react";
-import "./style.css";
-import clearAllImage from './clearAll.svg';
-import notificationIcon from "./notificationIcon.svg";
-import closeIcon from "./Close.svg";
+import * as React from 'react';
+import { Typography } from '@material-ui/core';
+import Button from '@mui/material/Button';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Grow from '@mui/material/Grow';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
+import Stack from '@mui/material/Stack';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { readNotification } from '../../../actions/auth';
+import './style.css';
 
-/** Notification released*/
-class Notification extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      toggleNotification: false,
-      listItems: []
-    };
-  }
-  componentDidMount() {
-    this.setState({ listItems: this.props.listItems });
-  }
-  componentDidUpdate(previousProps) {
-    if (previousProps.listItems !== this.props.listItems) {
-      this.setState({ listItems: this.props.listItems });
+export default function MenuListComposition({ windowSize, notifications }) {
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  //const notifications = useSelector((state) => state.auth.notifications ? state.auth.notifications : []);
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const handleOpenNotify = (e, id) => {
+    const found = notifications.find((not) => not._id === id).postId;
+    if (found) {
+      setOpen(false);
+      // update visual
+      dispatch(readNotification({ id: id }));
+      navigate(`/posts/${found}`);
     }
   }
-  toggleNotification = () => {
-    const { toggleNotification } = this.state;
-    this.setState({ toggleNotification: !toggleNotification });
-  };
-  clearAllMessage = () => {
-    this.props.onClearAll && this.props.onClearAll();
-  };
-  generateDate = timeStamp => {
-    const d = new Date(timeStamp * 1000);
-    const n = d.getDate();
-    const m = d.getMonth();
-    const monthNames = [
-      "JAN",
-      "FEB",
-      "MAR",
-      "APR",
-      "MAY",
-      "JUN",
-      "JUL",
-      "AUG",
-      "SEP",
-      "OCT",
-      "NOV",
-      "DEC"
-    ];
-    return { date: `${n} ${monthNames[m]}`, time: timeStamp };
-  };
 
-  render() {
-    const { listItems } = this.state;
-    let totalCount = 0;
-    const allTimestamp = [];
-    listItems.map((i, k) => {
-      const test = allTimestamp.filter(
-        item => item.UTC.date === this.generateDate(i.UTC).date
-      );
-      if (test.length === 0) {
-        const itemObj = {
-          UTC: this.generateDate(i.UTC),
-          list: []
-        };
-        allTimestamp.push(itemObj);
-      }
-      totalCount = totalCount + i.list.length;
-    });
-    listItems.map((i, j) => {
-      const iUTC = this.generateDate(i.UTC).date;
-      const sameData = allTimestamp.filter(function (k) {
-        return k.UTC.date === iUTC;
-      });
-      const key = sameData.length && sameData[0].UTC.date;
-      allTimestamp.map(item => {
-        if (item.UTC.date === key) {
-          i.list.map(p => {
-            p.timeStamp = i.UTC;
-          });
-          item.list.push(i.list);
-        }
-      });
-    });
+  const readAll = (e) => {
+    notifications.map((not) => dispatch(readNotification({ id: not._id })));
+    navigate(`/posts`);
+  }
+
+  function handleListKeyDown(event) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    } else if (event.key === 'Escape') {
+      setOpen(false);
+    }
+  }
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevOpen = React.useRef(open);
+  React.useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus();
+    }
+
+    prevOpen.current = open;
+  }, [open]);
+
+  const Notification = ({ notify }) => {
     return (
-      <div className={"notification"} style={{ position: "relative" }}>
-        <div className={"iconSection"}>
-          <img
-            alt={"Notification"}
-            src={notificationIcon}
-            onClick={() => this.toggleNotification()}
-            style={{ cursor: "pointer" }}
-          ></img>
-          <span className={"iconBadge"}>{totalCount}</span>
-        </div>
-        {this.state.toggleNotification && (
-          <div
-            style={{
-              position: "absolute",
-              width: "200px",
-              border: "0.5px solid #8080803d",
-              minHeight: "100px",
-              overflowY: "auto",
-              top: "30px"
-            }}
-            className={"notificationBar"}
-          >
-            <div style={{ display: "flex" }}>
-              <p style={{ fontSize: "14px", textAlign: "left", width: "93%" }}>
-                Notifications
-              </p>
-              <img
-                alt={"close"}
-                onClick={() => this.toggleNotification()}
-                style={{ width: "5%", cursor: "pointer" }}
-                src={closeIcon}
-              ></img>
-            </div>
-            {allTimestamp.map((i, k) => {
-              return (
-                <div key={k}>
-                  <p
-                    style={{
-                      fontSize: "10px",
-                      margin: "5px 0",
-                      textAlign: "left",
-                      color: "#747474",
-                      display: "initial"
-                    }}
-                  >
-                    <span style={{ display: "inline-block", width: "50%" }}>
-                      {i.UTC.date}
-                    </span>
-                    <span
-                      style={{
-                        display: "inline-block",
-                        width: "50%",
-                        textAlign: "right"
-                      }}
-                    >
-                      {k === 0 && (
-                        <img
-                          alt={"clear all"}
-                          style={{
-                            width: "18%",
-                            cursor: "pointer",
-                            marginBottom: "-6px"
-                          }}
-                          onClick={() => this.clearAllMessage()}
-                          src={clearAllImage}
-                        ></img>
-                      )}
-                    </span>
-                  </p>
-                  {i.list.map(l => {
-                    return l.map(k => {
-                      const d = new Date(k.timeStamp * 1000);
-                      const min = d.getUTCMinutes();
-                      const hours = d.getUTCHours() % 12 || 12;
-                      const amOrpm = hours >= 12 ? "pm" : "am";
-                      return (
-                        <div
-                          key={k.timeStamp}
-                          style={{ background: "#fff", padding: "5px" }}
-                          className={"lineItmes"}
-                        >
-                          <span
-                            style={{ fontSize: "13px", fontWeight: 700 }}
-                          >{`${k.type} (${k.count})`}</span>
-                          <span
-                            style={{
-                              fontSize: "10px",
-                              fontWeight: 700,
-                              color: "#747474",
-                              float: "right"
-                            }}
-                          >
-                            {`${hours} ${min} ${amOrpm}`}
-                          </span>
-                          <div style={{ fontSize: "10px" }}>{k.content}</div>
-                        </div>
-                      );
-                    });
-                  })}
-                </div>
-              );
-            })}
-            <p style={{ textAlign: "right", margin: 0, color: "#42A5F5" }}>
-              VIEW ALL
-            </p>
-          </div>
-        )}
-      </div>
+      <Typography variant="inherit" noWrap>
+        {notify.content}
+      </Typography>
     );
   }
-}
 
-export default Notification;
+  return (
+    <Stack direction="row" spacing={2}>
+      <div style={{ zIndex: '1000' }}>
+        <Button
+          ref={anchorRef}
+          id="composition-button"
+          aria-controls={open ? 'composition-menu' : undefined}
+          aria-expanded={open ? 'true' : undefined}
+          aria-haspopup="true"
+          onClick={handleToggle}
+        >
+          <NotificationsIcon fontSize='large' />
+          {notifications.length > 0 && (
+            <div className="iconBadge">{notifications.length}</div>
+          )}
+
+        </Button>
+        <Popper
+          open={open}
+          anchorEl={anchorRef.current}
+          role={undefined}
+          placement="bottom-start"
+          transition
+          disablePortal
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin:
+                  placement === 'bottom-start' ? 'left top' : 'left bottom',
+              }}
+            >
+              <Paper sx={{ width: (windowSize > 500 ? '100%' : 280) }}>
+                <ClickAwayListener onClickAway={handleClose}>
+                  <MenuList
+                    autoFocusItem={open}
+                    id="composition-menu"
+                    aria-labelledby="composition-button"
+                    onKeyDown={handleListKeyDown}
+                  >
+                    {notifications.length > 0 ? (
+                      <div>
+                        {notifications.map((notify) => (
+                          <MenuItem key={notify._id} onClick={(e) => handleOpenNotify(e, notify._id)}>
+                            <Notification notify={notify} />
+                          </MenuItem>
+                        ))}
+                        <MenuItem onClick={readAll}>
+                          Clear All
+                        </MenuItem>
+                      </div>
+                    ) : (
+                      <MenuItem onClick={handleClose}>
+                        You don't have notifications
+                      </MenuItem>
+                    )
+                    }
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
+      </div>
+    </Stack >
+  );
+}

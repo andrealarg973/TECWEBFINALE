@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import PostMessage from '../models/postMessage.js';
 import PostMessageTemporal from '../models/postMessageTemporal.js';
 import ChannelSchema from '../models/channel.js';
+import NotificationlSchema from '../models/notification.js';
 
 const router = express.Router();
 
@@ -195,6 +196,14 @@ export const createPost = async (req, res) => {
         .then(replacedString => {
             //console.log("VAL: ", replacedString);
             newPostMessage.message = replacedString;
+
+            if (newPostMessage.destinatariPrivati.length > 0) {
+                newPostMessage.destinatariPrivati.map(dest => {
+                    const msg = '@' + newPostMessage.name + ' tagged you on a post.';
+                    const newNotify = NotificationlSchema({ postId: newPostMessage._id, userId: dest, createdAt: newPostMessage.createdAt, content: msg });
+                    newNotify.save();
+                });
+            }
 
             try {
                 newPostMessage.save();

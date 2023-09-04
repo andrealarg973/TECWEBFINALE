@@ -30,6 +30,8 @@ export const getQuotas = (id) => API.get(`/users/${id}/getQuotas`);
 export const getUsers = (id) => API.get(`/users/${id}/getUsers`);
 export const getSMMs = () => API.get(`/users/getSMM`);
 export const getMySMM = (id) => API.get(`/users/${id}/getSMM`);
+export const getNotifications = (id) => API.get(`/users/${id}/getNotifications`);
+export const readNotification = (id) => API.patch(`/users/readNotification`, id);
 export const signIn = (formData) => API.post('/users/signin', formData);
 export const signUp = (formData) => API.post('/users/signup', formData);
 export const updateQuota = (formData) => API.patch(`/users/updateQuota`, formData);

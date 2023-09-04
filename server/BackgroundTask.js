@@ -2,6 +2,7 @@
 import PostMessage from './models/postMessage.js';
 import PostMessageTemporal from './models/postMessageTemporal.js';
 import QuotaSchema from './models/quota.js';
+import NotificationlSchema from './models/notification.js';
 
 async function updateQuotas() {
     //const dateDay = new Date();
@@ -152,6 +153,13 @@ async function automaticPosts() {
                                 //console.log('Quota', car);
                                 if (car >= 0) {
                                     try {
+                                        if (newPost.destinatariPrivati.length > 0) {
+                                            newPost.destinatariPrivati.map(dest => {
+                                                const msg = '@' + newPost.name + ' tagged you on a post.';
+                                                const newNotify = NotificationlSchema({ postId: newPost._id, userId: dest, createdAt: newPost.createdAt, content: msg });
+                                                newNotify.save();
+                                            });
+                                        }
                                         await newPost.save();
                                         const newTemporal = await PostMessageTemporal.findByIdAndUpdate(String(post._id), { createdAt: timeNow, title: post.title, reply: post.reply, location: post.location, type: post.type, message: post.message, name: post.name, creator: post.creator, tags: post.tags, selectedFile: post.selectedFile, privacy: post.privacy, visual: post.visual, likes: post.likes, comments: post.comments, dislikes: post.islikes, comments: post.comments, destinatari: post.destinatari, destinatariPrivati: post.destinatariPrivati }, { new: true });
                                         //console.log("before:", post.createdAt);
