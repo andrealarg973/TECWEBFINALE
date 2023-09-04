@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { TextField, Button, Typography, Paper, CircularProgress } from '@material-ui/core';
+import { Container, TextField, Button, Typography, Paper, CircularProgress } from '@material-ui/core';
 import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
 import CreateSelect from 'react-select/creatable';
@@ -360,6 +360,7 @@ const Form = ({ currentId, setCurrentId }) => {
     // <TextField name="tags" variant="outlined" label="Tags (coma separated)" fullWidth value={postData.tags} onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })} />
 
     return (
+
         <Paper className={classes.paper} elevation={6} ref={replyRef}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                 <div style={{ flexDirection: 'column' }}>
@@ -419,6 +420,7 @@ const Form = ({ currentId, setCurrentId }) => {
                 <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
             </form>
         </Paper >
+
     );
 };
 

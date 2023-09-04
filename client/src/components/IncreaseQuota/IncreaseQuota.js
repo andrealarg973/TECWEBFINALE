@@ -44,7 +44,7 @@ const IncreaseQuota = () => {
     }
 
     return (
-        <Container maxWidth="xs">
+        <Container maxWidth="sm">
             <Paper className={classes.paper} elevation={6}>
                 <form autoComplete="off" noValidate className={`${classes.form}`} onSubmit={handleSubmitQuota}>
                     <Typography variant="h6">Increase Quota (for 1 year)</Typography>

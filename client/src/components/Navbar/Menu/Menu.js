@@ -14,6 +14,8 @@ import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import PersonIcon from '@mui/icons-material/Person';
 import AbcIcon from '@mui/icons-material/Abc';
+import GroupIcon from '@mui/icons-material/Group';
+import CreateIcon from '@mui/icons-material/Create';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { readNotification } from '../../../actions/auth';
@@ -52,13 +54,16 @@ export default function MenuListComposition({ windowSize, notifications }) {
     }
 
     const navigateChannelManager = () => {
-
+        setOpen(false);
+        navigate('/channelManager');
     }
     const navigateTemporalManager = () => {
-
+        setOpen(false);
+        navigate('/temporalPosts');
     }
     const navigateAccountSettings = () => {
-
+        setOpen(false);
+        navigate('/settings');
     }
 
     const navigateBuyQuota = () => {
@@ -70,6 +75,19 @@ export default function MenuListComposition({ windowSize, notifications }) {
         setOpen(false);
         navigate('/profile');
     }
+
+    const navigateSelectSMM = () => {
+        setOpen(false);
+        navigate('/selectSMM');
+    }
+
+    const navigateNewSqueal = () => {
+        setOpen(false);
+        navigate('/newPost');
+    }
+
+
+
 
     function handleListKeyDown(event) {
         if (event.key === 'Tab') {
@@ -133,13 +151,12 @@ export default function MenuListComposition({ windowSize, notifications }) {
                                     >
                                         <MenuItem onClick={navigateUserPage}>
                                             <PersonIcon style={{ color: 'blue' }} />
-                                            <div>User Page</div>
+                                            <div>My Posts</div>
                                         </MenuItem>
-                                        <MenuItem onClick={navigateBuyQuota}>
-                                            <AbcIcon style={{ color: 'green' }} />
-                                            <div>Buy Quota</div>
+                                        <MenuItem onClick={navigateNewSqueal}>
+                                            <CreateIcon style={{ color: 'darkgreen' }} />
+                                            <div>New Squeal</div>
                                         </MenuItem>
-
                                         <MenuItem onClick={navigateChannelManager}>
                                             <NoteAddIcon style={{ color: 'green' }} />
                                             <div>Manage Channels</div>
@@ -147,6 +164,16 @@ export default function MenuListComposition({ windowSize, notifications }) {
                                         <MenuItem onClick={navigateTemporalManager}>
                                             <EditCalendarIcon style={{ color: 'green' }} />
                                             <div>Manage Temporal Posts</div>
+                                        </MenuItem>
+                                        {user.result.role === 'vip' && (
+                                            <MenuItem onClick={navigateSelectSMM}>
+                                                <GroupIcon style={{ color: 'green' }} />
+                                                <div>Select SMM</div>
+                                            </MenuItem>
+                                        )}
+                                        <MenuItem onClick={navigateBuyQuota}>
+                                            <AbcIcon style={{ color: 'green' }} />
+                                            <div>Buy Quota</div>
                                         </MenuItem>
                                         <MenuItem onClick={navigateAccountSettings}>
                                             <SettingsIcon style={{ color: 'gray' }} />

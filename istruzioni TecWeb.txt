@@ -65,6 +65,7 @@ HARD
 - canali popolati automaticamente?
 
 MEDIUM
+- pagina modifica password, gestione messaggi temporali
 - notifica per msg privato (aggiornamento real-time)
 - pagina iscrizione/visualizzazione canali
 - (menzioni nel testo colorate?)

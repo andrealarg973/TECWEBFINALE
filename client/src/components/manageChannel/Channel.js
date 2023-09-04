@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Grow, Grid, Paper, AppBar, TextField, Button, Typography, CardContent } from '@material-ui/core';
-import { getUsers } from '../../../actions/auth';
-import { updateChannel } from '../../../actions/channels';
+import { getUsers } from '../../actions/auth';
+import { updateChannel } from '../../actions/channels';
 import { useDispatch } from 'react-redux';
 import Select from 'react-select';
 import { ToastContainer, toast } from 'react-toastify';
