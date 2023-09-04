@@ -201,7 +201,7 @@ async function automaticPosts() {
     //console.log(temporals);
 }
 
-const delay = 3; // time in seconds
+const delay = 1; // time in seconds
 // Call the doSomething function every 5 seconds (5000 milliseconds)
 //setInterval(() => { values = doSomething(values) }, delay * 1000);
 setInterval(automaticPosts, delay * 1000);

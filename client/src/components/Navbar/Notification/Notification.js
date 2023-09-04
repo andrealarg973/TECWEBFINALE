@@ -9,9 +9,11 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Stack from '@mui/material/Stack';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { readNotification } from '../../../actions/auth';
+import { updateVisual } from '../../../actions/posts';
 import './style.css';
 
 export default function MenuListComposition({ windowSize, notifications }) {
@@ -36,7 +38,7 @@ export default function MenuListComposition({ windowSize, notifications }) {
     const found = notifications.find((not) => not._id === id).postId;
     if (found) {
       setOpen(false);
-      // update visual
+      dispatch(updateVisual(found));
       dispatch(readNotification({ id: id }));
       navigate(`/posts/${found}`);
     }
@@ -44,7 +46,8 @@ export default function MenuListComposition({ windowSize, notifications }) {
 
   const readAll = (e) => {
     notifications.map((not) => dispatch(readNotification({ id: not._id })));
-    navigate(`/posts`);
+    setOpen(false);
+    //navigate(`/posts`);
   }
 
   function handleListKeyDown(event) {
@@ -68,8 +71,8 @@ export default function MenuListComposition({ windowSize, notifications }) {
 
   const Notification = ({ notify }) => {
     return (
-      <Typography variant="inherit" noWrap>
-        {notify.content}
+      <Typography variant="inherit" noWrap style={{ color: 'cyan' }}>
+        {notify.sender}<span style={{ color: 'black' }}> {notify.content}</span>
       </Typography>
     );
   }
@@ -107,7 +110,7 @@ export default function MenuListComposition({ windowSize, notifications }) {
                   placement === 'bottom-start' ? 'left top' : 'left bottom',
               }}
             >
-              <Paper sx={{ width: (windowSize > 500 ? '100%' : 280) }}>
+              <Paper sx={{ width: (windowSize > 500 ? '100%' : 280), maxHeight: '400px', overflow: 'auto' }}>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList
                     autoFocusItem={open}
@@ -123,7 +126,8 @@ export default function MenuListComposition({ windowSize, notifications }) {
                           </MenuItem>
                         ))}
                         <MenuItem onClick={readAll}>
-                          Clear All
+                          <DeleteIcon style={{ color: 'red' }} />
+                          <div style={{ color: 'red' }}>Clear All</div>
                         </MenuItem>
                       </div>
                     ) : (

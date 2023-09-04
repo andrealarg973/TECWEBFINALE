@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const notificationlSchema = mongoose.Schema({
     postId: String,
     userId: String,
+    sender: String,
     content: String,
     read: {
         type: Boolean,

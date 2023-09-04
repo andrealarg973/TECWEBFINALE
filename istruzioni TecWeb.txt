@@ -58,7 +58,6 @@ MODIFICHE
 --------------------------------------------------------------------
 
 HARD
-- notifica per msg privato (crea notifica db, aggiungi creazione notifica (se necessario) quando creo post)
 - upload video (riorganizzazione file multimediali)
 - messaggi automatici temporizzati (gestione)
 - aumento/riduzione quota rispetto a reazioni (come fare? e aggiungi tabella per statistiche 
@@ -67,6 +66,7 @@ HARD
 
 MEDIUM
 - pagina iscrizione/visualizzazione canali
+- notifica per msg privato (aggiornamento real-time)
 - (menzioni nel testo colorate?)
 
 EASY

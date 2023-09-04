@@ -184,7 +184,7 @@ export const getCar = async (req, res) => {
 export const getNotifications = async (req, res) => {
     const user = req.params.id;
     try {
-        const notifications = await NotificationlSchema.find({ $and: [{ userId: user }, { read: false }] });
+        const notifications = await NotificationlSchema.find({ $and: [{ userId: user }, { read: false }] }).sort({ createdAt: -1 });
         res.status(200).json(notifications);
     } catch (error) {
         console.log(error);

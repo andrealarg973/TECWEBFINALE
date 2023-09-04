@@ -110,10 +110,10 @@ const UserPage = () => {
         <Grow in>
             <Container maxWidth="xl">
                 <Grid container className={classes.gridContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>
-                    <Grid item xs={12} sm={6} md={9}>
+                    <Grid item xs={12} sm={6} md={8}>
                         <Posts setCurrentId={setCurrentId} />
                     </Grid>
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item xs={12} sm={6} md={4}>
                         {user.result.role === 'vip' &&
                             <Paper className={classes.paper} elevation={6}>
                                 <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmitSMM}>

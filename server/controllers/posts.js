@@ -193,16 +193,24 @@ export const createPost = async (req, res) => {
     const newPostMessage = new PostMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString() });
 
     fetchDataAndReplace(newPostMessage.message)
-        .then(replacedString => {
+        .then(async (replacedString) => {
             //console.log("VAL: ", replacedString);
             newPostMessage.message = replacedString;
 
             if (newPostMessage.destinatariPrivati.length > 0) {
                 newPostMessage.destinatariPrivati.map(dest => {
-                    const msg = '@' + newPostMessage.name + ' tagged you on a post.';
-                    const newNotify = NotificationlSchema({ postId: newPostMessage._id, userId: dest, createdAt: newPostMessage.createdAt, content: msg });
+                    const msg = ' tagged you on a post.';
+                    const newNotify = NotificationlSchema({ postId: newPostMessage._id, userId: dest, createdAt: newPostMessage.createdAt, content: msg, sender: '@' + newPostMessage.name });
                     newNotify.save();
                 });
+            }
+
+            if (newPostMessage.reply !== '') {
+                const dest = await PostMessage.findById(newPostMessage.reply);
+                const msg = ' replied at your post.';
+                const newNotify = NotificationlSchema({ postId: newPostMessage._id, userId: dest.creator, createdAt: newPostMessage.createdAt, content: msg, sender: '@' + newPostMessage.name });
+                newNotify.save();
+                //console.log(newNotify);
             }
 
             try {
