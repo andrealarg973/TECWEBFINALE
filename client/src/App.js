@@ -30,7 +30,7 @@ const App = () => {
                     <Route path="/posts" exact element={<Home />} />
                     <Route path="/posts/search" exact element={<Home />} />
                     <Route path="/posts/:id" element={<PostDetails />} />
-                    <Route path="/auth" exact element={!user ? <Auth /> : <Navigate to="/posts" />} />
+                    <Route path="/auth" exact element={!user?.result?._id ? <Auth /> : <Navigate to="/posts" />} />
                     <Route path="/profile" exact element={<UserPage />} />
                     <Route path="/buyQuota" exact element={<IncreaseQuota />} />
                     <Route path="/selectSMM" exact element={<SelectSmm />} />
