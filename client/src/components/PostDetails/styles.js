@@ -2,11 +2,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
     media: {
-        borderRadius: '20px',
-        objectFit: 'cover',
-        width: '100%',
-        maxHeight: '600px',
-
+        height: 0,
+        paddingTop: '56.25%',
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        backgroundBlendMode: 'darken',
     },
     media1: {
         height: 0,

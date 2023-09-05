@@ -12,6 +12,7 @@ import moment from 'moment';
 import Map from '../../Map/Map';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { URL, LOCALHOST } from '../../../constants/paths';
 
 import { deletePost, likePost, dislikePost, updateVisual, getPost } from '../../../actions/posts';
 
@@ -148,11 +149,11 @@ const Post = ({ post, setCurrentId, users }) => {
                             {repPost.type === 'media' && (
                                 repPost.selectedFile.split('.').pop() === 'mp4' ? (
                                     <>
-                                        <CardMedia component='video' controls image={"http://localhost:5000/public/media/" + repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={repPost.title} />
+                                        <CardMedia component='video' controls image={URL + "/public/media/" + repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={repPost.title} />
                                     </>
                                 ) : (
                                     <>
-                                        <CardMedia className={classes.media} image={"http://localhost:5000/public/media/" + repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={repPost.title} />
+                                        <CardMedia className={classes.media} image={URL + "/public/media/" + repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={repPost.title} />
                                     </>
                                 )
 
@@ -221,11 +222,11 @@ const Post = ({ post, setCurrentId, users }) => {
                     {post.type === 'media' && (
                         post.selectedFile.split('.').pop() === 'mp4' ? (
                             <>
-                                <CardMedia component='video' controls image={"http://localhost:5000/public/media/" + post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
+                                <CardMedia component='video' controls image={URL + "/public/media/" + post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
                             </>
                         ) : (
                             <>
-                                <CardMedia className={classes.media} image={"http://localhost:5000/public/media/" + post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
+                                <CardMedia className={classes.media} image={URL + "/public/media/" + post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
                             </>
                         )
 

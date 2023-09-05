@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Grow, Grid, Paper, AppBar, TextField, Button, Typography } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { URL, LOCALHOST } from '../../constants/paths';
 
 import useStyles from '../styles';
 
@@ -30,7 +31,7 @@ const UploadFile = ({ sendDataToParent }) => {
 
         formData.append('file', file);
 
-        axios.post(`http://192.168.178.116:5000/${user?.result?._id}/uploadMedia`, formData, config)
+        axios.post(`${URL}/${user?.result?._id}/uploadMedia`, formData, config)
             .then(res => {
                 if (res.status === 200) {
                     sendDataToParent(res.data.filename);

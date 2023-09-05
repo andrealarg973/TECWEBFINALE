@@ -12,6 +12,7 @@ import useStyles from './styles';
 import { getUsers } from '../../actions/auth';
 import { useNavigate } from 'react-router-dom';
 import { updateVisual } from '../../actions/posts';
+import { URL, LOCALHOST } from '../../constants/paths';
 
 const PostDetails = () => {
     const { post, isLoading, replyPost } = useSelector((state) => state.posts);
@@ -69,11 +70,11 @@ const PostDetails = () => {
                             {repPost.type === 'media' && (
                                 repPost.selectedFile.split('.').pop() === 'mp4' ? (
                                     <>
-                                        <CardMedia component='video' controls image={"http://localhost:5000/public/media/" + repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={repPost.title} />
+                                        <CardMedia component='video' controls image={URL + "/public/media/" + repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={repPost.title} />
                                     </>
                                 ) : (
                                     <>
-                                        <CardMedia className={classes.media} image={"http://localhost:5000/public/media/" + repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={repPost.title} />
+                                        <CardMedia className={classes.media} image={URL + "/public/media/" + repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={repPost.title} />
                                     </>
                                 )
 
@@ -126,11 +127,11 @@ const PostDetails = () => {
                     {post.type === 'media' && (
                         post.selectedFile.split('.').pop() === 'mp4' ? (
                             <div className={classes.imageSection}>
-                                <CardMedia component='video' controls image={"http://localhost:5000/public/media/" + post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
+                                <CardMedia component='video' controls image={URL + "/public/media/" + post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
                             </div>
                         ) : (
                             <div className={classes.imageSection}>
-                                <CardMedia className={classes.media} image={"http://localhost:5000/public/media/" + post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
+                                <CardMedia className={classes.media} image={URL + "/public/media/" + post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
                             </div>
                         )
                     )}

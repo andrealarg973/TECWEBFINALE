@@ -58,7 +58,6 @@ MODIFICHE
 --------------------------------------------------------------------
 
 HARD
-- upload video (riorganizzazione file multimediali)
 - aumento/riduzione quota rispetto a reazioni (come fare? e aggiungi tabella per statistiche 
     (diff tra scorsa iterazione e questa)), esegui ogni minuto?
 - canali popolati automaticamente?
@@ -76,11 +75,10 @@ MODERATORE
 - homepage senza login (solo canali RISERVATI)
 - iscrizione automatica CANALI RISERVATI (es. controverso)
 
+
 FORSE
 - notifica per msg privato (aggiornamento real-time)
 - (menzioni nel testo colorate?)
-
-
 
 NON MIE:
 - gestione posizione: posizione corrente (SMM usa posizione fittizzia)
@@ -89,6 +87,7 @@ NON MIE:
 
 
 COMPLETATI:
+- upload video (riorganizzazione file multimediali)
 - pagina modifica password, gestione messaggi temporali (update temporal post)
 - risposta squeal (visualizza riassunto risposta anche nella pagina dettagli)
 - acquisto caratteri
