@@ -1,4 +1,4 @@
-import { FETCH_ALL, FETCH_TEMPORAL, FETCH_POST, FETCH_REPLY_POST, FETCH_BY_SEARCH, FETCH_BY_USER, CREATE, CREATE_TEMPORAL, UPDATE, DELETE, START_LOADING, STOP_LOADING, COMMENT } from '../constants/actionTypes';
+import { FETCH_ALL, FETCH_TEMPORAL, FETCH_POST, FETCH_REPLY_POST, FETCH_BY_SEARCH, FETCH_BY_USER, CREATE, CREATE_TEMPORAL, UPDATE, UPDATE_TEMPORAL, DELETE, START_LOADING, STOP_LOADING, COMMENT } from '../constants/actionTypes';
 import * as api from '../api';
 
 // Action Creators (functions that return an action)
@@ -116,6 +116,16 @@ export const updatePost = (id, post) => async (dispatch) => {
     try {
         const { data } = await api.updatePost(id, post);
         dispatch({ type: UPDATE, payload: data });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const updateTemporal = (id, post) => async (dispatch) => {
+    try {
+        const { data } = await api.updateTemporal(id, post);
+        dispatch({ type: UPDATE_TEMPORAL, payload: data });
+        return data;
     } catch (error) {
         console.log(error);
     }

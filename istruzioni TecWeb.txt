@@ -64,10 +64,7 @@ HARD
 - canali popolati automaticamente?
 
 MEDIUM
-- pagina modifica password, gestione messaggi temporali (update temporal post)
 - pagina iscrizione/visualizzazione canali (uso pagina gestione canali?)
-- notifica per msg privato (aggiornamento real-time)
-- (menzioni nel testo colorate?)
 
 EASY
 - pulizia database 
@@ -79,6 +76,10 @@ MODERATORE
 - homepage senza login (solo canali RISERVATI)
 - iscrizione automatica CANALI RISERVATI (es. controverso)
 
+FORSE
+- notifica per msg privato (aggiornamento real-time)
+- (menzioni nel testo colorate?)
+
 
 
 NON MIE:
@@ -88,6 +89,7 @@ NON MIE:
 
 
 COMPLETATI:
+- pagina modifica password, gestione messaggi temporali (update temporal post)
 - risposta squeal (visualizza riassunto risposta anche nella pagina dettagli)
 - acquisto caratteri
 - random quote con {QUOTE} anche nei msg automatici

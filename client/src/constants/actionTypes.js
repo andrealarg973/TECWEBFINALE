@@ -1,6 +1,7 @@
 export const CREATE = 'CREATE';
 export const CREATE_TEMPORAL = 'CREATE_TEMPORAL';
 export const UPDATE = 'UPDATE';
+export const UPDATE_TEMPORAL = 'UPDATE_TEMPORAL';
 export const LIKE = 'LIKE';
 export const DISLIKE = 'DISLIKE';
 export const COMMENT = 'COMMENT';
@@ -18,6 +19,7 @@ export const STOP_LOADING = 'STOP_LOADING';
 export const AUTH = 'AUTH';
 export const LOGOUT = 'LOGOUT';
 export const UPDATE_QUOTA = 'UPDATE_QUOTA';
+export const UPDATE_PWD = 'UPDATE_PWD';
 export const GET_CAR = 'GET_CAR';
 export const GET_USERS = 'GET_USERS';
 export const GET_SMMS = 'GET_SMMS';

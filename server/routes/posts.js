@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getPosts, getTemporalPosts, getPost, getReplyPost, getPostsBySearch, getPostsByUser, createPost, createAutomaticPost, updatePost, deletePost, likePost, dislikePost, commentPost, updateVisual } from '../controllers/posts.js';
+import { getPosts, getTemporalPosts, getPost, getReplyPost, getPostsBySearch, getPostsByUser, createPost, createAutomaticPost, updatePost, updateTemporal, deletePost, likePost, dislikePost, commentPost, updateVisual } from '../controllers/posts.js';
 import auth from '../middleware/auth.js';
 
 const router = express.Router();
@@ -17,6 +17,7 @@ router.patch('/:id/visual', updateVisual);
 router.post('/', auth, createPost);
 router.post('/automatic', auth, createAutomaticPost);
 router.patch('/:id', auth, updatePost);
+router.patch('/:id/updateTemporal', auth, updateTemporal);
 router.delete('/:id', auth, deletePost);
 router.patch('/:id/likePost', auth, likePost);
 router.patch('/:id/dislikePost', auth, dislikePost);

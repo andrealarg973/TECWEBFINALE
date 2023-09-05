@@ -173,7 +173,7 @@ const Post = ({ post, setCurrentId, users }) => {
     // usa classes.overlay per scrivere sopra l'immagine
 
     return (
-        <Card className={classes.card} style={post.destinatariPrivati.length > 0 ? { border: '2px dashed blue' } : {}} raised elevation={6}>
+        <Card className={classes.card} style={((post.destinatariPrivati.length > 0 && !post.repeat) ? { border: '2px dashed blue' } : (post.repeat ? (post.active ? { border: '3px solid green' } : { border: '3px solid red' }) : {}))} raised elevation={6}>
             <ButtonBase className={classes.cardAction} onClick={openPost}>
 
                 <div className={classes.details} >
@@ -249,9 +249,12 @@ const Post = ({ post, setCurrentId, users }) => {
                         <ReplyIcon fontSize="small" /> Reply
                     </Button>
                 ) : (
-                    <Button size="small" color="primary" onClick={() => { setCurrentId(post._id) }}>
-                        <CreateIcon fontSize="small" /> Manage
-                    </Button>
+                    <>
+                        <Button size="small" color="primary" onClick={() => { setCurrentId(post._id) }}>
+                            <CreateIcon fontSize="small" /> Manage
+                        </Button>
+                        Timer: {post.repeat} seconds
+                    </>
                 )}
 
 

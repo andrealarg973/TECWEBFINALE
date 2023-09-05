@@ -52,7 +52,7 @@ const ChannelManager = () => {
     );
 
     return (
-        <Container>
+        <Container maxWidth="xl">
             <Paper className={classes.paper} elevation={6}>
                 <Typography variant="h5" style={{ textAlign: 'center' }}>Channel Manager</Typography>
                 <Container maxWidth="sm">

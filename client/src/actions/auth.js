@@ -1,4 +1,4 @@
-import { AUTH, UPDATE_QUOTA, GET_CAR, GET_USERS, GET_SMMS, GET_MY_SMM, SET_SMM, GET_QUOTA, GET_NOTIFICATIONS, READ_NOTIFICATION } from '../constants/actionTypes';
+import { AUTH, UPDATE_QUOTA, UPDATE_PWD, GET_CAR, GET_USERS, GET_SMMS, GET_MY_SMM, SET_SMM, GET_QUOTA, GET_NOTIFICATIONS, READ_NOTIFICATION } from '../constants/actionTypes';
 import * as api from '../api';
 
 export const getUsers = (id) => async (dispatch) => {
@@ -78,6 +78,18 @@ export const updateQuota = (formData) => async (dispatch) => {
         const { data } = await api.updateQuota(formData);
         //console.log('data', data);
         dispatch({ type: UPDATE_QUOTA, payload: data });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const updatePassword = (id, pwd, navigate) => async (dispatch) => {
+    try {
+        const { data } = await api.updatePassword(id, pwd);
+        //console.log('data', data);
+        dispatch({ type: UPDATE_PWD, payload: data });
+        navigate('/');
 
     } catch (error) {
         console.log(error);

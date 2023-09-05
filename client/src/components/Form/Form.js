@@ -11,7 +11,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
 import useStyles from './styles';
-import { createPost, createPostTemporal, updatePost } from '../../actions/posts';
+import { createPost, createPostTemporal, updatePost, updateTemporal } from '../../actions/posts';
 import { getUsers, updateQuota, getCar, getQuotas } from '../../actions/auth';
 import { getChannels, createChannel } from '../../actions/channels';
 import { useNavigate } from 'react-router-dom';
@@ -153,6 +153,7 @@ const Form = ({ currentId, setCurrentId }) => {
                 if (post.type === 'location') setLocation(post.location);
                 setPostData(post);
                 setTemporal(true);
+                setTime(post.repeat);
                 setSwitchController(post.active);
             }
             replyRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -168,9 +169,6 @@ const Form = ({ currentId, setCurrentId }) => {
 
         if (currentId === 0 || currentId === null) {
             if ((Math.min(quotas.day, quotas.week, quotas.month) - caratteri >= 0) || (postData.destinatariPrivati.length > 0) || temporal) {
-                //if (postData.destinatari.length < 1 && postData.destinatariPrivati.length < 1) {
-                //alert('Devi selezionare almeno un destinatario!');
-                //} else {
                 if (temporal) {
                     dispatch(createPostTemporal({ ...postData, name: user?.result?.name, location: location, repeat: (time >= 10 ? time : 10) }));
                 } else {
@@ -188,11 +186,11 @@ const Form = ({ currentId, setCurrentId }) => {
 
             }
         } else {
-            /*
-            dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
+
+            dispatch(updateTemporal(currentId, { ...postData, name: user?.result?.name, repeat: time, active: switchController }));
             clear();
-            navigate('/');
-            */
+            navigate('/temporalPosts');
+            /*
             if ((Math.min(quotas.day, quotas.week, quotas.month) - caratteri >= 0) || (postData.destinatariPrivati.length > 0) || temporal) {
                 //if (postData.destinatari.length < 1 && postData.destinatariPrivati.length < 1) {
                 //alert('Devi selezionare almeno un destinatario!');
@@ -213,6 +211,7 @@ const Form = ({ currentId, setCurrentId }) => {
                 alert('Quota insufficiente');
 
             }
+            */
         }
 
     }
@@ -229,6 +228,8 @@ const Form = ({ currentId, setCurrentId }) => {
     const clear = () => {
         setCurrentId(null);
         setCaratteri(0);
+        setTime(10);
+        setTemporal(false);
         setPostData({ title: '', message: '', tags: '', selectedFile: '', type: 'text', privacy: 'public', reply: '', location: [], destinatari: [], destinatariPrivati: [] });
     }
     /*
@@ -429,7 +430,7 @@ const Form = ({ currentId, setCurrentId }) => {
                     <>
                         <div style={{ marginBottom: '10px' }}>Ogni quanto vuoi pubblicare il messaggio? (in secondi)</div>
                         <Tooltip placement="top" title="Minimum 10 seconds, it will set automatically to 10 if lower">
-                            <input className={classes.inputTime} min="10" value={post?.repeat ? post.repeat : time} onChange={(e) => setTime(e.target.value)} type="number"></input>
+                            <input className={classes.inputTime} min="10" value={time} onChange={(e) => setTime(e.target.value)} type="number"></input>
                         </Tooltip>
                     </>
                 )}

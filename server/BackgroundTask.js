@@ -155,8 +155,8 @@ async function automaticPosts() {
                                     try {
                                         if (newPost.destinatariPrivati.length > 0) {
                                             newPost.destinatariPrivati.map(dest => {
-                                                const msg = '@' + newPost.name + ' tagged you on a post.';
-                                                const newNotify = NotificationlSchema({ postId: newPost._id, userId: dest, createdAt: newPost.createdAt, content: msg });
+                                                const msg = ' tagged you on a post.';
+                                                const newNotify = NotificationlSchema({ postId: newPost._id, userId: dest, createdAt: newPost.createdAt, content: msg, sender: '@' + newPost.name });
                                                 newNotify.save();
                                             });
                                         }

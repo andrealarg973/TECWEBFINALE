@@ -133,6 +133,32 @@ export const signup = async (req, res) => {
     }
 }
 
+export const changePassword = async (req, res) => {
+    const id = req.params.id;
+    const data = req.body;
+    //console.log(id);
+    //console.log(data);
+    try {
+        const currentUser = await User.findById(id);
+        const hashedPassword = await bcrypt.hash(data.oldPassword, 12);
+
+        //console.log(hashedPassword);
+        //console.log(currentUser.password);
+
+        const isPasswordCorrect = await bcrypt.compare(data.oldPassword, currentUser.password);
+        if (!isPasswordCorrect) return res.status(400).json({ message: "Passwords don't match" });
+
+        const newHashedPassword = await bcrypt.hash(data.newPassword, 12);
+
+        const newUser = await User.findByIdAndUpdate(currentUser._id, { password: newHashedPassword }, { new: true });
+
+        res.status(200).json(newUser);
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 export const updateQuota = async (req, res) => {
     //console.log(req.body);

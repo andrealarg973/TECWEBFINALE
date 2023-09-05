@@ -281,6 +281,20 @@ export const updatePost = async (req, res) => {
     res.json(updatedPost);
 }
 
+export const updateTemporal = async (req, res) => {
+    const { id } = req.params;
+    const updatedPost = req.body;
+    //console.log(updatedPost);
+
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
+
+    //const updatedPost = { creator, title, message, tags, likes, destinatari, destinatariPrivati, privacy, selectedFile, _id: id };
+
+    await PostMessageTemporal.findByIdAndUpdate(id, updatedPost, { new: true });
+
+    res.json(updatedPost);
+}
+
 export const updateVisual = async (req, res) => {
     const { id } = req.params;
 

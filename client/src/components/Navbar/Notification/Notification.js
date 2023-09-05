@@ -88,7 +88,7 @@ export default function MenuListComposition({ windowSize, notifications }) {
           aria-haspopup="true"
           onClick={handleToggle}
         >
-          <NotificationsIcon fontSize='large' />
+          <NotificationsIcon fontSize='large' style={{ color: '#FFBF00' }} />
           {notifications.length > 0 && (
             <div className="iconBadge">{notifications.length}</div>
           )}

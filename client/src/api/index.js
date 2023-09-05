@@ -21,6 +21,7 @@ export const fetchPostsBySearch = (searchQuery) => API.get(`/posts/search?search
 export const createPost = (newPost) => API.post('/posts', newPost);
 export const createPostTemporal = (newPost) => API.post('/posts/automatic', newPost);
 export const updatePost = (id, updatedPost) => API.patch(`/posts/${id}`, updatedPost);
+export const updateTemporal = (id, updatedPost) => API.patch(`/posts/${id}/updateTemporal`, updatedPost);
 export const updateVisual = (id) => API.patch(`/posts/${id}/visual`);
 export const deletePost = (id) => API.delete(`/posts/${id}`);
 export const likePost = (id) => API.patch(`/posts/${id}/likePost`);
@@ -33,6 +34,7 @@ export const getSMMs = () => API.get(`/users/getSMM`);
 export const getMySMM = (id) => API.get(`/users/${id}/getSMM`);
 export const getNotifications = (id) => API.get(`/users/${id}/getNotifications`);
 export const readNotification = (id) => API.patch(`/users/readNotification`, id);
+export const updatePassword = (id, pwd) => API.patch(`/users/${id}/changePassword`, pwd);
 export const signIn = (formData) => API.post('/users/signin', formData);
 export const signUp = (formData) => API.post('/users/signup', formData);
 export const updateQuota = (formData) => API.patch(`/users/updateQuota`, formData);
