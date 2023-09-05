@@ -13,6 +13,7 @@ API.interceptors.request.use((req) => {
 });
 
 export const fetchPosts = (page, userId) => API.get(`/posts/${userId}/all?page=${page}`, userId);
+export const fetchTemporalPosts = (userId) => API.get(`/posts/${userId}/temporal`);
 export const fetchPost = (id) => API.get(`/posts/${id}`);
 export const fetchReplyPost = (id) => API.get(`/posts/getReplyPost`, id);
 export const fetchPostsByUser = (id) => API.get(`/posts/${id}/posts`);

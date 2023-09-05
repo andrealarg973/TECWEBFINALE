@@ -39,6 +39,25 @@ export const getPosts = async (req, res) => {
     }
 }
 
+export const getTemporalPosts = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        // ottiene tutti i canali per i quali l'utente può visualizzare/postare messaggi (e che non siano chiusi)
+        const temporalPosts = await PostMessageTemporal.find({ creator: id });
+
+
+        const replyPostsId = temporalPosts.filter(post => post.reply !== '').map(post => post.reply);
+
+        const replyPosts = await PostMessage.find({ _id: { $in: replyPostsId } });
+        //console.log(replyPosts);
+
+        res.status(200).json({ data: temporalPosts, replyPosts: replyPosts });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
 export const getPost = async (req, res) => {
     const { id } = req.params;
 

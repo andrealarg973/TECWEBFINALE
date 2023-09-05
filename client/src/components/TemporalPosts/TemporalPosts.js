@@ -10,6 +10,7 @@ import { getPostsBySearch } from '../../actions/posts';
 import Posts from '../Posts/Posts';
 import Form from '../Form/Form';
 import Paginate from '../Pagination';
+import { getTemporalPosts } from '../../actions/posts';
 
 import useStyles from '../styles';
 
@@ -18,6 +19,10 @@ const TemporalPosts = () => {
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('profile'));
     const classes = useStyles();
+
+    useEffect(() => {
+        dispatch(getTemporalPosts(user?.result?._id));
+    }, []);
 
     return (
         <Grow in>

@@ -234,18 +234,25 @@ const Post = ({ post, setCurrentId, users }) => {
             )}
 
             <CardActions className={classes.cardActions}>
-                <div>
-                    <Button size="small" color="primary" disabled={!user?.result} onClick={handleLike}>
-                        <Likes />
+                {!post.repeat && (
+                    <div>
+                        <Button size="small" color="primary" disabled={!user?.result} onClick={handleLike}>
+                            <Likes />
+                        </Button>
+                        <Button size="small" color="primary" align="center" disabled={!user?.result} onClick={handleDislike}>
+                            <Dislikes />
+                        </Button>
+                    </div>
+                )}
+                {!post.repeat ? (
+                    <Button size="small" color="primary" onClick={() => { setCurrentId(post._id) }}>
+                        <ReplyIcon fontSize="small" /> Reply
                     </Button>
-                    <Button size="small" color="primary" align="center" disabled={!user?.result} onClick={handleDislike}>
-                        <Dislikes />
+                ) : (
+                    <Button size="small" color="primary" onClick={() => { setCurrentId(post._id) }}>
+                        <CreateIcon fontSize="small" /> Manage
                     </Button>
-                </div>
-
-                <Button size="small" color="primary" onClick={() => { setCurrentId(post._id) }}>
-                    <ReplyIcon fontSize="small" /> Reply
-                </Button>
+                )}
 
 
             </CardActions>

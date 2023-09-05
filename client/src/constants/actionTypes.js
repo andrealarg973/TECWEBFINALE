@@ -6,6 +6,7 @@ export const DISLIKE = 'DISLIKE';
 export const COMMENT = 'COMMENT';
 export const DELETE = 'DELETE';
 export const FETCH_ALL = 'FETCH_ALL';
+export const FETCH_TEMPORAL = 'FETCH_TEMPORAL';
 export const FETCH_POST = 'FETCH_POST';
 export const FETCH_REPLY_POST = 'FETCH_REPLY_POST';
 export const FETCH_BY_SEARCH = 'FETCH_BY_SEARCH';

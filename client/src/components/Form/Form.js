@@ -6,6 +6,9 @@ import CreateSelect from 'react-select/creatable';
 import Select from 'react-select';
 import ChipInput from 'material-ui-chip-input';
 import Tooltip from '@mui/material/Tooltip';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 
 import useStyles from './styles';
 import { createPost, createPostTemporal, updatePost } from '../../actions/posts';
@@ -55,6 +58,7 @@ const Form = ({ currentId, setCurrentId }) => {
     });
     const [location, setLocation] = useState([]);
     const replyRef = useRef();
+    const [switchController, setSwitchController] = useState(false);
 
     const getQTAs = async () => {
         await dispatch(getQuotas(user.result._id)).then((res) => {
@@ -141,7 +145,16 @@ const Form = ({ currentId, setCurrentId }) => {
         }
 
         if (post) {
-            setPostData({ ...postData, reply: post._id, destinatari: post.destinatari, privacy: post.privacy });
+            if (!post.repeat) {
+                // reply post
+                setPostData({ ...postData, reply: post._id, destinatari: post.destinatari, privacy: post.privacy });
+            } else {
+                // edit temporal post
+                if (post.type === 'location') setLocation(post.location);
+                setPostData(post);
+                setTemporal(true);
+                setSwitchController(post.active);
+            }
             replyRef.current.scrollIntoView({ behavior: 'smooth' });
             //setPostData(post);
             //console.log(postData);
@@ -202,6 +215,10 @@ const Form = ({ currentId, setCurrentId }) => {
             }
         }
 
+    }
+
+    const handleSwitch = () => {
+        setSwitchController(!switchController);
     }
 
     const handleMessage = (e) => {
@@ -364,7 +381,7 @@ const Form = ({ currentId, setCurrentId }) => {
         <Paper className={classes.paper} elevation={6} ref={replyRef}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                 <div style={{ flexDirection: 'column' }}>
-                    <Typography style={{ textAlign: 'center' }} variant="h4">{currentId ? 'Reply to ' + post.name : 'Create Post'}</Typography>
+                    <Typography style={{ textAlign: 'center' }} variant="h4">{currentId ? (!post.repeat ? 'Reply to ' + post.name : 'Edit Post') : 'Create Post'}</Typography>
                     <RadioButtons />
                 </div>
 
@@ -407,14 +424,19 @@ const Form = ({ currentId, setCurrentId }) => {
                 )}
 
                 <Typography variant="h6">Messaggio Temporizzato</Typography>
-                <input name="temporal" type="CHECKBOX" placeholder='ciao' value="temporal" className={classes.check} onChange={handleRadioClick} />
+                <input name="temporal" type="CHECKBOX" checked={temporal} disabled={post?.repeat ? true : false} placeholder='ciao' value="temporal" className={classes.check} onChange={handleRadioClick} />
                 {temporal && (
                     <>
                         <div style={{ marginBottom: '10px' }}>Ogni quanto vuoi pubblicare il messaggio? (in secondi)</div>
                         <Tooltip placement="top" title="Minimum 10 seconds, it will set automatically to 10 if lower">
-                            <input className={classes.inputTime} min="10" value={time} onChange={(e) => setTime(e.target.value)} type="number"></input>
+                            <input className={classes.inputTime} min="10" value={post?.repeat ? post.repeat : time} onChange={(e) => setTime(e.target.value)} type="number"></input>
                         </Tooltip>
                     </>
+                )}
+                {post?.repeat && (
+                    <FormGroup style={{ marginLeft: '15px' }}>
+                        <FormControlLabel control={<Switch checked={switchController} onChange={handleSwitch} />} label="Active" />
+                    </FormGroup>
                 )}
                 <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
                 <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
