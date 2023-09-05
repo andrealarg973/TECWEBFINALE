@@ -186,32 +186,36 @@ const Form = ({ currentId, setCurrentId }) => {
 
             }
         } else {
+            if (postData.reply === '') {
 
-            dispatch(updateTemporal(currentId, { ...postData, name: user?.result?.name, repeat: time, active: switchController }));
-            clear();
-            navigate('/temporalPosts');
-            /*
-            if ((Math.min(quotas.day, quotas.week, quotas.month) - caratteri >= 0) || (postData.destinatariPrivati.length > 0) || temporal) {
-                //if (postData.destinatari.length < 1 && postData.destinatariPrivati.length < 1) {
-                //alert('Devi selezionare almeno un destinatario!');
-                //} else {
-                if (temporal) {
-                    dispatch(createPostTemporal({ ...postData, name: user?.result?.name, reply: currentId, location: location, repeat: (time >= 10 ? time : 10) }));
-                } else {
-                    dispatch(createPost({ ...postData, name: user?.result?.name, reply: currentId, location: location }));
-                }
-                //console.log(postData);
-                if (postData.destinatari.length > 0) {
-                    //dispatch(updateQuota({ ...caratteri, user: user?.result?._id, quota: caratteri }));
-                }
+
+                dispatch(updateTemporal(currentId, { ...postData, name: user?.result?.name, repeat: time, active: switchController }));
                 clear();
-                navigate('/');
-                //}
+                navigate('/temporalPosts');
             } else {
-                alert('Quota insufficiente');
 
+                if ((Math.min(quotas.day, quotas.week, quotas.month) - caratteri >= 0) || (postData.destinatariPrivati.length > 0) || temporal) {
+                    //if (postData.destinatari.length < 1 && postData.destinatariPrivati.length < 1) {
+                    //alert('Devi selezionare almeno un destinatario!');
+                    //} else {
+                    const privacy = (postData.destinatariPrivati.length <= 0 && postData.destinatari.length <= 0) ? 'public' : 'private';
+                    if (temporal) {
+                        dispatch(createPostTemporal({ ...postData, name: user?.result?.name, reply: currentId, privacy: privacy, location: location, repeat: (time >= 10 ? time : 10) }));
+                    } else {
+                        dispatch(createPost({ ...postData, name: user?.result?.name, privacy: privacy, reply: currentId, location: location }));
+                    }
+                    //console.log(postData);
+                    if (postData.destinatari.length > 0) {
+                        //dispatch(updateQuota({ ...caratteri, user: user?.result?._id, quota: caratteri }));
+                    }
+                    clear();
+                    navigate('/');
+                    //}
+                } else {
+                    alert('Quota insufficiente');
+
+                }
             }
-            */
         }
 
     }
