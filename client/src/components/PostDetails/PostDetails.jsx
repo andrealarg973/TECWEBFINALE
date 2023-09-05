@@ -67,9 +67,16 @@ const PostDetails = () => {
                         </div>
                         <CardContent>
                             {repPost.type === 'media' && (
-                                <>
-                                    <CardMedia className={classes.media1} image={repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
-                                </>
+                                repPost.selectedFile.split('.').pop() === 'mp4' ? (
+                                    <>
+                                        <CardMedia component='video' controls image={"http://localhost:5000/public/media/" + repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={repPost.title} />
+                                    </>
+                                ) : (
+                                    <>
+                                        <CardMedia className={classes.media} image={"http://localhost:5000/public/media/" + repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={repPost.title} />
+                                    </>
+                                )
+
                             )}
                             {repPost.type === 'text' && (
                                 <>
@@ -117,11 +124,15 @@ const PostDetails = () => {
                     )}
                     <Typography gutterBottom variant="h6" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
                     {post.type === 'media' && (
-                        <>
+                        post.selectedFile.split('.').pop() === 'mp4' ? (
                             <div className={classes.imageSection}>
-                                <img className={classes.media} src={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} alt={post.title} />
+                                <CardMedia component='video' controls image={"http://localhost:5000/public/media/" + post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
                             </div>
-                        </>
+                        ) : (
+                            <div className={classes.imageSection}>
+                                <CardMedia className={classes.media} image={"http://localhost:5000/public/media/" + post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
+                            </div>
+                        )
                     )}
                     {post.type === 'text' && (
                         <>

@@ -146,9 +146,16 @@ const Post = ({ post, setCurrentId, users }) => {
                         </div>
                         <CardContent>
                             {repPost.type === 'media' && (
-                                <>
-                                    <CardMedia className={classes.media} image={repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
-                                </>
+                                repPost.selectedFile.split('.').pop() === 'mp4' ? (
+                                    <>
+                                        <CardMedia component='video' controls image={"http://localhost:5000/public/media/" + repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={repPost.title} />
+                                    </>
+                                ) : (
+                                    <>
+                                        <CardMedia className={classes.media} image={"http://localhost:5000/public/media/" + repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={repPost.title} />
+                                    </>
+                                )
+
                             )}
                             {repPost.type === 'text' && (
                                 <>
@@ -212,9 +219,16 @@ const Post = ({ post, setCurrentId, users }) => {
                 <Typography className={classes.title} gutterBottom variant="h5" component="h2">{post.title}</Typography>
                 <CardContent>
                     {post.type === 'media' && (
-                        <>
-                            <CardMedia className={classes.media} image={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
-                        </>
+                        post.selectedFile.split('.').pop() === 'mp4' ? (
+                            <>
+                                <CardMedia component='video' controls image={"http://localhost:5000/public/media/" + post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
+                            </>
+                        ) : (
+                            <>
+                                <CardMedia className={classes.media} image={"http://localhost:5000/public/media/" + post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={post.title} />
+                            </>
+                        )
+
                     )}
                     {post.type === 'text' && (
                         <>

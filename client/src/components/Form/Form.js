@@ -9,6 +9,7 @@ import Tooltip from '@mui/material/Tooltip';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import UploadFile from '../UploadFile/UploadFile';
 
 import useStyles from './styles';
 import { createPost, createPostTemporal, updatePost, updateTemporal } from '../../actions/posts';
@@ -59,6 +60,14 @@ const Form = ({ currentId, setCurrentId }) => {
     const [location, setLocation] = useState([]);
     const replyRef = useRef();
     const [switchController, setSwitchController] = useState(false);
+
+    const [dataFromChild, setDataFromChild] = useState('');
+
+    // Callback function to receive data from the child component
+    const receiveDataFromChild = (data) => {
+        setDataFromChild(data);
+        setPostData({ ...postData, selectedFile: data });
+    };
 
     const getQTAs = async () => {
         await dispatch(getQuotas(user.result._id)).then((res) => {
@@ -166,6 +175,10 @@ const Form = ({ currentId, setCurrentId }) => {
         e.preventDefault();
         //setPostData({ ...postData, location: location });
         //console.log(postData);
+        if (postData.type === 'media' && postData.selectedFile === '') {
+            alert('You forgot to upload the media file');
+            return;
+        }
 
         if (currentId === 0 || currentId === null) {
             if ((Math.min(quotas.day, quotas.week, quotas.month) - caratteri >= 0) || (postData.destinatariPrivati.length > 0) || temporal) {
@@ -381,6 +394,8 @@ const Form = ({ currentId, setCurrentId }) => {
     // <TextField name="title" variant="outlined" label="Title" fullWidth value={postData.title} onChange={(e) => setPostData({ ...postData, title: e.target.value })} />
     // <TextField name="tags" variant="outlined" label="Tags (coma separated)" fullWidth value={postData.tags} onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })} />
 
+
+    // <FileBase type="file" multiple={false} onDone={({ base64 }) => { setPostData({ ...postData, selectedFile: base64 }); setCaratteri(125); }} />
     return (
 
         <Paper className={classes.paper} elevation={6} ref={replyRef}>
@@ -398,7 +413,7 @@ const Form = ({ currentId, setCurrentId }) => {
                     </>
                 )}
                 {postData.type === 'media' && (
-                    <div className={classes.fileInput}><FileBase type="file" multiple={false} onDone={({ base64 }) => { setPostData({ ...postData, selectedFile: base64 }); setCaratteri(125); }} /></div>
+                    <div className={classes.fileInput}><UploadFile sendDataToParent={receiveDataFromChild} /></div>
                 )}
                 {postData.type === 'location' && (
                     <>

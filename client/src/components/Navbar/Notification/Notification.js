@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { readNotification } from '../../../actions/auth';
 import { updateVisual } from '../../../actions/posts';
+import moment from 'moment';
 import './style.css';
 
 export default function MenuListComposition({ windowSize, notifications }) {
@@ -73,10 +74,12 @@ export default function MenuListComposition({ windowSize, notifications }) {
     return (
       <Typography variant="inherit" noWrap style={{ color: 'cyan' }}>
         {notify.sender}<span style={{ color: 'black' }}> {notify.content}</span>
+        <Typography style={{ color: 'black', textAlign: 'right' }} variant="body2">{moment(notify.createdAt).fromNow()}</Typography>
       </Typography>
     );
   }
 
+  //<Typography variant="body2">{moment(post.createdAt).fromNow()}</Typography>
   return (
     <Stack direction="row" spacing={2}>
       <div style={{ zIndex: '1000' }}>

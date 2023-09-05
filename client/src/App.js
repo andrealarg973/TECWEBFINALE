@@ -14,6 +14,7 @@ import ChannelManager from "./components/manageChannel/ChannelManager";
 import Settings from './components/Settings/Settings';
 import TemporalPosts from './components/TemporalPosts/TemporalPosts';
 import Form from "./components/Form/Form";
+import UploadFile from "./components/UploadFile/UploadFile";
 
 const App = () => {
 
@@ -36,6 +37,7 @@ const App = () => {
                     <Route path="/channelManager" exact element={<ChannelManager />} />
                     <Route path="/settings" exact element={<Settings />} />
                     <Route path="/temporalPosts" exact element={<TemporalPosts />} />
+                    <Route path="/uploadFile" exact element={<UploadFile />} />
                     <Route path="/newPost" exact element={<Container maxWidth="sm"><Form currentId={currentId} setCurrentId={setCurrentId} /></Container>} />
                 </Routes>
             </Container>
