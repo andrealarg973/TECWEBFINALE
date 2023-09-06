@@ -3,8 +3,9 @@ import PostMessage from './models/postMessage.js';
 import PostMessageTemporal from './models/postMessageTemporal.js';
 import QuotaSchema from './models/quota.js';
 import NotificationlSchema from './models/notification.js';
+import StatisticSchema from './models/statistic.js';
 
-async function updateQuotas() {
+async function test() {
     //const dateDay = new Date();
     //dateDay.setHours(17, 0, 0, 0);
     //let db = arg;
@@ -27,8 +28,6 @@ async function updateQuotas() {
     });
     console.log("-------------------------------------------");
 
-
-
     //db.push('wewe');
     //console.log(arg);
     //const posts = await PostMessage.find();
@@ -36,26 +35,120 @@ async function updateQuotas() {
     //console.log("Background task executed");
 }
 
-function replacePlaceholders(inputString) {
-    const currentDate = new Date();
+async function updateQuotas() {
+    const currentStats = await PostMessage.aggregate([
+        {
+            $match: {
+                'destinatariPrivati': { $exists: true }, // Ensure the field exists
+                $expr: { $lte: [{ $size: '$destinatariPrivati' }, 0] } // Check the length of the array
+            }
+        },
+        {
+            $group: {
+                _id: "$creator",
+                popularPosts: {
+                    $sum: {
+                        $cond: [
+                            {
+                                $and: [
+                                    { $gt: [{ $size: "$likes" }, { $multiply: ["$visual", 0.25] }] },
+                                    { $lte: [{ $size: "$dislikes" }, { $multiply: ["$visual", 0.25] }] }
+                                ]
+                            },
+                            1,
+                            0
+                        ]
+                    }
+                },
+                impopularPosts: {
+                    $sum: {
+                        $cond: [
+                            {
+                                $and: [
+                                    { $lte: [{ $size: "$likes" }, { $multiply: ["$visual", 0.25] }] },
+                                    { $gt: [{ $size: "$dislikes" }, { $multiply: ["$visual", 0.25] }] }
+                                ]
+                            },
+                            1,
+                            0
+                        ]
+                    }
+                },
+                controversialPosts: {
+                    $sum: {
+                        $cond: [
+                            {
+                                $and: [
+                                    { $gt: [{ $size: "$likes" }, { $multiply: ["$visual", 0.25] }] },
+                                    { $gt: [{ $size: "$dislikes" }, { $multiply: ["$visual", 0.25] }] }
+                                ]
+                            },
+                            1,
+                            0
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            $project: {
+                _id: 1,
+                popularPosts: 1,
+                impopularPosts: 1,
+                controversialPosts: 1,
+                totalPosts: {
+                    $add: ["$popularPosts", "$impopularPosts", "$controversialPosts"]
+                }
+            }
+        }
+    ]);
 
-    const dateOptions = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    };
+    const previousStats = await StatisticSchema.find();
+    //console.log(previousStatistics);
 
-    const timeOptions = {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-    };
+    currentStats.map(async (currStat) => {
+        const previousStat = previousStats.find(s => s.userId === currStat._id);
+        if (currStat.popularPosts > previousStat.maxPopularPosts) {
+            //console.log(currStat._id + " new popular quote: " + currStat.popularPosts + " vs previous " + previousStat.maxPopularPosts);
+            await StatisticSchema.findByIdAndUpdate(previousStat._id, { maxPopularPosts: currStat.popularPosts }, { new: true });
+            if (parseInt(currStat.popularPosts / 10) > parseInt(previousStat.maxPopularPosts / 10)) {
+                //console.log('HAVE TO INCREASE QUOTA');
+                const quota = await QuotaSchema.findOne({ user: currStat._id });
+                const newQuota = await QuotaSchema.findByIdAndUpdate(
+                    quota._id,
+                    {
+                        extraDay: quota.extraDay + (parseInt(quota.day / 100)),
+                        extraWeek: quota.extraWeek + (parseInt(quota.week / 100)),
+                        extraMonth: quota.extraMonth + (parseInt(quota.month / 100)),
+                    },
+                    { new: true }
+                );
+                //console.log(newQuota);
+            }
+        }
+        if (currStat.impopularPosts > previousStat.maxImpopularPosts) {
+            //console.log(currStat._id + " new impopular quote: " + currStat.impopularPosts + " vs previous " + previousStat.maxImpopularPosts);
+            await StatisticSchema.findByIdAndUpdate(previousStat._id, { maxImpopularPosts: currStat.impopularPosts }, { new: true });
+            if (parseInt(currStat.impopularPosts / 3) > parseInt(previousStat.maxImpopularPosts / 3)) {
+                //console.log('HAVE TO REDUCE QUOTA');
+                const quota = await QuotaSchema.findOne({ user: currStat._id });
+                const newQuota = await QuotaSchema.findByIdAndUpdate(
+                    quota._id,
+                    {
+                        extraDay: quota.extraDay - (parseInt(quota.day / 100)),
+                        extraWeek: quota.extraWeek - (parseInt(quota.week / 100)),
+                        extraMonth: quota.extraMonth - (parseInt(quota.month / 100)),
+                    },
+                    { new: true }
+                );
+                //console.log(newQuota);
+            }
+        }
+    });
 
-    const replacedString = inputString
-        .replace(/{DATE}/g, currentDate.toLocaleDateString(undefined, dateOptions))
-        .replace(/{TIME}/g, currentDate.toLocaleTimeString(undefined, timeOptions));
+    //const posts = await postsAggregate.toArray();
+    //console.log(currentStats);
 
-    return replacedString;
 }
 
 async function fetchDataAndReplace(inputString) {
@@ -212,8 +305,9 @@ async function automaticPosts() {
     //console.log(temporals);
 }
 
-const delay = 1; // time in seconds
+const delay = 3; // time in seconds
 // Call the doSomething function every 5 seconds (5000 milliseconds)
 //setInterval(() => { values = doSomething(values) }, delay * 1000);
 setInterval(automaticPosts, delay * 1000);
-//setInterval(updateQuotas, delay * 1000);
+//setInterval(test, delay * 1000);
+setInterval(updateQuotas, delay * 1000);

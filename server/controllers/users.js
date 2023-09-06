@@ -8,6 +8,7 @@ import QuotaSchema from '../models/quota.js';
 import PostMessage from '../models/postMessage.js';
 import InitialQuotaSchema from '../models/initialQuota.js';
 import NotificationlSchema from '../models/notification.js';
+import StatisticSchema from '../models/statistic.js';
 
 const router = express.Router();
 
@@ -120,7 +121,8 @@ export const signup = async (req, res) => {
 
         const initialQuota = await InitialQuotaSchema.findOne();
 
-        const quota = await QuotaSchema.create({ user: result._id, day: initialQuota.day, week: initialQuota.week, month: initialQuota.month });
+        await QuotaSchema.create({ user: result._id, day: initialQuota.day, week: initialQuota.week, month: initialQuota.month });
+        await StatisticSchema.create({ userId: result._id });
 
         //console.log(result);
 
