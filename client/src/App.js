@@ -17,8 +17,6 @@ import Form from "./components/Form/Form";
 import UploadFile from "./components/UploadFile/UploadFile";
 
 const App = () => {
-
-    const user = JSON.parse(localStorage.getItem('profile'));
     const [currentId, setCurrentId] = useState(0);
 
     return (
@@ -30,7 +28,7 @@ const App = () => {
                     <Route path="/posts" exact element={<Home />} />
                     <Route path="/posts/search" exact element={<Home />} />
                     <Route path="/posts/:id" element={<PostDetails />} />
-                    <Route path="/auth" exact element={!user?.result?._id ? <Auth /> : <Navigate to="/posts" />} />
+                    <Route path="/auth" exact element={<Auth />} />
                     <Route path="/profile" exact element={<UserPage />} />
                     <Route path="/buyQuota" exact element={<IncreaseQuota />} />
                     <Route path="/selectSMM" exact element={<SelectSmm />} />
