@@ -15,6 +15,7 @@ API.interceptors.request.use((req) => {
 });
 
 export const fetchPosts = (page, userId) => API.get(`/posts/${userId}/all?page=${page}`, userId);
+export const fetchUnloggedPosts = (page) => API.get(`/posts/unlogged?page=${page}`);
 export const fetchTemporalPosts = (userId) => API.get(`/posts/${userId}/temporal`);
 export const fetchPost = (id) => API.get(`/posts/${id}`);
 export const fetchReplyPost = (id) => API.get(`/posts/getReplyPost`, id);
@@ -44,6 +45,7 @@ export const getCar = (id) => API.patch(`/users/caratteri`, id);
 export const setSMM = (idVip, idSmm) => API.patch(`/users/${idVip}/setSMM`, idSmm);
 
 export const getChannels = (id) => API.get(`/channels/${id}/getChannels`);
+export const getReservedChannels = () => API.get(`/channels/getReservedChannels`);
 export const getMyChannels = (id) => API.get(`/channels/${id}/getMyChannels`);
 export const createChannel = (channel) => API.post('/channels/addChannel', channel);
 export const updateChannel = (id, channel) => API.patch(`/channels/${id}/updateChannel`, channel);

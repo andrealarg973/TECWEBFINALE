@@ -58,8 +58,6 @@ MODIFICHE
 --------------------------------------------------------------------
 
 HARD
-- aumento/riduzione quota rispetto a reazioni (come fare? e aggiungi tabella per statistiche 
-    (diff tra scorsa iterazione e questa)), esegui ogni minuto?
 - canali popolati automaticamente?
 
 MEDIUM
@@ -88,6 +86,8 @@ NON MIE:
 
 
 COMPLETATI:
+- aumento/riduzione quota rispetto a reazioni (come fare? e aggiungi tabella per statistiche 
+    (diff tra scorsa iterazione e questa)), esegui ogni minuto?
 - upload video (riorganizzazione file multimediali)
 - pagina modifica password, gestione messaggi temporali (update temporal post)
 - risposta squeal (visualizza riassunto risposta anche nella pagina dettagli)

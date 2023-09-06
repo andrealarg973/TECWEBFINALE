@@ -3,7 +3,7 @@ import { Pagination, PaginationItem } from '@material-ui/lab';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getPosts } from '../actions/posts';
+import { getPosts, getUnloggedPosts } from '../actions/posts';
 
 import useStyles from './styles';
 
@@ -14,7 +14,14 @@ const Paginate = ({ page }) => {
     const user = JSON.parse(localStorage.getItem('profile'));
 
     useEffect(() => {
-        if (page) dispatch(getPosts(page, user?.result._id));
+        if (page) {
+            if (user) {
+                dispatch(getPosts(page, user?.result._id));
+            } else {
+                dispatch(getUnloggedPosts(page));
+            }
+
+        }
     }, [page, dispatch]);
 
     return (

@@ -10,7 +10,7 @@ const router = express.Router();
 
 export const getPosts = async (req, res) => {
     const { page } = req.query;
-    const id = req.params.id;
+    const id = req?.params?.id;
     //console.log(id);
 
     try {
@@ -19,7 +19,7 @@ export const getPosts = async (req, res) => {
         //const total = await PostMessage.countDocuments({});
 
         // ottiene tutti i canali per i quali l'utente può visualizzare/postare messaggi (e che non siano chiusi)
-        const canali = await ChannelSchema.find({ $and: [{ $or: [{ owner: { $in: id } }, { participants: { $in: id } }, { privacy: 'public' }] }, { privacy: { $ne: 'closed' } }] });
+        const canali = await ChannelSchema.find({ $and: [{ $or: [{ owner: { $in: id } }, { participants: { $in: id } }, { privacy: 'reserved' }, { privacy: 'public' }] }, { privacy: { $ne: 'closed' } }] });
         //console.log(canali);
 
         // ottiene tutti i post visualizzabili dall'utente in questione
@@ -38,6 +38,29 @@ export const getPosts = async (req, res) => {
         res.status(404).json({ message: error.message });
     }
 }
+
+export const getUnloggedPosts = async (req, res) => {
+    const { page } = req.query;
+
+    try {
+        const LIMIT = 12;
+        const startIndex = (Number(page) - 1) * LIMIT; // get the starting index of every page
+        //const total = await PostMessage.countDocuments({});
+
+        const canali = await ChannelSchema.find({ privacy: 'reserved' });
+        const posts = await PostMessage.find({ destinatari: { $in: canali.map((canale) => canale.value) } }).sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+        const total = await PostMessage.find({ destinatari: { $in: canali.map((canale) => canale.value) } }).countDocuments({});
+        const replyPostsId = posts.filter(post => post.reply !== '').map(post => post.reply);
+        const replyPosts = await PostMessage.find({ _id: { $in: replyPostsId } });
+
+        //console.log({ data: posts, replyPosts: replyPosts, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT) })
+
+        res.status(200).json({ data: posts, replyPosts: replyPosts, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT) });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
 
 export const getTemporalPosts = async (req, res) => {
     const id = req.params.id;

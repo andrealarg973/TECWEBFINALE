@@ -7,6 +7,7 @@ export const DISLIKE = 'DISLIKE';
 export const COMMENT = 'COMMENT';
 export const DELETE = 'DELETE';
 export const FETCH_ALL = 'FETCH_ALL';
+export const FETCH_UNLOGGED = 'FETCH_UNLOGGED';
 export const FETCH_TEMPORAL = 'FETCH_TEMPORAL';
 export const FETCH_POST = 'FETCH_POST';
 export const FETCH_REPLY_POST = 'FETCH_REPLY_POST';
@@ -30,6 +31,7 @@ export const GET_NOTIFICATIONS = 'GET_NOTIFICATIONS';
 export const READ_NOTIFICATION = 'READ_NOTIFICATION';
 
 export const GET_CHANNELS = 'GET_CHANNELS';
+export const GET_RES_CHANNELS = 'GET_RES_CHANNELS';
 export const CREATE_CHANNEL = 'CREATE_CHANNEL';
 export const GET_MY_CHANNELS = 'GET_MY_CHANNELS';
 export const UPDATE_CHANNEL = 'UPDATE_CHANNEL';

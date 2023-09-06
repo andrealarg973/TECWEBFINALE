@@ -104,6 +104,11 @@ const Channel = ({ channel }) => {
                     <input name="privacy" type="radio" value="public" onChange={handleRadioClick} defaultChecked={checkPrivacy('public')} />Public
                     <input name="privacy" type="radio" value="private" onChange={handleRadioClick} defaultChecked={checkPrivacy('private')} />Private
                     <input name="privacy" type="radio" value="closed" onChange={handleRadioClick} defaultChecked={checkPrivacy('closed')} />Closed
+                    {channelData.privacy === 'reserved' && (
+                        <>
+                            <input name="privacy" type="radio" value="reserved" onChange={handleRadioClick} defaultChecked={checkPrivacy('reserved')} />Reserved
+                        </>
+                    )}
                 </div>
                 <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
                 <ToastContainer autoClose={1000} hideProgressBar={true} />
