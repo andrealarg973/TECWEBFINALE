@@ -144,6 +144,10 @@ async function updateQuotas() {
                 //console.log(newQuota);
             }
         }
+
+        if (currStat.popularPosts !== previousStat.popularPosts || currStat.impopularPosts !== previousStat.impopularPosts || currStat.controversialPosts !== previousStat.controversialPosts) {
+            await StatisticSchema.findByIdAndUpdate(previousStat._id, { popularPosts: currStat.popularPosts, impopularPosts: currStat.impopularPosts, controversialPosts: currStat.controversialPosts }, { new: true });
+        }
     });
 
     //const posts = await postsAggregate.toArray();

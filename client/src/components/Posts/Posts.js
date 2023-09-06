@@ -21,7 +21,9 @@ const Posts = ({ setCurrentId }) => {
     }
 
     useEffect(() => {
-        getUsrs();
+        if (user) {
+            getUsrs();
+        }
         //console.log(users);
     }, []);
 
