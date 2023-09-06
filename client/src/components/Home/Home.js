@@ -82,7 +82,7 @@ const Home = () => {
     }
 
     useEffect(() => {
-        getChanns();
+        if (user) getChanns();
         //getReservedChanns();
     }, []);
 

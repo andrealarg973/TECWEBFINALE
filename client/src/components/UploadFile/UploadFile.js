@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Grow, Grid, Paper, AppBar, TextField, Button, Typography } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import { URL, LOCALHOST } from '../../constants/paths';
+import { URL } from '../../constants/paths';
 
 import useStyles from '../styles';
 

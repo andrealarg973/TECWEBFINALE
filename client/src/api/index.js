@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { URL, LOCALHOST } from '../constants/paths';
+import { URL1 } from '../constants/paths';
 
 // http://192.168.178.116:5000
-const API = axios.create({ baseURL: URL });
+const API = axios.create({ baseURL: URL1 });
 
 //const url = 'http://localhost:5000/posts'; // url pointing to backend
 

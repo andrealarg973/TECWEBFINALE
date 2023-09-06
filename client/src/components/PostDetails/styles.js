@@ -7,6 +7,11 @@ export default makeStyles((theme) => ({
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
         backgroundBlendMode: 'darken',
     },
+    mediaVideo: {
+        maxHeight: '600px',
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        backgroundBlendMode: 'darken',
+    },
     media1: {
         height: 0,
         paddingTop: '56.25%',

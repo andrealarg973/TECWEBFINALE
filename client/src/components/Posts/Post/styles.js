@@ -7,6 +7,11 @@ export default makeStyles({
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
         backgroundBlendMode: 'darken',
     },
+    mediaVideo: {
+        maxHeight: '200px',
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        backgroundBlendMode: 'darken',
+    },
     border: {
         border: 'solid',
     },

@@ -5,14 +5,14 @@ import QuotaSchema from './models/quota.js';
 import NotificationlSchema from './models/notification.js';
 import StatisticSchema from './models/statistic.js';
 
-async function test() {
+async function getControversial() {
     //const dateDay = new Date();
     //dateDay.setHours(17, 0, 0, 0);
     //let db = arg;
 
-
+    /*
     const posts = await PostMessage.find();
-    //console.log(day);
+
     posts.map((post) => {
         if (post.likes.length > (0.25 * post.visual) && post.dislikes.length > (0.25 * post.visual)) {
             console.log("CONTROVERSO: ", post.message, post.likes.length, post.dislikes.length, post.visual);
@@ -27,12 +27,56 @@ async function test() {
 
     });
     console.log("-------------------------------------------");
+    */
 
-    //db.push('wewe');
-    //console.log(arg);
-    //const posts = await PostMessage.find();
-    // Your periodic action code here
-    //console.log("Background task executed");
+    const postsToMoveInControversial = await PostMessage.aggregate([
+        {
+            $match: {
+                $expr: {
+                    $and: [
+                        { $lt: [{ $size: "$destinatariPrivati" }, 1] },
+                        { $gt: [{ $size: "$likes" }, { $multiply: ["$visual", 0.25] }] },
+                        { $gt: [{ $size: "$dislikes" }, { $multiply: ["$visual", 0.25] }] },
+                        { $not: { $in: ["CONTROVERSIAL", "$destinatari"] } }
+                    ]
+                }
+            }
+        }
+    ]);
+
+    const postsToRemoveFromControversial = await PostMessage.aggregate([
+        {
+            $match: {
+                $expr: {
+                    $and: [
+                        {
+                            $or: [
+                                { $lte: [{ $size: "$likes" }, { $multiply: ["$visual", 0.25] }] },
+                                { $lte: [{ $size: "$dislikes" }, { $multiply: ["$visual", 0.25] }] }
+                            ]
+                        },
+                        { $in: ["CONTROVERSIAL", "$destinatari"] }
+                    ]
+                }
+            }
+        }
+    ]);
+
+    // need to check that post is not private!!
+
+    //console.log('add', postsToMoveInControversial);
+    //console.log('remove', postsToRemoveFromControversial);
+
+
+    postsToMoveInControversial.map(async (post) => {
+        await PostMessage.findByIdAndUpdate(post._id, { destinatari: post.destinatari.concat(['CONTROVERSIAL']) }, { new: true });
+    });
+
+    postsToRemoveFromControversial.map(async (post) => {
+        await PostMessage.findByIdAndUpdate(post._id, { destinatari: post.destinatari.filter((dest) => dest !== 'CONTROVERSIAL') }, { new: true });
+    });
+
+
 }
 
 async function updateQuotas() {
@@ -310,7 +354,9 @@ async function automaticPosts() {
 }
 
 const automaticPostsDelay = 1; // time in seconds
-const automaticQuotaDelay = 30; // time in seconds
+const automaticQuotaDelay = 5; // time in seconds
+const getControversialDelay = 5; // time in seconds
 
 setInterval(automaticPosts, automaticPostsDelay * 1000);
 setInterval(updateQuotas, automaticQuotaDelay * 1000);
+setInterval(getControversial, getControversialDelay * 1000);

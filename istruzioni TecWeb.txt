@@ -67,7 +67,7 @@ EASY
 - pulizia database 
 - acquisto quota (scade dopo un anno)
 
-MODERATORE
+MODERATORE (si e no)
 - canali riservati: di squealer, solo il mod può usarli (alla fine)
 - creazione CANALI PUBBLICI, popolazione automatica
 - homepage senza login (solo canali RISERVATI)
