@@ -55,7 +55,18 @@ export const getPublicChannels = async (req, res) => {
     }
 }
 
+export const getChannelByName = async (req, res) => {
+    const name = req.params.id;
+    //console.log('BODY', id);
+    try {
+        const channel = await ChannelSchema.findOne({ value: name });
+        //console.log(channel);
 
+        res.status(200).json(channel);
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export const getChannels = async (req, res) => {
     const id = req.params.id;

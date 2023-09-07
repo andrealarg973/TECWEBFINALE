@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getPosts, getUnloggedPosts, getTemporalPosts, getPost, getReplyPost, getPostsBySearch, getPostsByUser, createPost, createAutomaticPost, updatePost, updateTemporal, deletePost, likePost, dislikePost, commentPost, updateVisual } from '../controllers/posts.js';
+import { getPosts, getChannelPosts, getUnloggedPosts, getTemporalPosts, getPost, getReplyPost, getPostsBySearch, getPostsByUser, createPost, createAutomaticPost, updatePost, updateTemporal, deletePost, likePost, dislikePost, commentPost, updateVisual } from '../controllers/posts.js';
 import auth from '../middleware/auth.js';
 
 const router = express.Router();
@@ -9,6 +9,7 @@ const router = express.Router();
 router.get('/search', getPostsBySearch);
 router.get('/:id/all', getPosts);
 router.get('/unlogged', getUnloggedPosts);
+router.get('/:id/getChannelPosts', getChannelPosts);
 router.get('/:id/temporal', getTemporalPosts);
 router.get('/:id', getPost);
 router.get('/getReplyPost', getReplyPost);

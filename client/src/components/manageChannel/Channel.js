@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grow, Grid, Paper, AppBar, TextField, Button, Typography, CardContent } from '@material-ui/core';
+import { Container, Grow, Grid, Paper, AppBar, ButtonBase, TextField, Button, Typography, CardContent } from '@material-ui/core';
 import { getUsers } from '../../actions/auth';
 import { updateChannel } from '../../actions/channels';
 import { useDispatch } from 'react-redux';
@@ -7,10 +7,12 @@ import Select from 'react-select';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useStyles from '../styles';
+import { useNavigate } from 'react-router-dom';
 
 const Channel = ({ channel }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('profile'));
     const [channelData, setChannelData] = useState({
         privacy: '',
@@ -80,10 +82,17 @@ const Channel = ({ channel }) => {
         return e === channel.privacy;
     }
 
+    const openChannelPage = () => {
+        console.log(channelData._id);
+        navigate(`/channelPage/${channelData.value}`);
+    }
+
     return (
         <Paper className={classes.paper} elevation={6}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
-                <Typography variant="h4" style={{ textAlign: 'center' }} paragraph className={classes.channelTitle}>{channelData.label}</Typography>
+                <ButtonBase onClick={openChannelPage}>
+                    <Typography variant="h4" style={{ textAlign: 'center' }} paragraph className={classes.channelTitle}>{channelData.label}</Typography>
+                </ButtonBase>
                 <TextField required name="desc" variant="outlined" label="Description" fullWidth multiline minRows={2} value={channelData.desc} onChange={((e) => setChannelData({ ...channelData, desc: e.target.value }))} />
 
                 <Typography variant="h6" style={{ textAlign: 'center' }}>Owners:</Typography>

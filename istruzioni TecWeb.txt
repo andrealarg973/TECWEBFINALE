@@ -61,7 +61,7 @@ HARD
 - canali popolati automaticamente?
 
 MEDIUM
-- pagina iscrizione/visualizzazione canali (aggiungi a readers)
+- pagina visualizzazione tutti post di un canale (diverso da ricerca, con controllo autorizzazioni)
 
 EASY
 - pulizia database 
@@ -86,6 +86,7 @@ NON MIE:
 
 
 COMPLETATI:
+- pagina iscrizione/visualizzazione canali (aggiungi a readers)
 - aumento/riduzione quota rispetto a reazioni (come fare? e aggiungi tabella per statistiche 
     (diff tra scorsa iterazione e questa)), esegui ogni minuto?
 - upload video (riorganizzazione file multimediali)

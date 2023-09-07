@@ -47,6 +47,20 @@ export const getPosts = (page, userId) => async (dispatch) => {
     }
 }
 
+export const getChannelPosts = (id) => async (dispatch) => {
+    try {
+        dispatch({ type: START_LOADING });
+        const { data } = await api.fetchChannelPosts(id);
+
+        //console.log(data);
+
+        dispatch({ type: FETCH_ALL, payload: data });
+        dispatch({ type: STOP_LOADING });
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 export const getUnloggedPosts = (page, userId) => async (dispatch) => {
     try {
         dispatch({ type: START_LOADING });

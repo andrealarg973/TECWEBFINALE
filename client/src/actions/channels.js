@@ -47,6 +47,18 @@ export const getPublicChannels = (id) => async (dispatch) => {
     }
 }
 
+export const getChannelByName = (id) => async (dispatch) => {
+    //console.log(id);
+    try {
+        const { data } = await api.getChannelByName(id);
+        //console.log(data);
+        dispatch({ type: GET_CHANNELS, payload: data });
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const getChannels = (id) => async (dispatch) => {
     //console.log(id);
     try {

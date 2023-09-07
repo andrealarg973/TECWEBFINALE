@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getChannels, getPublicChannels, getOwnedChannels, getWritableChannels, getReadableChannels, getReservedChannels, addChannel, getMyChannels, updateChannel } from '../controllers/channels.js';
+import { getChannels, getPublicChannels, getChannelByName, getOwnedChannels, getWritableChannels, getReadableChannels, getReservedChannels, addChannel, getMyChannels, updateChannel } from '../controllers/channels.js';
 //import auth from '../middleware/auth.js';
 
 const router = express.Router();
@@ -11,6 +11,7 @@ router.get('/:id/getOwnedChannels', getOwnedChannels);
 router.get('/:id/getWritableChannels', getWritableChannels);
 router.get('/:id/getReadableChannels', getReadableChannels);
 router.get('/:id/getPublicChannels', getPublicChannels);
+router.get('/:id/getChannelByName', getChannelByName);
 router.get('/getReservedChannels', getReservedChannels);
 router.get('/:id/getMyChannels', getMyChannels);
 router.post('/addChannel', addChannel);

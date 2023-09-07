@@ -39,6 +39,21 @@ export const getPosts = async (req, res) => {
     }
 }
 
+export const getChannelPosts = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const posts = await PostMessage.find({ destinatari: { $in: id } }).sort({ _id: -1 });
+        const replyPostsId = posts.filter(post => post.reply !== '').map(post => post.reply);
+
+        const replyPosts = await PostMessage.find({ _id: { $in: replyPostsId } });
+        //console.log(posts);
+        res.status(200).json({ data: posts, replyPosts: replyPosts });
+    } catch (error) {
+        res.status(500).json(error);
+    }
+}
+
 export const getUnloggedPosts = async (req, res) => {
     const { page } = req.query;
 

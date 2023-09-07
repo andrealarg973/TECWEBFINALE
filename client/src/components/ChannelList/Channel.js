@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Grow, Grid, Paper, AppBar, TextField, Button, Typography, CardContent } from '@material-ui/core';
+import { Container, Grow, Grid, Paper, AppBar, TextField, Button, ButtonBase, Typography, CardContent } from '@material-ui/core';
 import { getUsers } from '../../actions/auth';
 import { updateChannel } from '../../actions/channels';
 import { useDispatch } from 'react-redux';
 import Select from 'react-select';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 import useStyles from '../styles';
 
 const Channel = ({ channel }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('profile'));
     const [channelData, setChannelData] = useState({
         privacy: '',
@@ -61,20 +63,24 @@ const Channel = ({ channel }) => {
         }
     }
 
+    const openChannelPage = () => {
+        console.log(channelData._id);
+        navigate(`/channelPage/${channelData.value}`);
+    }
+
     return (
         <Paper className={classes.paper} elevation={6}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
-                <div style={{ flexDirection: 'column-reverse' }}>
+                <ButtonBase className={classes.cardAction} onClick={openChannelPage} style={{ flexDirection: 'column', width: '100%' }}>
+
                     <Typography variant="h4" style={{ textAlign: 'center' }} paragraph className={classes.channelTitle}>{channelData.label}</Typography>
                     <Typography variant="body1" label="Description" > {channelData.desc} </Typography>
                     <Typography variant="h6" style={{ textAlign: 'center' }}>Owners:</Typography>
-                </div>
+                    <Select className={classes.fileInput} isDisabled={true} isMulti value={channelData.owner.map((participant) => ({
+                        value: participant, label: nome(participant)
+                    }))} />
 
-
-                <Select className={classes.fileInput} isDisabled={true} isMulti value={channelData.owner.map((participant) => ({
-                    value: participant, label: nome(participant)
-                }))} />
-
+                </ButtonBase>
                 {(channelData.read.find((u) => u === user?.result?._id) || channelData.write.find((u) => u === user?.result?._id)) ? (
                     <Button className={classes.buttonSubmit} variant="contained" color="secondary" size="large" type="submit" fullWidth>Unsubscribe</Button>
                 ) : (
