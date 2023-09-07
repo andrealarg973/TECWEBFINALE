@@ -58,6 +58,8 @@ MODIFICHE
 --------------------------------------------------------------------
 
 HARD
+- cosa succede quando elimini un account
+- reset password
 
 MEDIUM
 
