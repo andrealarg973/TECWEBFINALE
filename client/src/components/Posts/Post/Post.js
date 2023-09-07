@@ -140,38 +140,47 @@ const Post = ({ post, setCurrentId, users }) => {
     const PostReply = ({ repPost }) => {
         return (
             <>
-                <Card className={classes.cardReply} raised elevation={8}>
-                    <ButtonBase className={classes.cardAction} onClick={postReplied}>
-                        <div className={classes.details} >
-                            <Typography variant="h6">Reply to: {repPost.name}</Typography>
-                        </div>
+                {repPost.name ? (
+                    <Card className={classes.cardReply} raised elevation={8}>
+                        <ButtonBase className={classes.cardAction} onClick={postReplied}>
+                            <div className={classes.details} >
+                                <Typography variant="h6">Reply to: {repPost.name}</Typography>
+                            </div>
+                            <CardContent>
+                                {repPost.type === 'media' && (
+                                    repPost.selectedFile.split('.').pop() === 'mp4' ? (
+                                        <>
+                                            <CardMedia component='video' className={classes.mediaVideo} image={URL + "/public/media/" + repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={repPost.title} />
+                                        </>
+                                    ) : (
+                                        <>
+                                            <CardMedia className={classes.media} image={URL + "/public/media/" + repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={repPost.title} />
+                                        </>
+                                    )
+
+                                )}
+                                {repPost.type === 'text' && (
+                                    <>
+                                        <Typography variant="body2" component="p">{repPost.message}</Typography>
+                                    </>
+                                )}
+                                {repPost.type === 'location' && (
+                                    <>
+                                        <Map position={repPost.location} height={'20vh'} zoom={10} scrollWheelZoom={false} dragging={false} />
+                                    </>
+                                )}
+
+                            </CardContent>
+                        </ButtonBase>
+                    </Card>
+                ) : (
+                    <Card className={classes.cardReply} raised elevation={8}>
                         <CardContent>
-                            {repPost.type === 'media' && (
-                                repPost.selectedFile.split('.').pop() === 'mp4' ? (
-                                    <>
-                                        <CardMedia component='video' className={classes.mediaVideo} image={URL + "/public/media/" + repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={repPost.title} />
-                                    </>
-                                ) : (
-                                    <>
-                                        <CardMedia className={classes.media} image={URL + "/public/media/" + repPost.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} title={repPost.title} />
-                                    </>
-                                )
-
-                            )}
-                            {repPost.type === 'text' && (
-                                <>
-                                    <Typography variant="body2" component="p">{repPost.message}</Typography>
-                                </>
-                            )}
-                            {repPost.type === 'location' && (
-                                <>
-                                    <Map position={repPost.location} height={'20vh'} zoom={10} scrollWheelZoom={false} dragging={false} />
-                                </>
-                            )}
-
+                            <Typography variant="h6">This post was deleted</Typography>
                         </CardContent>
-                    </ButtonBase>
-                </Card>
+                    </Card>
+                )}
+
             </>
         );
     }

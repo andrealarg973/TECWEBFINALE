@@ -89,27 +89,25 @@ const Home = () => {
 
     return (
         <Grow in>
-            <Container maxWidth="xl">
-                <Grid className={classes.gridContainer} container justifyContent="space-between" alignItems="stretch" spacing={3}>
-                    <Grid item xs={12} sm={6} md={8} xl={9}>
-                        <Posts setCurrentId={setCurrentId} fullScreen={false} />
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={4} xl={3}>
-                        <AppBar className={classes.appBarSearch} position="static" color="inherit">
-                            <TextField name="search" variant="outlined" label="Search Post" onKeyUp={handleKeyPress} fullWidth value={search} onChange={(e) => { setSearch(e.target.value) }} />
-                            <ChipInput style={{ margin: '10px 0' }} value={tags} onAdd={handleAdd} onDelete={handleDelete} label="Search Tags" variant="outlined" />
-                            <Select fullWidth placeholder="Search Channel" isClearable className={classes.fileInput} options={channels} value={channel} onChange={handleSelectChannel} />
-                            <Button onClick={searchPost} className={classes.searchButton} variant="contained" color="primary">Search</Button>
-                        </AppBar>
-                        <Form currentId={currentId} setCurrentId={setCurrentId} />
-                        {(!searchQuery && !tags.length) && (
-                            <Paper elevation={6} className={classes.pagination}>
-                                <Paginate page={page} />
-                            </Paper>
-                        )}
-                    </Grid>
+            <Grid className={classes.gridContainer} container justifyContent="space-between" alignItems="stretch" spacing={3}>
+                <Grid item xs={12} sm={6} md={8} xl={9}>
+                    <Posts setCurrentId={setCurrentId} fullScreen={false} />
                 </Grid>
-            </Container>
+                <Grid item xs={12} sm={6} md={4} xl={3}>
+                    <AppBar className={classes.appBarSearch} position="static" color="inherit">
+                        <TextField name="search" variant="outlined" label="Search Post" onKeyUp={handleKeyPress} fullWidth value={search} onChange={(e) => { setSearch(e.target.value) }} />
+                        <ChipInput style={{ margin: '10px 0' }} value={tags} onAdd={handleAdd} onDelete={handleDelete} label="Search Tags" variant="outlined" />
+                        <Select fullWidth placeholder="Search Channel" isClearable className={classes.fileInput} options={channels} value={channel} onChange={handleSelectChannel} />
+                        <Button onClick={searchPost} className={classes.searchButton} variant="contained" color="primary">Search</Button>
+                    </AppBar>
+                    <Form currentId={currentId} setCurrentId={setCurrentId} />
+                    {(!searchQuery && !tags.length) && (
+                        <Paper elevation={6} className={classes.pagination}>
+                            <Paginate page={page} />
+                        </Paper>
+                    )}
+                </Grid>
+            </Grid>
         </Grow>
     );
 };

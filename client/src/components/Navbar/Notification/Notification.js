@@ -72,9 +72,9 @@ export default function MenuListComposition({ windowSize, notifications }) {
 
   const Notification = ({ notify }) => {
     return (
-      <Typography variant="inherit" noWrap style={{ color: 'cyan' }}>
-        {notify.sender}<span style={{ color: 'black' }}> {notify.content}</span>
-        <Typography style={{ color: 'black', textAlign: 'right' }} variant="body2">{moment(notify.createdAt).fromNow()}</Typography>
+      <Typography variant="inherit" noWrap>
+        <span style={{ color: 'cyan' }}>{notify.sender}</span> {notify.content}
+        <Typography style={{ textAlign: 'right' }} variant="body2">{moment(notify.createdAt).fromNow()}</Typography>
       </Typography>
     );
   }

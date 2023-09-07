@@ -40,7 +40,7 @@ const App = () => {
                     <Route path="/uploadFile" exact element={<UploadFile />} />
                     <Route path="/channelsList" exact element={<ChannelList />} />
                     <Route path="/channelPage/:id" exact element={<ChannelPage />} />
-                    <Route path="/newPost" exact element={<Container maxWidth="sm"><Form currentId={currentId} setCurrentId={setCurrentId} /></Container>} />
+                    <Route path="/newPost" exact element={<Form currentId={currentId} setCurrentId={setCurrentId} />} />
                 </Routes>
             </Container>
         </BrowserRouter>

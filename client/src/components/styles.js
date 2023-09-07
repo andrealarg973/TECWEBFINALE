@@ -31,6 +31,11 @@ export default makeStyles((theme) => ({
         margin: theme.spacing(2),
         justifyContent: 'center',
     },
+    paperContainer: {
+        padding: theme.spacing(2),
+        marginBottom: theme.spacing(2),
+        justifyContent: 'center',
+    },
     form: {
         display: 'flex',
         flexWrap: 'wrap',

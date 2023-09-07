@@ -1,9 +1,9 @@
 function getValueBasedOnCase(someCase) {
     switch (someCase) {
-        case 'ngrok':
-            return 'https://fc7b-84-33-117-23.ngrok-free.app/';
-        case 'index':
-            return 'https://f290-84-33-117-23.ngrok-free.app/'
+        case 'server':
+            return 'https://3cd4-84-33-117-23.ngrok-free.app/';
+        case 'media':
+            return 'https://d840-84-33-117-23.ngrok-free.app'
         case 'localhost':
             return 'http://localhost:5000';
         case 'remote':
@@ -13,5 +13,5 @@ function getValueBasedOnCase(someCase) {
     }
 }
 
-export const URL = getValueBasedOnCase('localhost');
-export const URL1 = getValueBasedOnCase('localhost');
+export const URL = getValueBasedOnCase('media'); // media
+export const URL1 = getValueBasedOnCase('server'); // server

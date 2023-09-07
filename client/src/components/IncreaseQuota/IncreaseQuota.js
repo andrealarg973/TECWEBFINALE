@@ -44,16 +44,14 @@ const IncreaseQuota = () => {
     }
 
     return (
-        <Container maxWidth="sm">
-            <Paper className={classes.paper} elevation={6}>
-                <form autoComplete="off" noValidate className={`${classes.form}`} onSubmit={handleSubmitQuota}>
-                    <Typography variant="h6">Increase Quota (for 1 year)</Typography>
-                    <CreditCard />
-                    <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Buy</Button>
-                    <ToastContainer autoClose={1000} hideProgressBar={true} />
-                </form>
-            </Paper>
-        </Container>
+        <Paper className={classes.paperContainer} elevation={6}>
+            <form autoComplete="off" noValidate className={`${classes.form}`} onSubmit={handleSubmitQuota}>
+                <Typography variant="h6">Increase Quota (for 1 year)</Typography>
+                <CreditCard />
+                <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Buy</Button>
+                <ToastContainer autoClose={1000} hideProgressBar={true} />
+            </form>
+        </Paper>
     );
 }
 

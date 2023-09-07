@@ -62,11 +62,11 @@ const ChannelManager = () => {
     }, []);
 
     return (
-        <Container maxWidth="xl">
-            <Paper className={classes.paper} elevation={6}>
+        <>
+            <Paper className={classes.paperContainer} elevation={6}>
                 <Typography variant="h3" style={{ textAlign: 'center' }}>Channel Manager</Typography>
                 <Container maxWidth="sm">
-                    <Paper className={classes.paper} elevation={6}>
+                    <Paper className={classes.paperContainer} elevation={6}>
                         <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                             <Typography variant="h6">Create Channel</Typography>
                             <TextField required variant="outlined" label="Channel Name" fullWidth value={newChannel.value} onChange={(e) => setNewChannel({ ...newChannel, value: e.target.value, label: '$' + e.target.value })}></TextField>
@@ -81,26 +81,27 @@ const ChannelManager = () => {
                         </form>
                     </Paper>
                 </Container>
-                {channels1.length > 0 ? (
-                    <>
-                        <Grid className={classes.container} container alignItems='stretch' spacing={3}>
-                            {
-                                channels1.map((channel) => (
-                                    <Grid key={channel._id} item xs={12} sm={12} md={6} lg={4} xl={3}>
-                                        <Channel channel={channel} />
-                                    </Grid>
-                                ))
-                            }
-                        </Grid>
-                    </>
-                ) : (
-                    <>
-                        <Typography variant="h6">Non possiedi nessun canale</Typography>
 
-                    </>
-                )}
             </Paper>
-        </Container>
+            {channels1.length > 0 ? (
+                <>
+                    <Grid className={classes.container} container alignItems='stretch' spacing={3}>
+                        {
+                            channels1.map((channel) => (
+                                <Grid key={channel._id} item xs={12} sm={12} md={6} lg={4} xl={3}>
+                                    <Channel channel={channel} />
+                                </Grid>
+                            ))
+                        }
+                    </Grid>
+                </>
+            ) : (
+                <>
+                    <Typography variant="h6">Non possiedi nessun canale</Typography>
+
+                </>
+            )}
+        </>
     );
 }
 

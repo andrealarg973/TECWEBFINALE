@@ -72,7 +72,7 @@ const Channel = ({ channel }) => {
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                 <ButtonBase className={classes.cardAction} onClick={openChannelPage} style={{ flexDirection: 'column', width: '100%' }}>
 
-                    <Typography variant="h4" style={{ textAlign: 'center' }} paragraph className={classes.channelTitle}>{channelData.label}</Typography>
+                    <Typography variant="h6" style={{ textAlign: 'center' }} paragraph className={classes.channelTitle}>{channelData.label}</Typography>
                     <Typography variant="body1" label="Description" > {channelData.desc} </Typography>
                 </ButtonBase>
                 {channelData.privacy !== 'reserved' && (

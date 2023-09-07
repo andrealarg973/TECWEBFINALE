@@ -88,7 +88,7 @@ const Channel = ({ channel }) => {
     }
 
     return (
-        <Paper className={classes.paper} elevation={6}>
+        <Paper className={classes.paperContainer} elevation={6}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                 <ButtonBase onClick={openChannelPage}>
                     <Typography variant="h4" style={{ textAlign: 'center' }} paragraph className={classes.channelTitle}>{channelData.label}</Typography>

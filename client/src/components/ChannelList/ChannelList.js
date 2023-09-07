@@ -34,8 +34,8 @@ const ChannelList = () => {
     }, []);
 
     return (
-        <Container maxWidth="xl">
-            <Paper className={classes.paper} elevation={6}>
+        <>
+            <Paper className={classes.paperContainer} elevation={6}>
                 <Typography variant="h3" style={{ textAlign: 'center' }}>Channels List</Typography>
                 {channels1.length > 0 ? (
                     <>
@@ -57,7 +57,7 @@ const ChannelList = () => {
                     </>
                 )}
             </Paper>
-        </Container>
+        </>
     );
 }
 
