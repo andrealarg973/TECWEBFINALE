@@ -27,25 +27,6 @@ const ChannelList = () => {
         });
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        //console.log(e);
-        dispatch(createChannel({ ...channels1, owner: newChannel.owner, value: newChannel.value, label: newChannel.label, desc: newChannel.desc })).then((res) => {
-            //console.log(res);
-            setChannels1(channels1.concat([res]));
-        });
-        //setChannels1(channels1.concat({ owner: [user?.result?._id], label: '$' + newChannel, value: newChannel, _id: '1234' }));
-        setNewChannel({
-            privacy: '',
-            value: '',
-            label: '',
-            desc: '',
-            owner: [user?.result?._id],
-            read: [],
-            write: [],
-        });
-    }
-
     useEffect(() => {
         if (user) {
             getChannels();

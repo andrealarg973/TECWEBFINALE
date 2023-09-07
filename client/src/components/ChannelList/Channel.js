@@ -64,7 +64,6 @@ const Channel = ({ channel }) => {
     }
 
     const openChannelPage = () => {
-        console.log(channelData._id);
         navigate(`/channelPage/${channelData.value}`);
     }
 
@@ -75,19 +74,22 @@ const Channel = ({ channel }) => {
 
                     <Typography variant="h4" style={{ textAlign: 'center' }} paragraph className={classes.channelTitle}>{channelData.label}</Typography>
                     <Typography variant="body1" label="Description" > {channelData.desc} </Typography>
-                    <Typography variant="h6" style={{ textAlign: 'center' }}>Owners:</Typography>
-                    <Select className={classes.fileInput} isDisabled={true} isMulti value={channelData.owner.map((participant) => ({
-                        value: participant, label: nome(participant)
-                    }))} />
-
                 </ButtonBase>
-                {(channelData.read.find((u) => u === user?.result?._id) || channelData.write.find((u) => u === user?.result?._id)) ? (
-                    <Button className={classes.buttonSubmit} variant="contained" color="secondary" size="large" type="submit" fullWidth>Unsubscribe</Button>
-                ) : (
-                    <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Subscribe</Button>
+                {channelData.privacy !== 'reserved' && (
+                    <>
+                        <Typography variant="h6" style={{ textAlign: 'center' }}>Owners:</Typography>
+                        <Select className={classes.fileInput} isDisabled={true} isMulti value={channelData.owner.map((participant) => ({
+                            value: participant, label: nome(participant)
+                        }))} />
+                        {(channelData.read.find((u) => u === user?.result?._id) || channelData.write.find((u) => u === user?.result?._id)) ? (
+                            <Button className={classes.buttonSubmit} variant="contained" color="secondary" size="large" type="submit" fullWidth>Unsubscribe</Button>
+                        ) : (
+                            <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Subscribe</Button>
+                        )}
+                        <ToastContainer autoClose={1000} hideProgressBar={true} />
+                    </>
                 )}
 
-                <ToastContainer autoClose={1000} hideProgressBar={true} />
             </form>
         </Paper>
     );

@@ -46,7 +46,7 @@ export const getPublicChannels = async (req, res) => {
     const id = req.params.id;
     //console.log('BODY', id);
     try {
-        const channels = await ChannelSchema.find({ $and: [{ $or: [{ privacy: 'public' }, { write: { $in: id } }, { read: { $in: id } }] }, { privacy: { $ne: 'closed' } }, { owner: { $not: { $in: id } } }] });
+        const channels = await ChannelSchema.find({ $and: [{ $or: [{ privacy: 'public' }, { privacy: 'reserved' }, { write: { $in: id } }, { read: { $in: id } }] }, { privacy: { $ne: 'closed' } }, { owner: { $not: { $in: id } } }] });
         //console.log(channels);
 
         res.status(200).json(channels);

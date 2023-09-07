@@ -199,6 +199,52 @@ async function updateQuotas() {
 
 }
 
+async function setTrendingPosts() {
+    //const posts = await PostMessage.find().sort({ likes: { $size: -1 } }).limit(10);
+    const posts = await PostMessage.aggregate([
+        {
+            $project: {
+                _id: 1,
+                destinatari: 1,
+                likesCount: { $size: "$likes" },
+                destinatariPrivatiCount: { $size: "$destinatariPrivati" }
+            }
+        },
+        {
+            $match: {
+                destinatariPrivatiCount: { $lte: 0 }
+            }
+        },
+        {
+            $sort: { likesCount: -1 }
+        },
+        {
+            $limit: 12
+        }
+    ]);
+
+    await removeTrendingPosts();
+
+    //console.log(posts);
+    posts.map(async (post) => {
+        await PostMessage.findByIdAndUpdate(post._id, {
+            destinatari: (
+                post.destinatari.find((dest) => dest === 'TRENDING') ?
+                    post.destinatari :
+                    post.destinatari.concat(['TRENDING'])
+            )
+        }, { new: true });
+    });
+    //console.log('---------');
+}
+
+async function removeTrendingPosts() {
+    const trendingPosts = await PostMessage.find({ destinatari: { $in: 'TRENDING' } });
+    trendingPosts.map(async (post) => {
+        await PostMessage.findByIdAndUpdate(post._id, { destinatari: post.destinatari.filter((dest) => dest !== 'TRENDING') }, { new: true });
+    });
+}
+
 async function fetchDataAndReplace(inputString) {
     const currentDate = new Date();
 
@@ -356,7 +402,11 @@ async function automaticPosts() {
 const automaticPostsDelay = 1; // time in seconds
 const automaticQuotaDelay = 5; // time in seconds
 const getControversialDelay = 5; // time in seconds
+const removeTrendingPostsDelay = 10;
+const setTrendingPostsDelay = 5;
 
 setInterval(automaticPosts, automaticPostsDelay * 1000);
 setInterval(updateQuotas, automaticQuotaDelay * 1000);
 setInterval(getControversial, getControversialDelay * 1000);
+//setInterval(removeTrendingPosts, 1 * 1000);
+setInterval(setTrendingPosts, setTrendingPostsDelay * 1000);

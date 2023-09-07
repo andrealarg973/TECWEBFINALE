@@ -32,6 +32,7 @@ const ChannelPage = () => {
 
     const getChannel = async () => {
         await dispatch(getChannelByName(id)).then((res) => {
+            if (!res) return;
             const allow = (res.owner.find((u) => u === user?.result?._id) ||
                 res.write.find((u) => u === user?.result?._id) ||
                 res.read.find((u) => u === user?.result?._id) ||
@@ -72,6 +73,7 @@ const ChannelPage = () => {
     useEffect(() => {
         if (user) {
             getChannel();
+            //console.log(channel);
             if (allowed) dispatch(getChannelPosts(id));
         }
 
@@ -80,14 +82,14 @@ const ChannelPage = () => {
 
     return (
         <>
-            {allowed ? (
+            {allowed && channel.label !== '' ? (
                 <>
                     <Card className={classes.card} raised elevation={6}>
                         <div className={classes.details}>
                             <Typography style={{ color: 'cyan' }} variant="h4">{channel.label}</Typography>
                             <div className={classes.descSubscribe}>
                                 <Typography style={{ marginRight: '40px' }} variant="h6">{channel.desc}</Typography>
-                                {!channel.owner.find((u) => u === user?.result?._id) && (
+                                {!channel.owner.find((u) => u === user?.result?._id) && channel.privacy !== 'reserved' && (
                                     ((channel.read.find((u) => u === user?.result?._id) || channel.write.find((u) => u === user?.result?._id)) ? (
                                         <Button className={classes.buttonSubmit} variant="contained" color="secondary" size="large" type="submit" onClick={handleSubscription}>Unsubscribe</Button>
                                     ) : (
@@ -104,7 +106,7 @@ const ChannelPage = () => {
                 </>
             ) : (
                 <>
-                    <Typography variant="h4">Not allowed to see posts in this channel</Typography>
+                    <Typography variant="h4">Not allowed to see posts in this channel Or channel not found</Typography>
                 </>
             )}
         </>

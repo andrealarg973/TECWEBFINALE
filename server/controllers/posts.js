@@ -41,9 +41,13 @@ export const getPosts = async (req, res) => {
 
 export const getChannelPosts = async (req, res) => {
     const id = req.params.id;
+    //console.log(id);
 
     try {
         const posts = await PostMessage.find({ destinatari: { $in: id } }).sort({ _id: -1 });
+        if (id === 'TRENDING') {
+            posts.sort((a, b) => b.likes.length - a.likes.length);
+        }
         const replyPostsId = posts.filter(post => post.reply !== '').map(post => post.reply);
 
         const replyPosts = await PostMessage.find({ _id: { $in: replyPostsId } });
