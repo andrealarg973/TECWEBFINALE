@@ -15,6 +15,7 @@ import Settings from './components/Settings/Settings';
 import TemporalPosts from './components/TemporalPosts/TemporalPosts';
 import Form from "./components/Form/Form";
 import UploadFile from "./components/UploadFile/UploadFile";
+import ChannelList from "./components/ChannelList/ChannelList";
 
 const App = () => {
     const [currentId, setCurrentId] = useState(0);
@@ -36,6 +37,7 @@ const App = () => {
                     <Route path="/settings" exact element={<Settings />} />
                     <Route path="/temporalPosts" exact element={<TemporalPosts />} />
                     <Route path="/uploadFile" exact element={<UploadFile />} />
+                    <Route path="/channelsList" exact element={<ChannelList />} />
                     <Route path="/newPost" exact element={<Container maxWidth="sm"><Form currentId={currentId} setCurrentId={setCurrentId} /></Container>} />
                 </Routes>
             </Container>

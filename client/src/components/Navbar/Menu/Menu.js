@@ -16,6 +16,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import AbcIcon from '@mui/icons-material/Abc';
 import GroupIcon from '@mui/icons-material/Group';
 import CreateIcon from '@mui/icons-material/Create';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { readNotification } from '../../../actions/auth';
@@ -86,8 +87,10 @@ export default function MenuListComposition({ windowSize, notifications }) {
         navigate('/newPost');
     }
 
-
-
+    const navigateChannelsList = () => {
+        setOpen(false);
+        navigate('/channelsList');
+    }
 
     function handleListKeyDown(event) {
         if (event.key === 'Tab') {
@@ -156,6 +159,10 @@ export default function MenuListComposition({ windowSize, notifications }) {
                                         <MenuItem onClick={navigateNewSqueal}>
                                             <CreateIcon style={{ color: 'darkgreen' }} />
                                             <div>New Squeal</div>
+                                        </MenuItem>
+                                        <MenuItem onClick={navigateChannelsList}>
+                                            <FormatListBulletedIcon style={{ color: 'green' }} />
+                                            <div>Channels list</div>
                                         </MenuItem>
                                         <MenuItem onClick={navigateChannelManager}>
                                             <NoteAddIcon style={{ color: 'green' }} />

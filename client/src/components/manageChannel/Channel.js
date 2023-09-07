@@ -83,7 +83,7 @@ const Channel = ({ channel }) => {
     return (
         <Paper className={classes.paper} elevation={6}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
-                <Typography variant="h4" paragraph className={classes.channelTitle}>${channelData.value}</Typography>
+                <Typography variant="h4" style={{ textAlign: 'center' }} paragraph className={classes.channelTitle}>{channelData.label}</Typography>
                 <TextField required name="desc" variant="outlined" label="Description" fullWidth multiline minRows={2} value={channelData.desc} onChange={((e) => setChannelData({ ...channelData, desc: e.target.value }))} />
 
                 <Typography variant="h6" style={{ textAlign: 'center' }}>Owners:</Typography>

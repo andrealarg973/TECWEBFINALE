@@ -11,7 +11,7 @@ const ChannelManager = () => {
     const user = JSON.parse(localStorage.getItem('profile'));
 
     const [newChannel, setNewChannel] = useState({
-        privacy: '',
+        privacy: 'public',
         value: '',
         label: '',
         desc: '',
@@ -30,13 +30,13 @@ const ChannelManager = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         //console.log(e);
-        dispatch(createChannel({ ...channels1, owner: newChannel.owner, value: newChannel.value, label: newChannel.label, desc: newChannel.desc })).then((res) => {
+        dispatch(createChannel({ ...channels1, owner: newChannel.owner, privacy: newChannel.privacy, value: newChannel.value, label: newChannel.label, desc: newChannel.desc })).then((res) => {
             //console.log(res);
             setChannels1(channels1.concat([res]));
         });
         //setChannels1(channels1.concat({ owner: [user?.result?._id], label: '$' + newChannel, value: newChannel, _id: '1234' }));
         setNewChannel({
-            privacy: '',
+            privacy: 'public',
             value: '',
             label: '',
             desc: '',
@@ -46,45 +46,52 @@ const ChannelManager = () => {
         });
     }
 
+    const handleRadioClick = (e) => {
+        setNewChannel({ ...newChannel, privacy: e.target.value });
+        //console.log(channelData);
+    }
+
+    const checkPrivacy = (e) => {
+        return e === newChannel.privacy;
+    }
+
     useEffect(() => {
         if (user) {
             getChannels();
         }
     }, []);
 
-    const Content = () => (
-        <>
-
-            <Grid className={classes.container} container alignItems='stretch' spacing={3}>
-
-                {
-                    channels1.map((channel) => (
-                        <Grid key={channel._id} item xs={12} sm={12} md={6} lg={4} xl={3}>
-                            <Channel channel={channel} />
-                        </Grid>
-                    ))
-                }
-            </Grid>
-        </>
-    );
-
     return (
         <Container maxWidth="xl">
             <Paper className={classes.paper} elevation={6}>
-                <Typography variant="h5" style={{ textAlign: 'center' }}>Channel Manager</Typography>
+                <Typography variant="h3" style={{ textAlign: 'center' }}>Channel Manager</Typography>
                 <Container maxWidth="sm">
                     <Paper className={classes.paper} elevation={6}>
                         <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                             <Typography variant="h6">Create Channel</Typography>
-                            <TextField required variant="outlined" label="Channel Name" fullWidth value={newChannel.label} onChange={(e) => setNewChannel({ ...newChannel, value: e.target.value, label: '$' + e.target.value })}></TextField>
+                            <TextField required variant="outlined" label="Channel Name" fullWidth value={newChannel.value} onChange={(e) => setNewChannel({ ...newChannel, value: e.target.value, label: '$' + e.target.value })}></TextField>
                             <TextField required name="desc" variant="outlined" label="Description" fullWidth multiline minRows={2} value={newChannel.desc} onChange={((e) => setNewChannel({ ...newChannel, desc: e.target.value }))} />
+                            <div style={{ marginBottom: '10px' }}>
+                                <Typography variant="h6" style={{ textAlign: 'center' }}>Privacy:</Typography>
+                                <input name="privacy" type="radio" value="public" onChange={handleRadioClick} defaultChecked={checkPrivacy('public')} />Public
+                                <input name="privacy" type="radio" value="private" onChange={handleRadioClick} defaultChecked={checkPrivacy('private')} />Private
+                                <input name="privacy" type="radio" value="closed" onChange={handleRadioClick} defaultChecked={checkPrivacy('closed')} />Closed
+                            </div>
                             <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Create</Button>
                         </form>
                     </Paper>
                 </Container>
                 {channels1.length > 0 ? (
                     <>
-                        <Content />
+                        <Grid className={classes.container} container alignItems='stretch' spacing={3}>
+                            {
+                                channels1.map((channel) => (
+                                    <Grid key={channel._id} item xs={12} sm={12} md={6} lg={4} xl={3}>
+                                        <Channel channel={channel} />
+                                    </Grid>
+                                ))
+                            }
+                        </Grid>
                     </>
                 ) : (
                     <>
