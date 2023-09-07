@@ -13,5 +13,5 @@ function getValueBasedOnCase(someCase) {
     }
 }
 
-export const URL = getValueBasedOnCase('media'); // media
-export const URL1 = getValueBasedOnCase('server'); // server
+export const URL = getValueBasedOnCase('localhost'); // media
+export const URL1 = getValueBasedOnCase('localhost'); // server
