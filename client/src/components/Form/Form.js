@@ -14,7 +14,7 @@ import UploadFile from '../UploadFile/UploadFile';
 import useStyles from './styles';
 import { createPost, createPostTemporal, updatePost, updateTemporal } from '../../actions/posts';
 import { getUsers, updateQuota, getCar, getQuotas } from '../../actions/auth';
-import { getChannels, createChannel } from '../../actions/channels';
+import { getWritableChannels, createChannel } from '../../actions/channels';
 import { useNavigate } from 'react-router-dom';
 import Map from '../Map/Map';
 
@@ -96,7 +96,7 @@ const Form = ({ currentId, setCurrentId }) => {
     }
 
     const getChanns = async () => {
-        await dispatch(getChannels(user?.result?._id)).then((res) => {
+        await dispatch(getWritableChannels(user?.result?._id)).then((res) => {
             //console.log('channels:', res);
             setChannels(res);
         });

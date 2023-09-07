@@ -1,6 +1,39 @@
 import { GET_CHANNELS, GET_RES_CHANNELS, GET_MY_CHANNELS, CREATE_CHANNEL, UPDATE_CHANNEL } from '../constants/actionTypes';
 import * as api from '../api';
 
+export const getOwnedChannels = (id) => async (dispatch) => {
+    //console.log(id);
+    try {
+        const { data } = await api.getOwnedChannels(id);
+        //console.log(data);
+        dispatch({ type: GET_CHANNELS, payload: data });
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const getWritableChannels = (id) => async (dispatch) => {
+    //console.log(id);
+    try {
+        const { data } = await api.getWritableChannels(id);
+        //console.log(data);
+        dispatch({ type: GET_CHANNELS, payload: data });
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const getReadableChannels = (id) => async (dispatch) => {
+    //console.log(id);
+    try {
+        const { data } = await api.getReadableChannels(id);
+        //console.log(data);
+        dispatch({ type: GET_CHANNELS, payload: data });
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
 export const getChannels = (id) => async (dispatch) => {
     //console.log(id);
     try {

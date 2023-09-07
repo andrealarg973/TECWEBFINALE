@@ -10,7 +10,7 @@ const router = express.Router();
 
 export const getPosts = async (req, res) => {
     const { page } = req.query;
-    const id = req?.params?.id;
+    const id = [req?.params?.id];
     //console.log(id);
 
     try {
@@ -19,7 +19,7 @@ export const getPosts = async (req, res) => {
         //const total = await PostMessage.countDocuments({});
 
         // ottiene tutti i canali per i quali l'utente può visualizzare/postare messaggi (e che non siano chiusi)
-        const canali = await ChannelSchema.find({ $and: [{ $or: [{ owner: { $in: id } }, { participants: { $in: id } }, { privacy: 'reserved' }, { privacy: 'public' }] }, { privacy: { $ne: 'closed' } }] });
+        const canali = await ChannelSchema.find({ $or: [{ owner: { $in: id } }, { write: { $in: id } }, { read: { $in: id } }, { privacy: 'reserved' }] });
         //console.log(canali);
 
         // ottiene tutti i post visualizzabili dall'utente in questione

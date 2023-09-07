@@ -5,11 +5,47 @@ import ChannelSchema from '../models/channel.js';
 
 const router = express.Router();
 
+export const getOwnedChannels = async (req, res) => {
+    const id = req.params.id;
+    //console.log('BODY', id);
+    try {
+        const channels = await ChannelSchema.find({ owner: { $in: id } });
+        //console.log(channels);
+
+        res.status(200).json(channels);
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const getWritableChannels = async (req, res) => {
+    const id = req.params.id;
+    //console.log('BODY', id);
+    try {
+        const channels = await ChannelSchema.find({ $and: [{ $or: [{ owner: { $in: id } }, { write: { $in: id } }] }, { privacy: { $ne: 'closed' } }] });
+        //console.log(channels);
+
+        res.status(200).json(channels);
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const getReadableChannels = async (req, res) => {
+    const id = req.params.id;
+    //console.log('BODY', id);
+    try {
+        const channels = await ChannelSchema.find({ $or: [{ owner: { $in: id } }, { write: { $in: id } }, { read: { $in: id } }, { privacy: 'reserved' }] });
+        //console.log(channels);
+
+        res.status(200).json(channels);
+    } catch (error) {
+        console.log(error);
+    }
+}
 export const getChannels = async (req, res) => {
     const id = req.params.id;
     //console.log('BODY', id);
     try {
-        const channels = await ChannelSchema.find({ $or: [{ privacy: 'public' }, { owner: id }, { participants: { $in: id } }] });
+        const channels = await ChannelSchema.find();
         //console.log(channels);
 
         res.status(200).json(channels);

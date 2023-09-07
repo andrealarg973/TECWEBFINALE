@@ -3,20 +3,21 @@ import { Container, Grow, Grid, Paper, AppBar, TextField, Button, Typography } f
 import { useDispatch } from 'react-redux';
 import useStyles from '../styles';
 import Channel from './Channel';
-import { createChannel, getMyChannels } from '../../actions/channels';
+import { createChannel, getOwnedChannels } from '../../actions/channels';
 
 const ChannelManager = () => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const user = JSON.parse(localStorage.getItem('profile'));
 
+    const [newChannel, setNewChannel] = useState('');
+    const [channels1, setChannels1] = useState([]);
+
     const getChannels = async () => {
-        await dispatch(getMyChannels(user.result._id)).then((res) => {
+        await dispatch(getOwnedChannels(user.result._id)).then((res) => {
             setChannels1(res);
         });
     }
-    const [newChannel, setNewChannel] = useState('');
-    const [channels1, setChannels1] = useState([]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

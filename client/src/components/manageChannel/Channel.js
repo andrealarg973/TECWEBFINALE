@@ -17,7 +17,8 @@ const Channel = ({ channel }) => {
         value: '',
         label: '',
         owner: [],
-        participants: []
+        read: [],
+        write: [],
     });
     //const [participants, setParticipants] = useState([]);
     const [users, setUsers] = useState([]);
@@ -43,15 +44,19 @@ const Channel = ({ channel }) => {
 
     }, [channel]);
 
-    const handleSelectChannels = (selectedOption, actionMeta) => {
-        //console.log('handleSelect', selectedOption, actionMeta);
-        setChannelData({ ...channelData, participants: selectedOption.map((dest) => dest.value) });
-        //console.log(channelData);
-    }
-
     const handleSelectOwner = (selectedOption, actionMeta) => {
         //console.log('handleSelect', selectedOption, actionMeta);
         setChannelData({ ...channelData, owner: selectedOption.map((dest) => dest.value) });
+        //console.log(channelData);
+    }
+    const handleSelectWriter = (selectedOption, actionMeta) => {
+        //console.log('handleSelect', selectedOption, actionMeta);
+        setChannelData({ ...channelData, write: selectedOption.map((dest) => dest.value) });
+        //console.log(channelData);
+    }
+    const handleSelectReader = (selectedOption, actionMeta) => {
+        //console.log('handleSelect', selectedOption, actionMeta);
+        setChannelData({ ...channelData, read: selectedOption.map((dest) => dest.value) });
         //console.log(channelData);
     }
 
@@ -84,18 +89,16 @@ const Channel = ({ channel }) => {
                 <Select className={classes.fileInput} isMulti value={channelData.owner.map((participant) => ({
                     value: participant, label: nome(participant)
                 }))} onChange={handleSelectOwner} options={users} />
-                <Typography variant="h6">Participants:</Typography>
-                {channelData.privacy !== 'private' ? (
+                {channelData.privacy !== 'reserved' && (
                     <>
-                        <Select isDisabled className={classes.fileInput} isMulti value={channelData.participants.map((participant) => ({
+                        <Typography variant="h6">Can Write:</Typography>
+                        <Select className={classes.fileInput} isMulti value={channelData.write.map((participant) => ({
                             value: participant, label: nome(participant)
-                        }))} onChange={handleSelectChannels} options={users} />
-                    </>
-                ) : (
-                    <>
-                        <Select className={classes.fileInput} isMulti value={channelData.participants.map((participant) => ({
+                        }))} onChange={handleSelectWriter} options={users} />
+                        <Typography variant="h6">Can Read:</Typography>
+                        <Select className={classes.fileInput} isMulti value={channelData.read.map((participant) => ({
                             value: participant, label: nome(participant)
-                        }))} onChange={handleSelectChannels} options={users} />
+                        }))} onChange={handleSelectReader} options={users} />
                     </>
                 )}
 

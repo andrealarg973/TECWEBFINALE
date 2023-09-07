@@ -45,6 +45,9 @@ export const getCar = (id) => API.patch(`/users/caratteri`, id);
 export const setSMM = (idVip, idSmm) => API.patch(`/users/${idVip}/setSMM`, idSmm);
 
 export const getChannels = (id) => API.get(`/channels/${id}/getChannels`);
+export const getOwnedChannels = (id) => API.get(`/channels/${id}/getOwnedChannels`);
+export const getWritableChannels = (id) => API.get(`/channels/${id}/getWritableChannels`);
+export const getReadableChannels = (id) => API.get(`/channels/${id}/getReadableChannels`);
 export const getReservedChannels = () => API.get(`/channels/getReservedChannels`);
 export const getMyChannels = (id) => API.get(`/channels/${id}/getMyChannels`);
 export const createChannel = (channel) => API.post('/channels/addChannel', channel);

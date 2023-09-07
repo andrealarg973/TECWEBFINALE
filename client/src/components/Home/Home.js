@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ChipInput from 'material-ui-chip-input';
 import Select from 'react-select';
-import { getChannels, getReservedChannels } from '../../actions/channels';
+import { getReadableChannels, getReservedChannels } from '../../actions/channels';
 
 import { getPostsBySearch } from '../../actions/posts';
 import Posts from '../Posts/Posts';
@@ -32,21 +32,18 @@ const Home = () => {
     const [channel, setChannel] = useState('');
 
     const getChanns = async () => {
-        await dispatch(getChannels(user?.result?._id)).then(async (res) => {
+        await dispatch(getReadableChannels(user?.result?._id)).then((res) => {
             //console.log('channels:', res);
-            //setChannels(channels.concat(res));
-            await dispatch(getReservedChannels(user?.result?._id)).then((res1) => {
-                //console.log('channels:', res1);
-                setChannels(res.concat(res1));
-            });
+            setChannels(res);
+
         });
         //console.log('channels:', channels);
     }
 
     const getReservedChanns = async () => {
         await dispatch(getReservedChannels(user?.result?._id)).then((res) => {
-            console.log('channels:', res);
-            setChannels(channels.concat(res));
+            //console.log('channels:', res);
+            setChannels(res);
         });
         //console.log('channels:', channels);
     }
@@ -82,7 +79,11 @@ const Home = () => {
     }
 
     useEffect(() => {
-        if (user) getChanns();
+        if (user) {
+            getChanns();
+        } else {
+            getReservedChanns();
+        }
         //getReservedChanns();
     }, []);
 

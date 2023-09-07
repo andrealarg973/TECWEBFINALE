@@ -11,7 +11,11 @@ const channelSchema = mongoose.Schema({
         type: [String],
         default: []
     },
-    participants: {
+    write: {
+        type: [String],
+        default: []
+    },
+    read: {
         type: [String],
         default: []
     }
