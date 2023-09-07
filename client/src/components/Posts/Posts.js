@@ -6,7 +6,7 @@ import { getUsers } from '../../actions/auth';
 import Post from './Post/Post';
 
 import useStyles from './styles';
-const Posts = ({ setCurrentId }) => {
+const Posts = ({ setCurrentId, fullScreen }) => {
     const { posts, isLoading } = useSelector((state) => state.posts);
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -33,11 +33,17 @@ const Posts = ({ setCurrentId }) => {
     return (
         isLoading ? <CircularProgress /> : (
             <Grid className={classes.container} container alignItems='stretch' spacing={3}>
-                {posts.map((post) => (
-                    <Grid key={post._id} item xs={12} sm={12} md={6} lg={4} xl={3}>
-                        <Post post={post} setCurrentId={setCurrentId} users={users} />
-                    </Grid>
-                ))}
+                {fullScreen ?
+                    (posts.map((post) => (
+                        <Grid key={post._id} item xs={12} sm={6} md={4} lg={3} xl={2}>
+                            <Post post={post} setCurrentId={setCurrentId} users={users} />
+                        </Grid>
+                    ))) : (
+                        posts.map((post) => (
+                            <Grid key={post._id} item xs={12} sm={12} md={6} lg={4} xl={3}>
+                                <Post post={post} setCurrentId={setCurrentId} users={users} />
+                            </Grid>
+                        )))}
             </Grid>
         )
     );

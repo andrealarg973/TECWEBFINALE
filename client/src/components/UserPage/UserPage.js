@@ -24,13 +24,7 @@ const UserPage = () => {
 
     return (
         <Grow in>
-            <Container maxWidth="xl">
-                <Grid container className={classes.gridContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>
-                    <Grid item>
-                        <Posts setCurrentId={setCurrentId} />
-                    </Grid>
-                </Grid>
-            </Container>
+            <Posts setCurrentId={setCurrentId} fullScreen={true} />
         </Grow >
     );
 }

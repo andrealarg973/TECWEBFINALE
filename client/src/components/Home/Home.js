@@ -92,7 +92,7 @@ const Home = () => {
             <Container maxWidth="xl">
                 <Grid className={classes.gridContainer} container justifyContent="space-between" alignItems="stretch" spacing={3}>
                     <Grid item xs={12} sm={6} md={8} xl={9}>
-                        <Posts setCurrentId={setCurrentId} />
+                        <Posts setCurrentId={setCurrentId} fullScreen={false} />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} xl={3}>
                         <AppBar className={classes.appBarSearch} position="static" color="inherit">

@@ -41,6 +41,22 @@ export const getReadableChannels = async (req, res) => {
         console.log(error);
     }
 }
+
+export const getPublicChannels = async (req, res) => {
+    const id = req.params.id;
+    //console.log('BODY', id);
+    try {
+        const channels = await ChannelSchema.find({ $and: [{ $or: [{ privacy: 'public' }, { write: { $in: id } }, { read: { $in: id } }] }, { privacy: { $ne: 'closed' } }] });
+        //console.log(channels);
+
+        res.status(200).json(channels);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
 export const getChannels = async (req, res) => {
     const id = req.params.id;
     //console.log('BODY', id);

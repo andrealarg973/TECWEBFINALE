@@ -61,7 +61,7 @@ HARD
 - canali popolati automaticamente?
 
 MEDIUM
-- pagina iscrizione/visualizzazione canali (uso pagina gestione canali?)
+- pagina iscrizione/visualizzazione canali (aggiungi a readers)
 
 EASY
 - pulizia database 

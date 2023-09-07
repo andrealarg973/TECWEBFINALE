@@ -3,6 +3,10 @@ import mongoose from 'mongoose';
 const channelSchema = mongoose.Schema({
     value: String,
     label: String,
+    desc: {
+        type: String,
+        default: ''
+    },
     privacy: {
         type: String,
         default: 'public'

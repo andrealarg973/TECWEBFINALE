@@ -10,7 +10,15 @@ const ChannelManager = () => {
     const classes = useStyles();
     const user = JSON.parse(localStorage.getItem('profile'));
 
-    const [newChannel, setNewChannel] = useState('');
+    const [newChannel, setNewChannel] = useState({
+        privacy: '',
+        value: '',
+        label: '',
+        desc: '',
+        owner: [user?.result?._id],
+        read: [],
+        write: [],
+    });
     const [channels1, setChannels1] = useState([]);
 
     const getChannels = async () => {
@@ -22,12 +30,20 @@ const ChannelManager = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         //console.log(e);
-        dispatch(createChannel({ ...channels1, owner: [user?.result?._id], label: '$' + newChannel, value: newChannel })).then((res) => {
+        dispatch(createChannel({ ...channels1, owner: newChannel.owner, value: newChannel.value, label: newChannel.label, desc: newChannel.desc })).then((res) => {
             //console.log(res);
             setChannels1(channels1.concat([res]));
         });
         //setChannels1(channels1.concat({ owner: [user?.result?._id], label: '$' + newChannel, value: newChannel, _id: '1234' }));
-        setNewChannel('');
+        setNewChannel({
+            privacy: '',
+            value: '',
+            label: '',
+            desc: '',
+            owner: [user?.result?._id],
+            read: [],
+            write: [],
+        });
     }
 
     useEffect(() => {
@@ -60,7 +76,8 @@ const ChannelManager = () => {
                     <Paper className={classes.paper} elevation={6}>
                         <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
                             <Typography variant="h6">Create Channel</Typography>
-                            <TextField required variant="outlined" label="Channel Name" fullWidth value={newChannel} onChange={(e) => setNewChannel(e.target.value)}></TextField>
+                            <TextField required variant="outlined" label="Channel Name" fullWidth value={newChannel.label} onChange={(e) => setNewChannel({ ...newChannel, value: e.target.value, label: '$' + e.target.value })}></TextField>
+                            <TextField required name="desc" variant="outlined" label="Description" fullWidth multiline minRows={2} value={newChannel.desc} onChange={((e) => setNewChannel({ ...newChannel, desc: e.target.value }))} />
                             <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Create</Button>
                         </form>
                     </Paper>

@@ -16,6 +16,7 @@ const Channel = ({ channel }) => {
         privacy: '',
         value: '',
         label: '',
+        desc: '',
         owner: [],
         read: [],
         write: [],
@@ -82,10 +83,10 @@ const Channel = ({ channel }) => {
     return (
         <Paper className={classes.paper} elevation={6}>
             <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
-                <div style={{ flexDirection: 'column' }}>
-                    <Typography variant="h4" paragraph className={classes.channelTitle}>${channelData.value}</Typography>
-                    <Typography variant="h6" style={{ textAlign: 'center' }}>Owners:</Typography>
-                </div>
+                <Typography variant="h4" paragraph className={classes.channelTitle}>${channelData.value}</Typography>
+                <TextField required name="desc" variant="outlined" label="Description" fullWidth multiline minRows={2} value={channelData.desc} onChange={((e) => setChannelData({ ...channelData, desc: e.target.value }))} />
+
+                <Typography variant="h6" style={{ textAlign: 'center' }}>Owners:</Typography>
                 <Select className={classes.fileInput} isMulti value={channelData.owner.map((participant) => ({
                     value: participant, label: nome(participant)
                 }))} onChange={handleSelectOwner} options={users} />
