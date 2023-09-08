@@ -41,6 +41,7 @@ export const readNotification = (id) => API.patch(`/users/readNotification`, id)
 export const updatePassword = (id, pwd) => API.patch(`/users/${id}/changePassword`, pwd);
 export const signIn = (formData) => API.post('/users/signin', formData);
 export const signUp = (formData) => API.post('/users/signup', formData);
+export const resetPwd = (formData) => API.post('/users/passwordReset', formData);
 export const updateQuota = (formData) => API.patch(`/users/updateQuota`, formData);
 export const getCar = (id) => API.patch(`/users/caratteri`, id);
 export const setSMM = (idVip, idSmm) => API.patch(`/users/${idVip}/setSMM`, idSmm);

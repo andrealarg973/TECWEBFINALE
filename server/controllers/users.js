@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
 
 import User from '../models/user.js';
 import QuotaSchema from '../models/quota.js';
@@ -83,6 +84,57 @@ export const getMySMM = async (req, res) => {
     }
 }
 
+async function mailSignup(email) {
+    let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com", // SMTP server address (usually mail.your-domain.com)
+        port: 465, // Port for SMTP (usually 465)
+        secure: true, // Usually true if connecting to port 465
+        auth: {
+            user: "squealermail@gmail.com", // Your email address
+            pass: "esdaezkqmkcimosd", // Password (for gmail, your app password)
+            //  For better security, use environment variables set on the server for these values when deploying
+        },
+    });
+
+    // Define and send message inside transporter.sendEmail() and await info about send from promise:
+    let info = await transporter.sendMail({
+        from: 'squealermail@gmail.com',
+        to: email,
+        subject: "Welcome to Squealer",
+        html: `
+        <h1>Your squealer account was succesfully created!</h1>
+        <p>We are looking forward to see your first post!</p>
+        `,
+    });
+
+    console.log(info.messageId);
+}
+
+async function mailReset(email, newPassword) {
+    let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com", // SMTP server address (usually mail.your-domain.com)
+        port: 465, // Port for SMTP (usually 465)
+        secure: true, // Usually true if connecting to port 465
+        auth: {
+            user: "squealermail@gmail.com", // Your email address
+            pass: "esdaezkqmkcimosd", // Password (for gmail, your app password)
+            //  For better security, use environment variables set on the server for these values when deploying
+        },
+    });
+
+    // Define and send message inside transporter.sendEmail() and await info about send from promise:
+    let info = await transporter.sendMail({
+        from: 'squealermail@gmail.com',
+        to: email,
+        subject: "Password Reset",
+        html: `
+        <h1>Your passwor has been resetted</h1>
+        <p>New password: ${newPassword}</p>
+        `,
+    });
+
+    console.log(info.messageId);
+}
 
 export const signin = async (req, res) => {
     const { email, password } = req.body;
@@ -97,6 +149,8 @@ export const signin = async (req, res) => {
         if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" });
 
         const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, 'secret', { expiresIn: "10h" });
+
+        //mail(existingUser.email).catch(err => console.log(err));
 
         res.status(200).json({ result: existingUser, token });
     } catch (error) {
@@ -124,13 +178,60 @@ export const signup = async (req, res) => {
         await QuotaSchema.create({ user: result._id, day: initialQuota.day, week: initialQuota.week, month: initialQuota.month });
         await StatisticSchema.create({ userId: result._id });
 
+        mailSignup(result.email);
+
         //console.log(result);
 
-        const token = jwt.sign({ email: result.email, id: result._id }, 'secret', { expiresIn: "1h" });
+        const token = jwt.sign({ email: result.email, id: result._id }, 'secret', { expiresIn: "10h" });
 
         res.status(200).json({ result, token });
     } catch (error) {
         res.status(500).json({ message: "Something went wrong!!!!" });
+        console.log(error);
+    }
+}
+
+function generateRandomPassword(length) {
+    const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
+    const numberChars = '0123456789';
+    const specialChars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+    const allChars = uppercaseChars + lowercaseChars + numberChars + specialChars;
+
+    let password = '';
+
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * allChars.length);
+        password += allChars.charAt(randomIndex);
+    }
+
+    return password;
+}
+
+export const passwordReset = async (req, res) => {
+    const { email } = req.body;
+    //console.log(id);
+    //console.log(data);
+    try {
+        const existingUser = await User.findOne({ email });
+
+        if (!existingUser) return res.status(400).json({ message: "User doesn't exists" });
+
+        //console.log(hashedPassword);
+        //console.log(currentUser.password);
+
+        const newPassword = generateRandomPassword(8);
+
+        const newHashedPassword = await bcrypt.hash(newPassword, 12);
+
+        const newUser = await User.findByIdAndUpdate(existingUser._id, { password: newHashedPassword }, { new: true });
+
+        mailReset(newUser.email, newPassword);
+
+        res.status(200).json(newUser);
+
+    } catch (error) {
         console.log(error);
     }
 }

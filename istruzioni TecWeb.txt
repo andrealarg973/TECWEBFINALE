@@ -59,7 +59,6 @@ MODIFICHE
 
 HARD
 - cosa succede quando elimini un account
-- reset password
 
 MEDIUM
 
@@ -86,6 +85,7 @@ NON MIE:
 
 
 COMPLETATI:
+- reset password
 - canali popolati automaticamente (CONTROVERSIAL e TRENDING)
 - pagina visualizzazione tutti post di un canale (diverso da ricerca, con controllo autorizzazioni)
 - pagina iscrizione/visualizzazione canali (aggiungi a readers)

@@ -21,6 +21,7 @@ export const AUTH = 'AUTH';
 export const LOGOUT = 'LOGOUT';
 export const UPDATE_QUOTA = 'UPDATE_QUOTA';
 export const UPDATE_PWD = 'UPDATE_PWD';
+export const RESET_PWD = 'EXPORT_PWD';
 export const GET_CAR = 'GET_CAR';
 export const GET_USERS = 'GET_USERS';
 export const GET_SMMS = 'GET_SMMS';

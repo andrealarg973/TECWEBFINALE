@@ -1,4 +1,4 @@
-import { AUTH, UPDATE_QUOTA, UPDATE_PWD, GET_CAR, GET_USERS, GET_SMMS, GET_MY_SMM, SET_SMM, GET_QUOTA, GET_NOTIFICATIONS, READ_NOTIFICATION } from '../constants/actionTypes';
+import { AUTH, UPDATE_QUOTA, UPDATE_PWD, GET_CAR, GET_USERS, GET_SMMS, GET_MY_SMM, SET_SMM, GET_QUOTA, GET_NOTIFICATIONS, READ_NOTIFICATION, RESET_PWD } from '../constants/actionTypes';
 import * as api from '../api';
 
 export const getUsers = (id) => async (dispatch) => {
@@ -54,6 +54,18 @@ export const signin = (formData, navigate) => async (dispatch) => {
         dispatch({ type: AUTH, data });
 
         navigate('/');
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const resetPwd = (formData, navigate) => async (dispatch) => {
+    try {
+        const { data } = await api.resetPwd(formData);
+
+        dispatch({ type: RESET_PWD, data });
+
+        navigate('/authReset');
     } catch (error) {
         console.log(error);
     }
