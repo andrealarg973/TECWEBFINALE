@@ -58,19 +58,13 @@ MODIFICHE
 --------------------------------------------------------------------
 
 HARD
-- cosa succede quando elimini un account
+
 
 MEDIUM
 
 EASY
 - pulizia database 
 - acquisto quota (scade dopo un anno)
-
-MODERATORE (si e no)
-- canali riservati: di squealer, solo il mod può usarli (alla fine)
-- creazione CANALI PUBBLICI, popolazione automatica
-- homepage senza login (solo canali RISERVATI)
-- iscrizione automatica CANALI RISERVATI (es. controverso)
 
 
 FORSE
@@ -85,6 +79,8 @@ NON MIE:
 
 
 COMPLETATI:
+- accesso con google fixed
+- cosa succede quando elimini un account
 - reset password
 - canali popolati automaticamente (CONTROVERSIAL e TRENDING)
 - pagina visualizzazione tutti post di un canale (diverso da ricerca, con controllo autorizzazioni)
@@ -105,6 +101,11 @@ COMPLETATI:
 - messagi variabili: {TIME}, {DATE}, ecc.
 - ricerca per canale
 - fix quota divisa in due chiamate
+MODERATORE (si e no)
+- canali riservati: di squealer, solo il mod può usarli (alla fine)
+- creazione CANALI PUBBLICI, popolazione automatica
+- homepage senza login (solo canali RISERVATI)
+- iscrizione automatica CANALI RISERVATI (es. controverso)
 
 
 
