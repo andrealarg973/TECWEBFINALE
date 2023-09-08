@@ -10,6 +10,7 @@ import PostMessage from '../models/postMessage.js';
 import InitialQuotaSchema from '../models/initialQuota.js';
 import NotificationlSchema from '../models/notification.js';
 import StatisticSchema from '../models/statistic.js';
+import ChannelSchema from '../models/channel.js';
 
 const router = express.Router();
 
@@ -177,7 +178,33 @@ export const deleteAccount = async (req, res) => {
             await PostMessage.findByIdAndRemove(post._id);
         });
 
-        await PostMessage.findByIdAndRemove(id);
+        const getParticipatingChannels = await ChannelSchema.find({ $or: [{ write: { $in: existingUser._id } }, { read: { $in: existingUser._id } }] });
+        getParticipatingChannels.map(async (c) => {
+            await ChannelSchema.findByIdAndUpdate(c._id, { write: c.write.filter((u) => u !== existingUser._id), read: c.read.filter((u) => u !== existingUser._id) }, { new: true });
+        });
+
+        const getOwnedChannels = await ChannelSchema.find({ owner: { $in: existingUser._id } });
+        getOwnedChannels.map(async (c) => {
+            if (c.owner.length > 1) {
+                console.log("newowners ", c.owner.filter((u) => u !== existingUser._id));
+                await ChannelSchema.findByIdAndUpdate(c._id, { owner: c.owner.filter((u) => u !== existingUser._id) }, { new: true });
+            } else {
+                if (c.write.length > 1) { // give channel to first participant
+                    console.log("write ", [c.write[0]]);
+                    await ChannelSchema.findByIdAndUpdate(c._id, { owner: [c.write[0]] }, { new: true });
+                } else if (c.read.length > 1) {
+                    console.log("read ", [c.read[0]]);
+                    await ChannelSchema.findByIdAndUpdate(c._id, { owner: [c.read[0]] }, { new: true });
+                } else {
+                    const lottery = await User.find({ $and: [{ $or: [{ role: 'user' }, { role: 'vip' }] }, { _id: { $ne: existingUser._id } }] });
+                    const num = Math.floor(Math.random() * lottery.length); // give the channel to a random user
+                    console.log("random ", [[String(lottery[num]._id)]]);
+                    await ChannelSchema.findByIdAndUpdate(c._id, { owner: [String(lottery[num]._id)] }, { new: true });
+                }
+            }
+        });
+
+        await User.findByIdAndRemove(existingUser._id);
 
         mailDelete(existingUser.email);
 
@@ -211,7 +238,7 @@ export const signin = async (req, res) => {
 };
 
 export const signup = async (req, res) => {
-    const { email, password, confirmPassword, firstName, lastName, role } = req.body;
+    const { email, password, confirmPassword, firstName, lastName, picture, role } = req.body;
     try {
         const existingUser = await User.findOne({ email });
 
@@ -223,7 +250,7 @@ export const signup = async (req, res) => {
 
         let temp = firstName + " " + lastName;
 
-        const result = await User.create({ email, password: hashedPassword, name: temp, role });
+        const result = await User.create({ email, password: hashedPassword, name: temp, picture, role });
 
         const initialQuota = await InitialQuotaSchema.findOne();
 

@@ -30,7 +30,7 @@ const ChannelManager = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         //console.log(e);
-        dispatch(createChannel({ ...channels1, owner: newChannel.owner, privacy: newChannel.privacy, value: newChannel.value, label: newChannel.label, desc: newChannel.desc })).then((res) => {
+        dispatch(createChannel({ ...channels1, owner: newChannel.owner, privacy: newChannel.privacy, value: newChannel.value.toLowerCase(), label: newChannel.label.toLowerCase(), desc: newChannel.desc })).then((res) => {
             //console.log(res);
             setChannels1(channels1.concat([res]));
         });

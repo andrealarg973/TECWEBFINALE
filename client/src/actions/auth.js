@@ -54,6 +54,7 @@ export const signin = (formData, navigate) => async (dispatch) => {
         dispatch({ type: AUTH, data });
 
         navigate('/');
+        return data;
     } catch (error) {
         console.log(error);
     }

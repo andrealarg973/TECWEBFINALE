@@ -12,7 +12,7 @@ import Input from './Input';
 //import Icon from './icon';
 import { signin, signup, resetPwd } from '../../actions/auth';
 
-const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '', role: 'user' };
+const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '', picture: '', role: 'user' };
 
 const Auth = () => {
     const classes = useStyles();
@@ -50,18 +50,38 @@ const Auth = () => {
     };
 
     const googleSuccess = async (res) => {
-        //console.log(res);
+
         const cred = res?.credential; // undefined if not found
         var result = jwt_decode(res.credential);
+        //console.log(result);
         //console.log({ token: cred, result });
         //const token = res?.tokenId;
+        dispatch(signin({ email: result.email, password: result.sub }, navigate)).then((res) => {
+            if (res?.result) {
+                //console.log('result found:');
+                //console.log(res);
+            } else {
+                //console.log('no result');
+                dispatch(signup({ firstName: result.given_name, lastName: result.family_name, email: result.email, password: result.sub, confirmPassword: result.sub, picture: result.picture, role: 'user' }, navigate));
+                //console.log(res);
+            }
+        });
 
+        /*
+        if (isSignup) {
+            dispatch(signup({ firstName: result.given_name, lastName: result.family_name, email: result.email, password: result.sub, confirmPassword: result.sub, picture: result.picture, role: 'user' }, navigate));
+        } else {
+            dispatch(signin({ email: result.email, password: result.sub }, navigate)).then((res) => console.log(res));
+        }*/
+
+        /*
         try {
             dispatch({ type: 'AUTH', data: { result, token: cred } });
             navigate('/');
         } catch (error) {
             console.log(error);
         }
+        */
     };
     const googleFailure = (error) => {
         console.log("Google sign in was unsuccessful!");

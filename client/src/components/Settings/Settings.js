@@ -57,11 +57,11 @@ const Settings = () => {
         toast.current.show({ severity: 'info', summary: 'Confirmed', detail: 'Account Deleted!', life: 3000 });
         setDeletingAccount(true);
         dispatch(deleteAccount({ _id: user?.result?._id }, navigate));
-        /*
+
         setTimeout(() => {
-            dispatch(deleteAccount({ _id: user?.result?._id }, navigate));
+            //dispatch(deleteAccount({ _id: user?.result?._id }, navigate));
             logout();
-        }, 3000);*/
+        }, 3000);
         //logout();
     }
 
