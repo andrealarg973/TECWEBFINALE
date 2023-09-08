@@ -34,7 +34,7 @@ const Channel = ({ channel }) => {
 
     const nome = (c) => {
         const foundItem = users.find(item => item.value === c);
-        return (foundItem ? foundItem.label : user.result.name);
+        return (foundItem ? foundItem.label : 'UNKNOWN');
     }
 
     useEffect(() => {
