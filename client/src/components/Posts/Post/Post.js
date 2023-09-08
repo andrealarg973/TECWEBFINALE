@@ -176,7 +176,7 @@ const Post = ({ post, setCurrentId, users }) => {
                 ) : (
                     <Card className={classes.cardReply} raised elevation={8}>
                         <CardContent>
-                            <Typography variant="h6">This post was deleted</Typography>
+                            <Typography variant="h6"><b>This post was deleted</b></Typography>
                         </CardContent>
                     </Card>
                 )}

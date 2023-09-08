@@ -59,6 +59,18 @@ export const signin = (formData, navigate) => async (dispatch) => {
     }
 }
 
+export const deleteAccount = (formData, navigate) => async (dispatch) => {
+    try {
+        const { data } = await api.deleteAccount(formData);
+
+        dispatch({ type: RESET_PWD, data });
+
+        //navigate('/');
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const resetPwd = (formData, navigate) => async (dispatch) => {
     try {
         const { data } = await api.resetPwd(formData);

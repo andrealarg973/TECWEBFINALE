@@ -107,7 +107,7 @@ async function mailSignup(email) {
         `,
     });
 
-    console.log(info.messageId);
+    //console.log(info.messageId);
 }
 
 async function mailReset(email, newPassword) {
@@ -133,7 +133,59 @@ async function mailReset(email, newPassword) {
         `,
     });
 
-    console.log(info.messageId);
+    //console.log(info.messageId);
+}
+
+async function mailDelete(email) {
+    let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com", // SMTP server address (usually mail.your-domain.com)
+        port: 465, // Port for SMTP (usually 465)
+        secure: true, // Usually true if connecting to port 465
+        auth: {
+            user: "squealermail@gmail.com", // Your email address
+            pass: "esdaezkqmkcimosd", // Password (for gmail, your app password)
+            //  For better security, use environment variables set on the server for these values when deploying
+        },
+    });
+
+    // Define and send message inside transporter.sendEmail() and await info about send from promise:
+    let info = await transporter.sendMail({
+        from: 'squealermail@gmail.com',
+        to: email,
+        subject: "Account Deleted",
+        html: `
+        <h1>As you requested your account has been deleted.</h1>
+        <p>We are sorry that you are not with us anymore, but we still hope to see you again someday!</p>
+        <p>Squearel staff</p>
+        `,
+    });
+
+    //console.log(info.messageId);
+}
+
+export const deleteAccount = async (req, res) => {
+    const { _id } = req.body;
+    //console.log(id);
+    //console.log(data);
+    try {
+        const existingUser = await User.findById(_id);
+
+        if (!existingUser) return res.status(400).json({ message: "User doesn't exists" });
+
+        const userPosts = await PostMessage.find({ creator: existingUser._id });
+        userPosts.map(async (post) => {
+            await PostMessage.findByIdAndRemove(post._id);
+        });
+
+        await PostMessage.findByIdAndRemove(id);
+
+        mailDelete(existingUser.email);
+
+        res.status(200).json(existingUser);
+
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 export const signin = async (req, res) => {
