@@ -22,6 +22,8 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
+app.enable('trust proxy');
+
 app.use('/', express.static(path.join(__dirname, 'react-app/build')));
 
 // Serve the Vue app
