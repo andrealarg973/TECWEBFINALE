@@ -27,7 +27,7 @@ const Posts = ({ setCurrentId, fullScreen }) => {
         //console.log(users);
     }, []);
 
-    if (posts.length <= 0 && !isLoading) return 'no posts';
+    if (posts?.length <= 0 && !isLoading) return 'no posts';
 
     //console.log(posts);
     return (

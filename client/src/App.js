@@ -22,7 +22,7 @@ const App = () => {
     const [currentId, setCurrentId] = useState(0);
 
     return (
-        <BrowserRouter>
+        <BrowserRouter basename="/react">
             <Container maxWidth="xl">
                 <Navbar />
                 <Routes>

@@ -10,7 +10,7 @@ import multer from 'multer';
 import fs from 'fs';
 import './BackgroundTask.js';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import path, { dirname, join } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -22,10 +22,38 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
-app.use('/posts', postRoutes);
-app.use('/users', userRoutes);
-app.use('/channels', channelRoutes);
-app.use('/public/media', express.static(__dirname + '/public/media'));
+app.use('/', express.static(path.join(__dirname, 'react-app/build')));
+
+// Serve the Vue app
+app.use('/', express.static(path.join(__dirname, 'vue-app/dist')));
+function isAPI(url) {
+    return url.startsWith(`/api`);
+}
+function isReact(url) {
+    return url.startsWith(`/react`);
+}
+function isVue(url) {
+    return url.startsWith(`/vue`);
+}
+
+app.get('*', (req, res, next) => {
+    //res.status(404).send('senti tu coso , non e\' che posso avere tutto eh! insomma un po\' di comprensione uffa!');
+    //(__dirname + '/static/dist')
+    if (isAPI(req.url)) return next();
+    if (isReact(req.url)) {
+        return res.sendFile('index.html', { 'root': __dirname + '/react-app/build' });
+    }
+    if (isVue(req.url)) {
+        return res.sendFile('index.html', { 'root': __dirname + '/vue-app/dist' });
+    }
+});
+
+
+app.use('/api/posts', postRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/channels', channelRoutes);
+//app.use('/public/media', express.static(__dirname + '/public/media'));
+app.use('/api/public/media', express.static(path.join(__dirname, '/public/media')));
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
