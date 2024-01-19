@@ -168,7 +168,7 @@ const Post = ({ post, setCurrentId, users }) => {
                                 )}
                                 {repPost.type === 'location' && (
                                     <>
-                                        <Map position={repPost.location} height={'20vh'} zoom={10} scrollWheelZoom={false} dragging={false} />
+                                        <Map position={repPost.location} height={'20vh'} zoom={10} scrollWheelZoom={false} dragging={false} draggableMarker={false} draggableEventHandler={(() => { })} />
                                     </>
                                 )}
 
@@ -249,7 +249,7 @@ const Post = ({ post, setCurrentId, users }) => {
                     )}
                     {post.type === 'location' && (
                         <>
-                            <Map position={post.location} height={'26vh'} zoom={10} scrollWheelZoom={false} dragging={false} />
+                            <Map position={post.location} height={'26vh'} zoom={10} scrollWheelZoom={false} dragging={false} draggableMarker={false} draggableEventHandler={(() => { })} />
                         </>
                     )}
 

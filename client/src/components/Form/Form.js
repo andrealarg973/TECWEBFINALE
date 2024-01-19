@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Container, TextField, Button, Typography, Paper, CircularProgress } from '@material-ui/core';
 import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +22,8 @@ import Map from '../Map/Map';
 
 // get the current id of the post
 
+
+
 const Form = ({ currentId, setCurrentId }) => {
     const [postData, setPostData] = useState({
         title: '',
@@ -41,6 +43,7 @@ const Form = ({ currentId, setCurrentId }) => {
     const user = JSON.parse(localStorage.getItem('profile'));
     const navigate = useNavigate();
     const [caratteri, setCaratteri] = useState(0);
+    const markerRef = useRef(null);
     /*
     const [initialCar, setInitialCar] = useState(0);
     const [maxCar, setMaxCar] = useState({
@@ -175,6 +178,8 @@ const Form = ({ currentId, setCurrentId }) => {
         e.preventDefault();
         //setPostData({ ...postData, location: location });
         //console.log(postData);
+        //console.log(markerRef.current.getLatLng());
+        setLocation(markerRef.current.getLatLng());
         if (postData.type === 'media' && postData.selectedFile === '') {
             alert('You forgot to upload the media file');
             return;
@@ -185,7 +190,8 @@ const Form = ({ currentId, setCurrentId }) => {
                 if (temporal) {
                     dispatch(createPostTemporal({ ...postData, name: user?.result?.name, location: location, repeat: (time >= 10 ? time : 10) }));
                 } else {
-                    dispatch(createPost({ ...postData, name: user?.result?.name, location: location }));
+                    //console.log(markerRef.current.getLatLng());
+                    dispatch(createPost({ ...postData, name: user?.result?.name, location: [markerRef.current.getLatLng().lat, markerRef.current.getLatLng().lng] }));
                 }
                 //console.log(postData);
                 if (postData.destinatari.length > 0) {
@@ -379,10 +385,22 @@ const Form = ({ currentId, setCurrentId }) => {
 
     const Maps = () => {
         //<GetUserLocation />
+        const markerEventHandler = useMemo(
+            () => ({
+                dragend() {
+                    const marker = markerRef.current
+                    if (marker != null) {
+                        console.log(marker.getLatLng());
+                        setLocation(marker.getLatLng())
+                    }
+                },
+            }),
+            [],
+        );
         if (location.length > 0) {
             const position = [location[0], location[1]];
             return (
-                <Map position={position} height={'50vh'} zoom={13} scrollWheelZoom={true} dragging={true} />
+                <Map position={position} height={'50vh'} zoom={13} scrollWheelZoom={true} dragging={true} draggableMarker={true} draggableEventHandler={markerEventHandler} markerRef={markerRef} />
             );
         } else {
             return (
