@@ -95,7 +95,8 @@ export default function MenuListComposition({ windowSize, notifications }) {
 
     const navigateSMMPage = () => {
         setOpen(false);
-        //navigate('/channelsList');
+        //navigate(-2);
+        navigate('../../../vue');
     }
 
     function handleListKeyDown(event) {

@@ -24,6 +24,10 @@ app.use(cors());
 
 app.enable('trust proxy');
 
+/* 
+****************************************************************
+*                UNCOMMENT THIS FOR GIOVANNA                   *
+****************************************************************
 app.use('/', express.static(path.join(__dirname, 'react-app/build')));
 
 // Serve the Vue app
@@ -49,13 +53,13 @@ app.get('*', (req, res, next) => {
         return res.sendFile('index.html', { 'root': __dirname + '/vue-app/dist' });
     }
 });
-
+*/
 
 app.use('/api/posts', postRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/channels', channelRoutes);
-//app.use('/public/media', express.static(__dirname + '/public/media'));
-app.use('/api/public/media', express.static(path.join(__dirname, '/public/media')));
+app.use('/public/media', express.static(__dirname + '/public/media'));
+//app.use('/api/public/media', express.static(path.join(__dirname, '/public/media')));
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {

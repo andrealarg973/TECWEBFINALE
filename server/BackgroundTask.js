@@ -318,10 +318,10 @@ async function automaticPosts() {
             if (secondsDiff - post.repeat > 0) {
                 const newPost = new PostMessage({ createdAt: new Date().toISOString(), title: post.title, reply: post.reply, type: post.type, location: post.location, message: post.message, name: post.name, creator: post.creator, tags: post.tags, selectedFile: post.selectedFile, privacy: post.privacy, visual: post.visual, likes: post.likes, comments: post.comments, dislikes: post.islikes, comments: post.comments, destinatari: post.destinatari, destinatariPrivati: post.destinatariPrivati });
                 //newPost.message = replacePlaceholders(newPost.message);
-
-                const apiUrl = `http://localhost:5000/users/${newPost.creator}/getQuotas`;
+                const apiUrl = `http://localhost:5000/api/users/${newPost.creator}/getQuotas`;
                 fetch(apiUrl)
                     .then(response => {
+                        //console.log("QUI");
                         if (!response.ok) {
                             throw new Error(`HTTP error! Status: ${response.status}`);
                         }
@@ -399,7 +399,7 @@ async function automaticPosts() {
     //console.log(temporals);
 }
 
-const automaticPostsDelay = 5; // time in seconds
+const automaticPostsDelay = 2; // time in seconds
 const automaticQuotaDelay = 30; // time in seconds
 const getControversialDelay = 60; // time in seconds
 const removeTrendingPostsDelay = 10;
