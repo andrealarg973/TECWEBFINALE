@@ -16,6 +16,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import AbcIcon from '@mui/icons-material/Abc';
 import GroupIcon from '@mui/icons-material/Group';
 import CreateIcon from '@mui/icons-material/Create';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -92,6 +93,11 @@ export default function MenuListComposition({ windowSize, notifications }) {
         navigate('/channelsList');
     }
 
+    const navigateSMMPage = () => {
+        setOpen(false);
+        //navigate('/channelsList');
+    }
+
     function handleListKeyDown(event) {
         if (event.key === 'Tab') {
             event.preventDefault();
@@ -156,6 +162,12 @@ export default function MenuListComposition({ windowSize, notifications }) {
                                             <PersonIcon style={{ color: 'blue' }} />
                                             <div>My Posts</div>
                                         </MenuItem>
+                                        {user.result.role === 'smm' && (
+                                            <MenuItem onClick={navigateSMMPage}>
+                                                <AnalyticsIcon style={{ color: 'blue' }} />
+                                                <div>SMM Dashboard</div>
+                                            </MenuItem>
+                                        )}
                                         <MenuItem onClick={navigateNewSqueal}>
                                             <CreateIcon style={{ color: 'darkgreen' }} />
                                             <div>New Squeal</div>

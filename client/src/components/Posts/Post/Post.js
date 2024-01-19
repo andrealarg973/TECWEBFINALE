@@ -116,8 +116,10 @@ const Post = ({ post, setCurrentId, users }) => {
     }
 
     const openPost = () => {
-        dispatch(updateVisual(post._id));
-        navigate(`/posts/${post._id}`);
+        if (!post?.repeat) {
+            dispatch(updateVisual(post._id));
+            navigate(`/posts/${post._id}`);
+        }
     }
 
     const postReplied = () => {

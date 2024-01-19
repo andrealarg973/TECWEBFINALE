@@ -399,11 +399,11 @@ async function automaticPosts() {
     //console.log(temporals);
 }
 
-const automaticPostsDelay = 1; // time in seconds
-const automaticQuotaDelay = 5; // time in seconds
-const getControversialDelay = 5; // time in seconds
+const automaticPostsDelay = 5; // time in seconds
+const automaticQuotaDelay = 30; // time in seconds
+const getControversialDelay = 60; // time in seconds
 const removeTrendingPostsDelay = 10;
-const setTrendingPostsDelay = 5;
+const setTrendingPostsDelay = 30;
 
 setInterval(automaticPosts, automaticPostsDelay * 1000);
 setInterval(updateQuotas, automaticQuotaDelay * 1000);

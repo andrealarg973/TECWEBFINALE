@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 
+import User from '../models/user.js';
 import PostMessage from '../models/postMessage.js';
 import PostMessageTemporal from '../models/postMessageTemporal.js';
 import ChannelSchema from '../models/channel.js';
@@ -251,7 +252,11 @@ async function fetchDataAndReplace(inputString) {
 
 export const createPost = async (req, res) => {
     const post = req.body;
-    const newPostMessage = new PostMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString() });
+    //console.log(post);
+    const vip = await User.find({ smm: req.userId });
+    //console.log(vip[0].name);
+    //console.log(post.name);
+    const newPostMessage = new PostMessage({ ...post, creator: req.userId, name: (vip.length > 0 ? vip[0].name : post.name), createdAt: new Date().toISOString() });
 
     fetchDataAndReplace(newPostMessage.message)
         .then(async (replacedString) => {

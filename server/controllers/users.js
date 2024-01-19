@@ -92,7 +92,7 @@ async function mailSignup(email) {
         secure: true, // Usually true if connecting to port 465
         auth: {
             user: "squealermail@gmail.com", // Your email address
-            pass: "esdaezkqmkcimosd", // Password (for gmail, your app password)
+            pass: "dgafhznykxdussac", // Password (for gmail, your app password)
             //  For better security, use environment variables set on the server for these values when deploying
         },
     });
@@ -118,7 +118,7 @@ async function mailReset(email, newPassword) {
         secure: true, // Usually true if connecting to port 465
         auth: {
             user: "squealermail@gmail.com", // Your email address
-            pass: "esdaezkqmkcimosd", // Password (for gmail, your app password)
+            pass: "dgafhznykxdussac", // Password (for gmail, your app password) // jeny ctsp xxif vngk, old: esdaezkqmkcimosd
             //  For better security, use environment variables set on the server for these values when deploying
         },
     });
@@ -144,7 +144,7 @@ async function mailDelete(email) {
         secure: true, // Usually true if connecting to port 465
         auth: {
             user: "squealermail@gmail.com", // Your email address
-            pass: "esdaezkqmkcimosd", // Password (for gmail, your app password)
+            pass: "dgafhznykxdussac", // Password (for gmail, your app password)
             //  For better security, use environment variables set on the server for these values when deploying
         },
     });
