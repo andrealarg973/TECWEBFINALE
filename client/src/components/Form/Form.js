@@ -179,7 +179,7 @@ const Form = ({ currentId, setCurrentId }) => {
         //setPostData({ ...postData, location: location });
         //console.log(postData);
         //console.log(markerRef.current.getLatLng());
-        setLocation(markerRef.current.getLatLng());
+        //setLocation(markerRef.current.getLatLng());
         if (postData.type === 'media' && postData.selectedFile === '') {
             alert('You forgot to upload the media file');
             return;
@@ -188,10 +188,10 @@ const Form = ({ currentId, setCurrentId }) => {
         if (currentId === 0 || currentId === null) {
             if ((Math.min(quotas.day, quotas.week, quotas.month) - caratteri >= 0) || (postData.destinatariPrivati.length > 0) || temporal) {
                 if (temporal) {
-                    dispatch(createPostTemporal({ ...postData, name: user?.result?.name, location: location, repeat: (time >= 10 ? time : 10) }));
+                    dispatch(createPostTemporal({ ...postData, name: user?.result?.name, location: (markerRef.current !== null ? [markerRef?.current?.getLatLng()?.lat, markerRef?.current?.getLatLng()?.lng] : [9999, 9999]), repeat: (time >= 10 ? time : 10) }));
                 } else {
-                    //console.log(markerRef.current.getLatLng());
-                    dispatch(createPost({ ...postData, name: user?.result?.name, location: [markerRef.current.getLatLng().lat, markerRef.current.getLatLng().lng] }));
+                    console.log(markerRef);
+                    dispatch(createPost({ ...postData, name: user?.result?.name, location: (markerRef.current !== null ? [markerRef?.current?.getLatLng()?.lat, markerRef?.current?.getLatLng()?.lng] : [9999, 9999]) }));
                 }
                 //console.log(postData);
                 if (postData.destinatari.length > 0) {
@@ -206,8 +206,6 @@ const Form = ({ currentId, setCurrentId }) => {
             }
         } else {
             if (postData.reply === '') {
-
-
                 dispatch(updateTemporal(currentId, { ...postData, name: user?.result?.name, repeat: time, active: switchController }));
                 clear();
                 navigate('/temporalPosts');
@@ -219,9 +217,9 @@ const Form = ({ currentId, setCurrentId }) => {
                     //} else {
                     const privacy = (postData.destinatariPrivati.length <= 0 && postData.destinatari.length <= 0) ? 'public' : 'private';
                     if (temporal) {
-                        dispatch(createPostTemporal({ ...postData, name: user?.result?.name, reply: currentId, privacy: privacy, location: location, repeat: (time >= 10 ? time : 10) }));
+                        dispatch(createPostTemporal({ ...postData, name: user?.result?.name, reply: currentId, privacy: privacy, location: (markerRef.current !== null ? [markerRef?.current?.getLatLng()?.lat, markerRef?.current?.getLatLng()?.lng] : [9999, 9999]), repeat: (time >= 10 ? time : 10) }));
                     } else {
-                        dispatch(createPost({ ...postData, name: user?.result?.name, privacy: privacy, reply: currentId, location: location }));
+                        dispatch(createPost({ ...postData, name: user?.result?.name, privacy: privacy, reply: currentId, location: (markerRef.current !== null ? [markerRef?.current?.getLatLng()?.lat, markerRef?.current?.getLatLng()?.lng] : [9999, 9999]) }));
                     }
                     //console.log(postData);
                     if (postData.destinatari.length > 0) {
@@ -232,11 +230,9 @@ const Form = ({ currentId, setCurrentId }) => {
                     //}
                 } else {
                     alert('Quota insufficiente');
-
                 }
             }
         }
-
     }
 
     const handleSwitch = () => {
@@ -400,7 +396,7 @@ const Form = ({ currentId, setCurrentId }) => {
         if (location.length > 0) {
             const position = [location[0], location[1]];
             return (
-                <Map position={position} height={'50vh'} zoom={13} scrollWheelZoom={true} dragging={true} draggableMarker={true} draggableEventHandler={markerEventHandler} markerRef={markerRef} />
+                <Map position={position} height={'50vh'} zoom={13} scrollWheelZoom={true} dragging={true} draggableMarker={(user?.result?.role === 'smm' ? true : false)} markerRef={markerRef} />
             );
         } else {
             return (

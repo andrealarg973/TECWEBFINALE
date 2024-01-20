@@ -1,4 +1,5 @@
 // backgroundTasks.js
+import User from './models/user.js';
 import PostMessage from './models/postMessage.js';
 import PostMessageTemporal from './models/postMessageTemporal.js';
 import QuotaSchema from './models/quota.js';
@@ -316,7 +317,8 @@ async function automaticPosts() {
             //console.log("manca", secondsDiff - post.repeat);
 
             if (secondsDiff - post.repeat > 0) {
-                const newPost = new PostMessage({ createdAt: new Date().toISOString(), title: post.title, reply: post.reply, type: post.type, location: post.location, message: post.message, name: post.name, creator: post.creator, tags: post.tags, selectedFile: post.selectedFile, privacy: post.privacy, visual: post.visual, likes: post.likes, comments: post.comments, dislikes: post.islikes, comments: post.comments, destinatari: post.destinatari, destinatariPrivati: post.destinatariPrivati });
+                const vip = await User.find({ smm: post.creator });
+                const newPost = new PostMessage({ createdAt: new Date().toISOString(), title: post.title, reply: post.reply, type: post.type, location: post.location, message: post.message, name: (vip.length > 0 ? vip[0].name : post.name), creator: post.creator, tags: post.tags, selectedFile: post.selectedFile, privacy: post.privacy, visual: post.visual, likes: post.likes, comments: post.comments, dislikes: post.islikes, comments: post.comments, destinatari: post.destinatari, destinatariPrivati: post.destinatariPrivati });
                 //newPost.message = replacePlaceholders(newPost.message);
                 const apiUrl = `http://localhost:5000/api/users/${newPost.creator}/getQuotas`;
                 fetch(apiUrl)
