@@ -40,7 +40,8 @@ const Settings = () => {
 
         if (formData.newPassword === formData.confirmPassword) {
             dispatch(updatePassword(user?.result?._id, formData, navigate));
-            toast("Password Changed!", { type: "success" });
+            toast.current.show({ severity: 'success', summary: 'Confirmed', detail: 'Password Changed!', life: 7000 });
+            //alert("Password Changed!", { type: "success" });
         } else {
             alert("Passwords don't match");
         }

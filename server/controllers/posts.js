@@ -171,6 +171,12 @@ export const getPostsByUser = async (req, res) => {
     const userId = req.params.id;
 
     try {
+        // FIX THIS
+        //console.log(userId);
+        //const vip = await User.findById(userId);
+        //console.log(vip);
+        //const posts = (vip ? await PostMessage.find({ $or: [{ creator: userId }, { name: vip.name }] }).sort({ _id: -1 }) : await PostMessage.find({ creator: userId }).sort({ _id: -1 }));
+
         const posts = await PostMessage.find({ creator: userId }).sort({ _id: -1 });
         const replyPostsId = posts.filter(post => post.reply !== '').map(post => post.reply);
 
