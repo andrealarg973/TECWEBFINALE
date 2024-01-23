@@ -75,6 +75,7 @@ const Form = ({ currentId, setCurrentId }) => {
     const getQTAs = async () => {
         await dispatch(getQuotas(user.result._id)).then((res) => {
             setQuotas(res);
+            //console.log(res);
         });
         /*
         await dispatch(getCar({ user: user?.result?._id })).then((res) => {
@@ -309,7 +310,6 @@ const Form = ({ currentId, setCurrentId }) => {
         const adjust = currentTags.map((tag) => tag.replace(/\s/g, ''));
         setPostData({ ...postData, tags: adjust });
         //console.log(currentTags);
-
     }
 
     const handleRadioClick = (e) => {
@@ -322,7 +322,7 @@ const Form = ({ currentId, setCurrentId }) => {
         return (
             <Paper className={classes.paper}>
                 <Typography variant="h6" align="center">
-                    Please Sign In to create your post
+                    Please Sign In to create your post.
                 </Typography>
             </Paper>
         )

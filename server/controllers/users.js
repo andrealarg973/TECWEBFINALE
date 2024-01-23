@@ -410,8 +410,8 @@ export const readNotification = async (req, res) => {
 }
 
 export const getQuotas = async (req, res) => {
-    const id = req.params.id;
-
+    let id = req.params.id;
+    //console.log(id);
     try {
         const dateDay = new Date();
         dateDay.setHours(0, 0, 0, 0);
@@ -429,12 +429,26 @@ export const getQuotas = async (req, res) => {
         firstDayOfMonth.setHours(0, 0, 0, 0);
         //console.log(firstDayOfMonth);
 
-        const day = await PostMessage.find({ $and: [{ createdAt: { $gte: dateDay } }, { creator: id }, { $or: [{ destinatari: { $ne: [] } }, { privacy: 'public' }] }] });
+        // get vip's charachters left if smm
+        let vip = await User.findById(id);
+
+        if (vip.role === 'smm') {
+            const smm = await User.find({ smm: id });
+            console.log(smm);
+            if (smm.length > 0) {
+                id = String(smm[0]._id);
+            }
+        }
+        console.log(id);
+        vip = await User.findById(id);
+        //const posts = await PostMessage.find({ $or: [{ creator: userId }, { name: vip.name }] }).sort({ _id: -1 });
+
+        const day = await PostMessage.find({ $and: [{ createdAt: { $gte: dateDay } }, { $or: [{ creator: id }, { name: vip.name }] }, { $or: [{ destinatari: { $ne: [] } }, { privacy: 'public' }] }] });
 
         //console.log(day.length);
-        const week = await PostMessage.find({ $and: [{ createdAt: { $gte: mondayOfThisWeek } }, { creator: id }, { $or: [{ destinatari: { $ne: [] } }, { privacy: 'public' }] }] });
+        const week = await PostMessage.find({ $and: [{ createdAt: { $gte: mondayOfThisWeek } }, { $or: [{ creator: id }, { name: vip.name }] }, { $or: [{ destinatari: { $ne: [] } }, { privacy: 'public' }] }] });
         //console.log(week.length);
-        const month = await PostMessage.find({ $and: [{ createdAt: { $gte: firstDayOfMonth } }, { creator: id }, { $or: [{ destinatari: { $ne: [] } }, { privacy: 'public' }] }] });
+        const month = await PostMessage.find({ $and: [{ createdAt: { $gte: firstDayOfMonth } }, { $or: [{ creator: id }, { name: vip.name }] }, { $or: [{ destinatari: { $ne: [] } }, { privacy: 'public' }] }] });
         //console.log(month.length);
 
         let sumDay = 0;

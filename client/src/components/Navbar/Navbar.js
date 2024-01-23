@@ -64,8 +64,10 @@ const Navbar = () => {
     }
 
     const getQTAs = async () => {
+        //console.log(user?.result?._id);
         await dispatch(getQuotas(user?.result?._id)).then((res) => {
             setQuotas(res);
+            //console.log(res);
         });
     }
 
