@@ -262,16 +262,16 @@ const Post = ({ post, setCurrentId, users }) => {
             <CardActions className={classes.cardActions}>
                 {!post.repeat && (
                     <div>
-                        <Button size="small" color="primary" disabled={!user?.result} onClick={handleLike}>
+                        <Button size="small" color="primary" disabled={!user?.result || user?.result?.blocked} onClick={handleLike}>
                             <Likes />
                         </Button>
-                        <Button size="small" color="primary" align="center" disabled={!user?.result} onClick={handleDislike}>
+                        <Button size="small" color="primary" align="center" disabled={!user?.result || user?.result?.blocked} onClick={handleDislike}>
                             <Dislikes />
                         </Button>
                     </div>
                 )}
                 {!post.repeat ? (
-                    <Button size="small" color="primary" disabled={!user?.result} onClick={() => { setCurrentId(post._id) }}>
+                    <Button size="small" color="primary" disabled={!user?.result || user?.result?.blocked} onClick={() => { setCurrentId(post._id) }}>
                         <ReplyIcon fontSize="small" /> Reply
                     </Button>
                 ) : (

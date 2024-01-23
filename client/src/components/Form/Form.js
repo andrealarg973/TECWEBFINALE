@@ -328,6 +328,16 @@ const Form = ({ currentId, setCurrentId }) => {
         )
     }
 
+    if (user?.result?.blocked) {
+        return (
+            <Paper className={classes.paper}>
+                <Typography variant="h6" align="center">
+                    Your account has been blocked! You are unable to post now.
+                </Typography>
+            </Paper>
+        )
+    }
+
     const handlePostTypeClick = (e) => {
 
         if (e.target.value === 'location') {
