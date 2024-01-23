@@ -7,6 +7,7 @@ const userSchema = mongoose.Schema({
     role: { type: String, default: 'user' },
     smm: { type: String, default: '' },
     picture: { type: String, default: '' },
+    blocked: { type: Boolean, default: false }
 });
 
 const User = mongoose.model('User', userSchema);

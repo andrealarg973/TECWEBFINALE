@@ -271,7 +271,7 @@ const Post = ({ post, setCurrentId, users }) => {
                     </div>
                 )}
                 {!post.repeat ? (
-                    <Button size="small" color="primary" onClick={() => { setCurrentId(post._id) }}>
+                    <Button size="small" color="primary" disabled={!user?.result} onClick={() => { setCurrentId(post._id) }}>
                         <ReplyIcon fontSize="small" /> Reply
                     </Button>
                 ) : (

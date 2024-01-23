@@ -45,6 +45,7 @@ function SelectSmm() {
     }
 
     useEffect(() => {
+        if (user?.result?.role !== 'vip') window.location.href = window.location.origin + '/react';
 
         if (user) {
             getMySmm();
