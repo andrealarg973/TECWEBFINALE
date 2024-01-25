@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Avatar, Button, ButtonBase, Paper, Grid, Typography, Container } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useDispatch } from 'react-redux';
@@ -11,6 +11,14 @@ import useStyles from './styles';
 import Input from './Input';
 //import Icon from './icon';
 import { signin, signup, resetPwd } from '../../actions/auth';
+import { Toast } from 'primereact/toast';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'primeicons/primeicons.css';
+//theme
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+//core
+import "primereact/resources/primereact.min.css";
 
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '', picture: '', role: 'user' };
 
@@ -22,6 +30,7 @@ const Auth = () => {
     const [passwordReset, setPasswordReset] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const toast = useRef(null);
 
     const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
     const switchMode = () => {
@@ -29,7 +38,7 @@ const Auth = () => {
         setShowPassword(false);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (passwordReset) {
@@ -37,9 +46,20 @@ const Auth = () => {
             dispatch(resetPwd(formData, navigate));
         } else {
             if (isSignup) {
-                dispatch(signup(formData, navigate));
+                await dispatch(signup(formData, navigate)).then((res) => {
+                    if (!res) {
+                        //console.log("Invalid Credentials");
+                        toast.current.show({ severity: 'warn', summary: 'Not Signed Up', detail: 'Some data may be incorrect', life: 5000 });
+                    }
+                });
             } else {
-                dispatch(signin(formData, navigate));
+                await dispatch(signin(formData, navigate)).then((res) => {
+                    if (!res) {
+                        //console.log("Invalid Credentials");
+                        toast.current.show({ severity: 'warn', summary: 'Not Signed In', detail: 'Invalid Credentials', life: 5000 });
+                    }
+                });
+
             }
         }
 
@@ -60,8 +80,10 @@ const Auth = () => {
             if (res?.result) {
                 //console.log('result found:');
                 //console.log(res);
+                //toast.current.show({ severity: 'success', summary: 'Signed In with Google', life: 5000 });
             } else {
                 //console.log('no result');
+                toast.current.show({ severity: 'success', summary: 'Signed Up with Google', life: 5000 });
                 dispatch(signup({ firstName: result.given_name, lastName: result.family_name, email: result.email, password: result.sub, confirmPassword: result.sub, picture: result.picture, role: 'user' }, navigate));
                 //console.log(res);
             }
@@ -84,6 +106,7 @@ const Auth = () => {
         */
     };
     const googleFailure = (error) => {
+        toast.current.show({ severity: 'warn', summary: 'Not Signed In', detail: 'Google sign in was unsuccessful!', life: 5000 });
         console.log("Google sign in was unsuccessful!");
         console.log(error);
     };
@@ -102,6 +125,7 @@ const Auth = () => {
     return (
         <Container component="main" maxWidth="xs">
             <Paper className={classes.paper} elevation={3}>
+                <Toast ref={toast} />
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon />
                 </Avatar>
@@ -144,6 +168,7 @@ const Auth = () => {
                             <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit} >
                                 {isSignup ? 'Sign Up' : 'Sign in'}
                             </Button>
+                            <ToastContainer autoClose={1000} hideProgressBar={true} />
 
                             <GoogleOAuthProvider clientId="608973042252-v57p0u75d5dg4ve0m77dqnv251kqlivr.apps.googleusercontent.com">
                                 <GoogleLogin
