@@ -207,7 +207,7 @@ const Form = ({ currentId, setCurrentId }) => {
             }
         } else {
             if (postData.reply === '') {
-                dispatch(updateTemporal(currentId, { ...postData, name: user?.result?.name, repeat: time, active: switchController }));
+                dispatch(updateTemporal(currentId, { ...postData, repeat: time, active: switchController }));
                 clear();
                 navigate('/temporalPosts');
             } else {

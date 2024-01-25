@@ -410,5 +410,5 @@ const setTrendingPostsDelay = 30;
 setInterval(automaticPosts, automaticPostsDelay * 1000);
 setInterval(updateQuotas, automaticQuotaDelay * 1000);
 setInterval(getControversial, getControversialDelay * 1000);
-//setInterval(removeTrendingPosts, 1 * 1000);
 setInterval(setTrendingPosts, setTrendingPostsDelay * 1000);
+//setInterval(removeTrendingPosts, 1 * 1000);

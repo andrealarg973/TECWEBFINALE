@@ -11,7 +11,21 @@ const router = express.Router();
 
 export const getPosts = async (req, res) => {
     const { page } = req.query;
-    const id = [req?.params?.id];
+    let id = req?.params?.id;
+    //console.log(id);
+
+    // get vip's posts and smm
+    let vip = await User.findById(id);
+    let smm = [];
+
+    if (vip.role === 'smm') {
+        smm = await User.find({ smm: id });
+        //console.log(smm);
+        if (smm.length > 0) {
+            id = String(smm[0]._id);
+            vip = await User.findById(id);
+        }
+    }
     //console.log(id);
 
     try {
@@ -24,9 +38,9 @@ export const getPosts = async (req, res) => {
         //console.log(canali);
 
         // ottiene tutti i post visualizzabili dall'utente in questione
-        const posts = await PostMessage.find({ $or: [{ creator: id }, { destinatariPrivati: { $in: id } }, { privacy: 'public' }, { destinatari: { $in: canali.map((canale) => canale.value) } }] }).sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+        const posts = await PostMessage.find({ $or: [{ $or: [{ creator: ((vip.role === 'smm' && smm.length < 1) ? 'notfound' : id) }, { name: vip.name }] }, { destinatariPrivati: { $in: id } }, { privacy: 'public' }, { destinatari: { $in: canali.map((canale) => canale.value) } }] }).sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
 
-        const total = await PostMessage.find({ $or: [{ creator: id }, { destinatariPrivati: { $in: id } }, { privacy: 'public' }, { destinatari: { $in: canali.map((canale) => canale.value) } }] }).sort({ _id: -1 }).countDocuments({});
+        const total = await PostMessage.find({ $or: [{ $or: [{ creator: ((vip.role === 'smm' && smm.length < 1) ? 'notfound' : id) }, { name: vip.name }] }, { destinatariPrivati: { $in: id } }, { privacy: 'public' }, { destinatari: { $in: canali.map((canale) => canale.value) } }] }).sort({ _id: -1 }).countDocuments({});
         //console.log(total);
 
         const replyPostsId = posts.filter(post => post.reply !== '').map(post => post.reply);
@@ -83,13 +97,22 @@ export const getUnloggedPosts = async (req, res) => {
 
 
 export const getTemporalPosts = async (req, res) => {
-    const id = req.params.id;
+    let id = req.params.id;
+    let vip = await User.findById(id);
+
+    if (vip.role === 'smm') {
+        const smm = await User.find({ smm: id });
+        //console.log(smm);
+        if (smm.length > 0) {
+            id = String(smm[0]._id);
+            vip = await User.findById(id);
+        }
+    }
 
     try {
         // ottiene tutti i canali per i quali l'utente può visualizzare/postare messaggi (e che non siano chiusi)
-        const temporalPosts = await PostMessageTemporal.find({ creator: id });
-
-
+        const temporalPosts = await PostMessageTemporal.find({ $or: [{ creator: id }, { name: vip.name }] });
+        //console.log(temporalPosts);
         const replyPostsId = temporalPosts.filter(post => post.reply !== '').map(post => post.reply);
 
         const replyPosts = await PostMessage.find({ _id: { $in: replyPostsId } });
@@ -146,13 +169,32 @@ export const getPostsBySearch = async (req, res) => {
             const myTags = tags.split(',');
             const trimmedTags = myTags.map(tag => tag.trim());  // rimuove gli spazi tra i tag
             //console.log(trimmedTags);
-            const posts = await PostMessage.find({ $or: [{ title }, { message }, { destinatari: { $in: channel } }, { tags: { $in: trimmedTags } }] }).sort({ _id: -1 }); // find post based on two criteria: title or tags
+            //const posts = await PostMessage.find({ $or: [{ title }, { message }, { destinatari: { $in: channel } }, { tags: { $in: trimmedTags } }] }).sort({ _id: -1 }); // find post based on two criteria: title or tags
+            const posts = await PostMessage.find({
+                $or: [
+                    { title },
+                    { message },
+                    { destinatari: { $in: channel } },
+                    { tags: { $in: trimmedTags } }
+                ],
+                destinatariPrivati: { $size: 0 } // Check if destinatariPrivati array length is 0 (no des privati in ricerca)
+            }).sort({ _id: -1 });
+
             const replyPostsId = posts.filter(post => post.reply !== '').map(post => post.reply);
 
             const replyPosts = await PostMessage.find({ _id: { $in: replyPostsId } });
             res.json({ data: posts, replyPosts: replyPosts });
         } else {
-            const posts = await PostMessage.find({ $or: [{ title }, { message }, { destinatari: { $in: channel } }] }).sort({ _id: -1 }); // find post based on two criteria: title or tags
+            //const posts = await PostMessage.find({ $or: [{ title }, { message }, { destinatari: { $in: channel } }] }).sort({ _id: -1 }); // find post based on two criteria: title or tags
+            const posts = await PostMessage.find({
+                $or: [
+                    { title },
+                    { message },
+                    { destinatari: { $in: channel } }
+                ],
+                destinatariPrivati: { $size: 0 } // Check if destinatariPrivati array length is 0
+            }).sort({ _id: -1 });
+
             //console.log(posts);
             const replyPostsId = posts.filter(post => post.reply !== '').map(post => post.reply);
 
@@ -168,13 +210,24 @@ export const getPostsBySearch = async (req, res) => {
 }
 
 export const getPostsByUser = async (req, res) => {
-    const userId = req.params.id;
+    let userId = req.params.id;
 
     try {
         // FIX THIS
         //console.log(userId);
-        const vip = await User.findById(userId);
-        const posts = await PostMessage.find({ $or: [{ creator: userId }, { name: vip.name }] }).sort({ _id: -1 });
+        let vip = await User.findById(userId);
+        //let vip = await User.findById(id);
+        let smm = [];
+
+        if (vip.role === 'smm') {
+            smm = await User.find({ smm: userId });
+            //console.log(smm);
+            if (smm.length > 0) {
+                userId = String(smm[0]._id);
+                vip = await User.findById(userId);
+            }
+        }
+        const posts = await PostMessage.find({ $or: [{ creator: ((vip.role === 'smm' && smm.length < 1) ? 'notfound' : userId) }, { name: vip.name }] }).sort({ _id: -1 });
         //console.log(posts);
 
         //const posts = await PostMessage.find({ creator: userId }).sort({ _id: -1 });
@@ -230,7 +283,7 @@ async function fetchDataAndReplace(inputString) {
                 return replacedString;
             });
     } else if (inputString.includes('{NEWS}')) {
-        console.log('NEWS');
+        //console.log('NEWS');
         return fetch(newsUrl)
             .then(response => response.json())
             .then(postInfo => {
@@ -279,9 +332,17 @@ export const createPost = async (req, res) => {
 
             if (newPostMessage.reply !== '') {
                 const dest = await PostMessage.findById(newPostMessage.reply);
+
                 if (dest.creator !== newPostMessage.creator) {
                     const msg = ' replied at your post.';
                     const newNotify = NotificationlSchema({ postId: newPostMessage._id, userId: dest.creator, createdAt: newPostMessage.createdAt, content: msg, sender: '@' + newPostMessage.name });
+                    newNotify.save();
+                }
+                let vip = await User.find({ smm: dest.creator }); // redirect notifications to real user
+
+                if (dest.creator !== newPostMessage.creator && vip.length > 0) {
+                    const msg = ' replied at your post.';
+                    const newNotify = NotificationlSchema({ postId: newPostMessage._id, userId: vip[0]._id, createdAt: newPostMessage.createdAt, content: msg, sender: '@' + newPostMessage.name });
                     newNotify.save();
                 }
                 //console.log(newNotify);
@@ -308,7 +369,11 @@ export const createPost = async (req, res) => {
 
 export const createAutomaticPost = async (req, res) => {
     const post = req.body;
-    const newPostMessageTemporal = new PostMessageTemporal({ ...post, creator: req.userId, createdAt: new Date().toISOString() });
+    const vip = await User.find({ smm: req.userId });
+    //console.log(vip[0].name);
+    //console.log(post.name);
+
+    const newPostMessageTemporal = new PostMessageTemporal({ ...post, creator: req.userId, name: (vip.length > 0 ? vip[0].name : post.name), createdAt: new Date().toISOString() });
 
 
     //console.log(newPostMessageTemporal);
@@ -338,14 +403,28 @@ export const updateTemporal = async (req, res) => {
     const { id } = req.params;
     const updatedPost = req.body;
     //console.log(updatedPost);
+    //console.log(id);
+    let vip = await User.findById(updatedPost.creator);
+    let theName = vip.name;
+    //console.log(vip.name);
+
+    if (vip.role === 'smm') {
+        const smm = await User.find({ smm: updatedPost.creator });
+        //console.log(smm);
+        if (smm.length > 0) {
+            //id = String(smm[0]._id);
+            theName = smm[0].name;
+            //vip = await User.findById(id);
+        }
+    }
 
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
 
     //const updatedPost = { creator, title, message, tags, likes, destinatari, destinatariPrivati, privacy, selectedFile, _id: id };
 
-    await PostMessageTemporal.findByIdAndUpdate(id, updatedPost, { new: true });
-
-    res.json(updatedPost);
+    const newUpdatedPost = await PostMessageTemporal.findByIdAndUpdate(id, updatedPost, { creator: vip._id }, { name: theName }, { new: true });
+    //console.log(updatedPost);
+    res.json(newUpdatedPost);
 }
 
 export const updateVisual = async (req, res) => {

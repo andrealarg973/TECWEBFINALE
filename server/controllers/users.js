@@ -434,13 +434,14 @@ export const getQuotas = async (req, res) => {
 
         if (vip.role === 'smm') {
             const smm = await User.find({ smm: id });
-            console.log(smm);
+            //console.log(smm);
             if (smm.length > 0) {
                 id = String(smm[0]._id);
+                vip = await User.findById(id);
             }
         }
-        console.log(id);
-        vip = await User.findById(id);
+        //console.log(id);
+
         //const posts = await PostMessage.find({ $or: [{ creator: userId }, { name: vip.name }] }).sort({ _id: -1 });
 
         const day = await PostMessage.find({ $and: [{ createdAt: { $gte: dateDay } }, { $or: [{ creator: id }, { name: vip.name }] }, { $or: [{ destinatari: { $ne: [] } }, { privacy: 'public' }] }] });
