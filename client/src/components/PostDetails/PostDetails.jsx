@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Paper, Typography, CircularProgress, Divider, CardMedia, Card, ButtonBase, CardContent } from '@material-ui/core';
+import { Paper, Typography, CircularProgress, Divider, CardMedia, Card, ButtonBase, CardContent, Button } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
+import ReplyIcon from '@mui/icons-material/Reply';
 
 import Map from '../Map/Map';
 import CommentSection from './CommentSection';
@@ -14,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { updateVisual } from '../../actions/posts';
 import { URL } from '../../constants/paths';
 
-const PostDetails = () => {
+const PostDetails = ({ currentId, setCurrentId }) => {
     const { post, isLoading, replyPost } = useSelector((state) => state.posts);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -56,6 +57,11 @@ const PostDetails = () => {
         dispatch(updateVisual(post.reply));
         navigate(`/posts/${post.reply}`);
         //console.log(post);
+    }
+
+    const handleReply = () => {
+        setCurrentId(post._id);
+        navigate(`/newPost`);
     }
 
     const PostReply = ({ repPost }) => {
@@ -154,7 +160,9 @@ const PostDetails = () => {
                             <Map position={post.location} height={'69vh'} zoom={8} scrollWheelZoom={true} dragging={true} draggableMarker={false} draggableEventHandler={(() => { })} />
                         </>
                     )}
-
+                    <Button size="small" color="primary" disabled={!user?.result || user?.result?.blocked} onClick={handleReply}>
+                        <ReplyIcon fontSize="small" /> Reply
+                    </Button>
                     {post.reply !== '' && (
                         <PostReply repPost={replyPost} />
                     )}
