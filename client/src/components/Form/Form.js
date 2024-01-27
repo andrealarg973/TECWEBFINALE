@@ -220,12 +220,15 @@ const Form = ({ currentId, setCurrentId }) => {
                     if (temporal) {
                         dispatch(createPostTemporal({ ...postData, name: user?.result?.name, reply: currentId, privacy: privacy, location: (markerRef.current !== null ? [markerRef?.current?.getLatLng()?.lat, markerRef?.current?.getLatLng()?.lng] : [9999, 9999]), repeat: (time >= 10 ? time : 10) }));
                     } else {
-                        dispatch(createPost({ ...postData, name: user?.result?.name, privacy: privacy, reply: currentId, location: (markerRef.current !== null ? [markerRef?.current?.getLatLng()?.lat, markerRef?.current?.getLatLng()?.lng] : [9999, 9999]) }));
+                        dispatch(createPost({ ...postData, name: user?.result?.name, privacy: privacy, destinatariPrivati: postData.destinatariPrivati.concat([post.creator]), reply: currentId, location: (markerRef.current !== null ? [markerRef?.current?.getLatLng()?.lat, markerRef?.current?.getLatLng()?.lng] : [9999, 9999]) }));
+                        console.log(postData.destinatariPrivati);
+                        console.log({ value: post.creator, label: "@" + post.name });
+                        console.log(postData.destinatariPrivati.concat([{ value: post.creator, label: "@" + post.name }]));
                     }
                     //console.log(postData);
-                    if (postData.destinatari.length > 0) {
-                        //dispatch(updateQuota({ ...caratteri, user: user?.result?._id, quota: caratteri }));
-                    }
+                    //if (postData.destinatari.length > 0) {
+                    //dispatch(updateQuota({ ...caratteri, user: user?.result?._id, quota: caratteri }));
+                    //}
                     clear();
                     navigate('/');
                     //}
@@ -457,7 +460,7 @@ const Form = ({ currentId, setCurrentId }) => {
                 {postData.destinatari.length <= 0 && (
                     <>
                         <Typography variant="h6">Destinatari (utenti)</Typography>
-                        <Select className={classes.fileInput} value={postData.destinatariPrivati.map((c) => ({ value: c, label: "@" + nome(c) }))} isMulti options={users} onChange={handleSelectUsers} onInputChange={handleInputSelect} />
+                        <Select className={classes.fileInput} value={currentId ? ({ value: post.creator, label: "@" + post.name }) : (postData.destinatariPrivati.map((c) => ({ value: c, label: "@" + nome(c) })))} isMulti options={users} onChange={handleSelectUsers} onInputChange={handleInputSelect} />
                     </>
                 )}
 

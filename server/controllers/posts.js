@@ -322,7 +322,7 @@ export const createPost = async (req, res) => {
             //console.log("VAL: ", replacedString);
             newPostMessage.message = replacedString;
 
-            if (newPostMessage.destinatariPrivati.length > 0) {
+            if (newPostMessage.destinatariPrivati.length > 0 && newPostMessage.reply === '') {
                 newPostMessage.destinatariPrivati.map(dest => {
                     const msg = ' tagged you on a post.';
                     const newNotify = NotificationlSchema({ postId: newPostMessage._id, userId: dest, createdAt: newPostMessage.createdAt, content: msg, sender: '@' + newPostMessage.name });
