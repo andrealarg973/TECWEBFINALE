@@ -308,6 +308,7 @@ const Form = ({ currentId, setCurrentId }) => {
 
     const handleChangeTags = (currentTags) => {
         const adjust = currentTags.map((tag) => tag.replace(/\s/g, ''));
+        //setLocation(markerRef.current.getLatLng())
         setPostData({ ...postData, tags: adjust });
         //console.log(currentTags);
     }
@@ -397,7 +398,7 @@ const Form = ({ currentId, setCurrentId }) => {
                     const marker = markerRef.current
                     if (marker != null) {
                         console.log(marker.getLatLng());
-                        setLocation(marker.getLatLng())
+                        setLocation(marker.getLatLng());
                     }
                 },
             }),
