@@ -410,7 +410,7 @@ const Form = ({ currentId, setCurrentId }) => {
         if (location.length > 0) {
             const position = [location[0], location[1]];
             return (
-                <Map position={position} height={'50vh'} zoom={13} scrollWheelZoom={true} dragging={true} draggableMarker={(user?.result?.role === 'smm' ? true : false)} markerRef={markerRef} />
+                <Map position={position} height={'50vh'} zoom={13} scrollWheelZoom={true} dragging={true} draggableMarker={(user?.result?.role === 'smm' ? true : false)} markerRef={markerRef} notPathMap={true} />
             );
         } else {
             return (

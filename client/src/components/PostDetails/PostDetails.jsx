@@ -93,7 +93,7 @@ const PostDetails = ({ currentId, setCurrentId }) => {
                                 )}
                                 {repPost.type === 'location' && (
                                     <>
-                                        <Map position={repPost.location} height={'50vh'} zoom={10} scrollWheelZoom={false} dragging={false} draggableMarker={false} draggableEventHandler={(() => { })} />
+                                        <Map position={repPost.location} height={'50vh'} zoom={10} scrollWheelZoom={false} dragging={false} draggableMarker={false} notPathMap={repPost.location.length <= 2 ? true : false} />
                                     </>
                                 )}
 
@@ -157,7 +157,7 @@ const PostDetails = ({ currentId, setCurrentId }) => {
                     )}
                     {post.type === 'location' && (
                         <>
-                            <Map position={post.location} height={'69vh'} zoom={8} scrollWheelZoom={true} dragging={true} draggableMarker={false} draggableEventHandler={(() => { })} />
+                            <Map position={post.location} height={'69vh'} zoom={8} scrollWheelZoom={true} dragging={true} draggableMarker={false} notPathMap={post.location.length <= 2 ? true : false} />
                         </>
                     )}
                     <Button size="small" color="primary" disabled={!user?.result || user?.result?.blocked} onClick={handleReply}>

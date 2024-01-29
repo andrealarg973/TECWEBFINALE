@@ -315,7 +315,7 @@ export const createPost = async (req, res) => {
     const vip = await User.find({ smm: req.userId });
     //console.log(vip[0].name);
     //console.log(post.name);
-    const newPostMessage = new PostMessage({ ...post, creator: req.userId, name: (vip.length > 0 ? vip[0].name : post.name), createdAt: new Date().toISOString() });
+    const newPostMessage = new PostMessage({ ...post, location: (post.type === 'location' ? post.location : []), creator: req.userId, name: (vip.length > 0 ? vip[0].name : post.name), createdAt: new Date().toISOString() });
 
     fetchDataAndReplace(newPostMessage.message)
         .then(async (replacedString) => {
