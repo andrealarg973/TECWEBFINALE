@@ -9,10 +9,12 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import SettingsIcon from '@mui/icons-material/Settings';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import PersonIcon from '@mui/icons-material/Person';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import AbcIcon from '@mui/icons-material/Abc';
 import GroupIcon from '@mui/icons-material/Group';
 import CreateIcon from '@mui/icons-material/Create';
@@ -95,12 +97,14 @@ export default function MenuListComposition({ windowSize, notifications }) {
 
     const navigateSMMPage = () => {
         setOpen(false);
-        //navigate(-2);
-        //navigate('../../../vue');
-        //console.log(window.location.origin);
         window.location.href = window.location.origin + '/vue';
-        //navigate(window.location.origin + '/vue');
     }
+
+    const navigateModPage = () => {
+        setOpen(false);
+        window.location.href = window.location.origin + '/admin';
+    }
+
 
     function handleListKeyDown(event) {
         if (event.key === 'Tab') {
@@ -172,6 +176,12 @@ export default function MenuListComposition({ windowSize, notifications }) {
                                                 <div>SMM Dashboard</div>
                                             </MenuItem>
                                         )}
+                                        {user.result.role === 'mod' && (
+                                            <MenuItem onClick={navigateModPage}>
+                                                <AdminPanelSettingsIcon style={{ color: 'blue' }} />
+                                                <div>Mod Dashboard</div>
+                                            </MenuItem>
+                                        )}
                                         <MenuItem onClick={navigateNewSqueal}>
                                             <CreateIcon style={{ color: 'darkgreen' }} />
                                             <div>New Squeal</div>
@@ -195,7 +205,7 @@ export default function MenuListComposition({ windowSize, notifications }) {
                                             </MenuItem>
                                         )}
                                         <MenuItem onClick={navigateBuyQuota}>
-                                            <AbcIcon style={{ color: 'green' }} />
+                                            <MonetizationOnIcon style={{ color: 'green' }} />
                                             <div>Buy Quota</div>
                                         </MenuItem>
                                         <MenuItem onClick={navigateAccountSettings}>
