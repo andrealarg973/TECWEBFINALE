@@ -49,7 +49,18 @@ npm run dev
 
 
 --------------------------------------------------------------------
-start node-20 site222316 vuect/server/index.js
+ISTRUZIONI CARICAMENTO SU GIOVANNA
+1. caricamento build
+    - npm run build su client (crea cartella build)
+    - copia la build su giovanna, in TECWEBFINALE/server/react-app (./react-app/build)
+    - build vue in /vue-app/dist
+2. avvio gocker da giovanna
+    - ssh andrea.largura@gocker.cs.unibo.it
+    - start nodemon-20 site222316 TECWEBFINALE/server/index.js
+    - logs site222316 (per vedere console)
+
+API per PRENDERE IMMAGINI:
+https://site222316.tw.cs.unibo.it/api/public/media/{selectedFile}
 
 rafce
 
@@ -118,3 +129,8 @@ client:
     - api/index.js
     - actions
     - reducers
+
+ULTIMI FIX:
+- database locale
+- fix mappe
+- rileggere consegna

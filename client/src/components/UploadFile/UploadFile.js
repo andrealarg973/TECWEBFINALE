@@ -39,7 +39,7 @@ const UploadFile = ({ sendDataToParent }) => {
                     setDone(true);
                 }
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log('ERRORE CLEINT: ', err));
     }
 
 
