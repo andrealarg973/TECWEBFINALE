@@ -14,6 +14,7 @@ import Posts from '../Posts/Posts';
 
 const ChannelPage = () => {
     const dispatch = useDispatch();
+    const { isLoading } = useSelector((state) => state.posts);
     //const classes = useStyles();
     const user = JSON.parse(localStorage.getItem('profile'));
     const { id } = useParams();
@@ -79,6 +80,8 @@ const ChannelPage = () => {
 
 
     }, [allowed]);
+
+    if (isLoading) return (<><CircularProgress /></>);
 
     return (
         <>

@@ -112,6 +112,22 @@ const PostDetails = ({ currentId, setCurrentId }) => {
         );
     }
 
+    const MyComponent = ({ text }) => {
+        const handleClick = () => {
+            // Your click event logic here
+            console.log('Typography clicked!');
+            navigate('/channelPage/' + text);
+        };
+
+        return (
+            <div style={{ cursor: 'pointer', display: 'inline' }}>
+                <Typography style={{ display: 'inline' }} key={text} variant="body1" onClick={handleClick}>
+                    ${text}&nbsp;
+                </Typography>
+            </div >
+        );
+    };
+
     return (
         <Paper style={{ padding: '20px', borderRadius: '15px' }} elevation={6}>
             <div className={classes.card}>
@@ -121,7 +137,7 @@ const PostDetails = ({ currentId, setCurrentId }) => {
                     <Typography variant="body1">{moment(post.createdAt).fromNow()}</Typography>
                     {post.destinatari.length > 0 && (
                         <div className={classes.details}>
-                            <Typography variant="body1" style={{ color: 'cyan' }} component="h2">{post.destinatari.map((tag) => `$${tag} `)}</Typography>
+                            <Typography variant="body1" style={{ color: 'cyan' }} component="h2">{post.destinatari.map((tag) => <MyComponent key={tag} text={tag} />)}</Typography>
                         </div>
                     )}
                     {(post.destinatariPrivati.find((dest) => dest === user?.result?._id) || post.creator === user?.result?._id) && (
