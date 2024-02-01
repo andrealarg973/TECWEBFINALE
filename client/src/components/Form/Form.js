@@ -211,12 +211,13 @@ const Form = ({ currentId, setCurrentId }) => {
                 clear();
                 navigate('/temporalPosts');
             } else {
-
+                console.log(currentId);
                 if ((Math.min(quotas.day, quotas.week, quotas.month) - caratteri >= 0) || (postData.destinatariPrivati.length > 0) || temporal) {
                     //if (postData.destinatari.length < 1 && postData.destinatariPrivati.length < 1) {
                     //alert('Devi selezionare almeno un destinatario!');
                     //} else {
-                    const privacy = (postData.destinatariPrivati.length <= 0 && postData.destinatari.length <= 0) ? 'public' : 'private';
+                    const privacy = (postData.destinatariPrivati.length <= 0 && postData.destinatari.length <= 0 && post.privacy === 'public') ? 'public' : 'private';
+                    //console.log(post.privacy);
                     if (temporal) {
                         dispatch(createPostTemporal({ ...postData, name: user?.result?.name, reply: currentId, privacy: privacy, location: (markerRef.current !== null ? [markerRef?.current?.getLatLng()?.lat, markerRef?.current?.getLatLng()?.lng] : [9999, 9999]), repeat: (time >= 10 ? time : 10) }));
                     } else {

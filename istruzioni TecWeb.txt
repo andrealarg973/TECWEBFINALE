@@ -134,3 +134,16 @@ ULTIMI FIX:
 - database locale
 - fix mappe
 - rileggere consegna
+
+SMM
+id: 123, nome: smm
+VIP
+id: 234, nome: vip, smm: 123
+
+POST
+const vip = User.find({smm: id})
+if (vip.lenght > 0) {
+    getPost({$creator: 234 $or $name: vip.name})
+    $
+}
+

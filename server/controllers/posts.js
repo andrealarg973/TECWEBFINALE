@@ -17,6 +17,7 @@ export const getPosts = async (req, res) => {
     // get vip's posts and smm
     let vip = await User.findById(id);
     let smm = [];
+    //console.log("smm: ", vip.name);
 
     if (vip.role === 'smm') {
         smm = await User.find({ smm: id });
@@ -27,6 +28,8 @@ export const getPosts = async (req, res) => {
         }
     }
     //console.log(id);
+    //console.log("vip: ", smm[0].name);
+
 
     try {
         const LIMIT = 12;
@@ -39,9 +42,11 @@ export const getPosts = async (req, res) => {
 
         // ottiene tutti i post visualizzabili dall'utente in questione
         const posts = await PostMessage.find({ $or: [{ $or: [{ creator: ((vip.role === 'smm' && smm.length < 1) ? 'notfound' : id) }, { name: vip.name }] }, { destinatariPrivati: { $in: id } }, { privacy: 'public' }, { destinatari: { $in: canali.map((canale) => canale.value) } }] }).sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
-
+        //console.log(posts);
         const total = await PostMessage.find({ $or: [{ $or: [{ creator: ((vip.role === 'smm' && smm.length < 1) ? 'notfound' : id) }, { name: vip.name }] }, { destinatariPrivati: { $in: id } }, { privacy: 'public' }, { destinatari: { $in: canali.map((canale) => canale.value) } }] }).sort({ _id: -1 }).countDocuments({});
         //console.log(total);
+        //console.log(vip.name, vip.role);
+        //console.log(id);
 
         const replyPostsId = posts.filter(post => post.reply !== '').map(post => post.reply);
 
