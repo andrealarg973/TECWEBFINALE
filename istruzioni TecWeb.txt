@@ -147,3 +147,18 @@ if (vip.lenght > 0) {
     $
 }
 
+MANCANO
+- modifica quota iniziale
+- quota acquistata scade dopo un anno
+- no mappe con percorso
+- no beep acustico
+
+FIX
+- tech news (copiata risposta)
+- channelPage (basta avere almeno un post nel canale)
+- quote utenti vip (boh)
+
+UTENTI:
+fabio vitali        PRO
+erminio ottone      IMPOPOLARE
+enrico glionito     POPOLARE
