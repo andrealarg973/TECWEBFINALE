@@ -16,15 +16,48 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
+app.use(cors());
 dotenv.config();
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
 
 app.enable('trust proxy');
 
-/* 
+
+app.use('/api/posts', postRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/channels', channelRoutes);
+//app.use('/public/media', express.static(__dirname + '/public/media'));
+//app.use('/api/public/media', express.static(path.join(__dirname, '/public/media')));
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        return cb(null, "./public/media");
+    },
+    filename: function (req, file, cb) {
+        const extension = file.originalname.split(".").pop();
+        return cb(null, `${Date.now()}_${req.params.id}.${extension}`);
+    }
+});
+
+const upload = multer({ storage });
+
+app.post('/:id/uploadMedia', upload.single('file'), (req, res) => {
+    res.status(200).json(req.file);
+});
+
+
+
+
+const CONNECTION_URL = 'mongodb+srv://user:user@cluster0.xmu1sog.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const PORT = 5000;
+
+mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => app.listen(PORT, () => console.log('Server running on port: ' + PORT)))
+    .catch((err) => console.log(err.message));
+
+/*
 ****************************************************************
 *                UNCOMMENT THIS FOR GIOVANNA                   *
 ****************************************************************
@@ -55,37 +88,6 @@ app.get('*', (req, res, next) => {
 });
 */
 
-app.use('/api/posts', postRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/channels', channelRoutes);
-app.use('/public/media', express.static(__dirname + '/public/media'));
-//app.use('/api/public/media', express.static(path.join(__dirname, '/public/media')));
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        return cb(null, "./public/media");
-    },
-    filename: function (req, file, cb) {
-        const extension = file.originalname.split(".").pop();
-        return cb(null, `${Date.now()}_${req.params.id}.${extension}`);
-    }
-});
-
-const upload = multer({ storage });
-
-app.post('/:id/uploadMedia', upload.single('file'), (req, res) => {
-    res.status(200).json(req.file);
-});
-
-
-
-
-//const CONNECTION_URL = 'mongodb+srv://user:user@cluster0.xmu1sog.mongodb.net/?retryWrites=true&w=majority';
-const PORT = process.env.PORT || 5000;
-
-mongoose.connect(process.env.CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => app.listen(PORT, () => console.log('Server running on port: ' + PORT)))
-    .catch((err) => console.log(err.message));
 
 //mongoose.set('useFindAndModify', false);
 
